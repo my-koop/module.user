@@ -6,7 +6,7 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "mykoop/mykoop.d.ts": {
-      "commit": "2b92f62fffcf9f07feaa2bc430989f897b347132"
+      "commit": "752be10a0060330c01ff0ffc9b84abec3f289e3f"
     }
   }
 }
