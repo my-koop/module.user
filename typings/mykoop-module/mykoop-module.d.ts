@@ -5,9 +5,11 @@
 
 /// <reference path="../mykoop/mykoop.d.ts" />
 
-// Rename mykoop-module to your purpose
-declare module "mykoop-module" {
-  import mykoop = require("mykoop");
+declare module mykoop {
+  export interface IModule {}
+}
+
+declare module mkmodule {
 
   export class Module implements mykoop.IModule{
     method1(par1: string): string;

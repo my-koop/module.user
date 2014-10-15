@@ -1,19 +1,4 @@
-import mkmodule = require("mykoop-module");
-import mykoop = require("mykoop");
-
-class Module implements mkmodule.Module {
-  moduleManager: mykoop.ModuleManager;
-
-  init(moduleManager: mykoop.ModuleManager){
-    this.moduleManager = moduleManager;
-    //app.get("")
-  }
-
-  method1(par1: string): string{
-    return "";
-  }
-}
-
+import Module = require("./module");
 
 class ModuleBridge implements mykoop.IModuleBridge {
   instance: Module;
