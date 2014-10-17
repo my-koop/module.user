@@ -11,6 +11,10 @@
   },
   "dependencies": {
     "mykoop": {},
-    "mykoop-core": {}
+    "mykoop-core": {},
+    "mykoop-database": {}
+  },
+  "owned": {
+    "mykoop-user": {}
   }
 }
