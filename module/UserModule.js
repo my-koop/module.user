@@ -18,4 +18,5 @@ var UserModule = (function () {
     };
     return UserModule;
 })();
+
 module.exports = UserModule;

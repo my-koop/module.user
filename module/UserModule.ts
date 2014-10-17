@@ -1,7 +1,7 @@
 import express = require("express");
 //import dependencies
 
-class UserModule implements mkinventory.Module {
+class UserModule implements mykoopuser.Module {
   moduleManager: mykoop.ModuleManager;
   db: mkdatabase.Module;
 
