@@ -1,4 +1,5 @@
 import Module = require("./module");
+import utils = require("mykoop-utils");
 
 class ModuleBridge implements mykoop.IModuleBridge {
   instance: Module;
@@ -17,30 +18,19 @@ class ModuleBridge implements mykoop.IModuleBridge {
 
   getMetaData(callback: mykoop.ModuleMetaDataCallback): void {
     // Avoid hardcoding data as much as possible here. Use require calls
-    // whenever possible. Routes are hardcoded at the moment, pending the
-    // route meta data utility.
+    // whenever possible.
+    var metaData = new utils.MetaData();
 
-    callback(null, {
-      routes: {
-        public:{
-          children: {
-            example: {
-              children: {
-                somePage: {
-                  handler: {
-                    resolve: "component",
-                    value: "Component1"
-                  },
-                  name: "example",
-                  path: "/example"
-                }
-              }
-            }
-          }
-        }
-      },
-      translations: require("../locales")
+    metaData.addRoute({
+      idPath: ["public","example","somepage"],
+      component: "Component1",
+      name: "example",
+      path: "/example"
     });
+
+    metaData.addData("translations", require("../locales"));
+
+    callback(null, metaData.get());
   }
 }
 
