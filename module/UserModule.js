@@ -1,3 +1,5 @@
+var getUserProfileData = require("../lib/getUserProfileData");
+
 //import dependencies
 var UserModule = (function () {
     function UserModule() {
@@ -6,9 +8,11 @@ var UserModule = (function () {
         this.moduleManager = moduleManager;
         var db = this.moduleManager.get("database");
         var routerModule = this.moduleManager.get("router");
+        routerModule.addRoutes(function (router) {
+            router.get("/data/:id", getUserProfileData.bind(null, db));
+            return "/user";
+        });
 
-        //routerModule.addRoutes(function(router: express.Router){
-        //});
         if (db) {
             this.db = db;
         }

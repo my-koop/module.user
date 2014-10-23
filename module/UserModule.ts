@@ -1,4 +1,5 @@
 import express = require("express");
+import getUserProfileData = require("../lib/getUserProfileData");
 //import dependencies
 
 class UserModule implements mykoopuser.Module {
@@ -8,9 +9,11 @@ class UserModule implements mykoopuser.Module {
   init(moduleManager: mykoop.ModuleManager){
     this.moduleManager = moduleManager;
     var db = <mkdatabase.Module>this.moduleManager.get("database");
-    var routerModule = <any>this.moduleManager.get("router");
-    //routerModule.addRoutes(function(router: express.Router){
-    //});
+    var routerModule = <mykoop.Router>this.moduleManager.get("router");
+    routerModule.addRoutes(function (router: express.Router) {
+      router.get("/data/:id", getUserProfileData.bind(null, db));
+      return "/user";
+    });
 
     if(db){
       this.db = db;
