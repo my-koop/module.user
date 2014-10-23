@@ -1,4 +1,5 @@
 import UserModule = require("./UserModule");
+import utils = require("mykoop-utils");
 
 class ModuleBridge implements mykoop.IModuleBridge {
   instance: UserModule;
