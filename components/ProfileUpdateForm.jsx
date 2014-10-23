@@ -55,34 +55,34 @@ var ProfileUpdateForm = React.createClass({
       <div>
         <form onSubmit={this.onSubmit}>
           <BSInput
-            type="email"
+            type="text"
             label="E-Mail"
             valueLink={this.makeValueLink("email")}
           />
           <BSInput
             type="text"
             label="First Name"
-            defaultValue={this.state.profileData.firstname}
+             valueLink={this.makeValueLink("firstname")}
           />
           <BSInput
             type="text"
             label="Last Name"
-            defaultValue={this.state.profileData.lastname}
+             valueLink={this.makeValueLink("lastname")}
           />
           <BSInput
             type="text"
             label="Birthdate"
-            defaultValue={this.state.profileData.birthdate}
+             valueLink={this.makeValueLink("birthdate")}
           />
           <BSInput
             type="text"
             label="Phone"
-            defaultValue={this.state.profileData.phone}
+             valueLink={this.makeValueLink("phone")}
           />
           <BSInput
             type="text"
             label="Origin"
-            defaultValue={this.state.profileData.origin}
+             valueLink={this.makeValueLink("origin")}
           />
           <BSInput type="submit" bsStyle="primary" value="Update Profile" />
         </form>
