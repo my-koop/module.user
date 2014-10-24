@@ -1,5 +1,6 @@
-var UserProfil = require("../classes/UserProfil");
-function updateUserProfilData(db,res,req,UserProfil,id){
+import express = require("express");
+import UserProfil = require("../classes/UserProfil");
+function updateUserProfilData(db: mkdatabase.Module,res: express.Response,req: express.Request){
   if(db){
     db.getConnection(function(err,connection){
       var updateData = {
@@ -17,11 +18,11 @@ function updateUserProfilData(db,res,req,UserProfil,id){
           if(err){
             throw err;
           }
-          //Update successful  
+          //Update successful
         }
       );
 
     });
   }
 };
-module.exports = updateUserProfilData;
+export = updateUserProfilData;

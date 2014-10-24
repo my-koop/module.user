@@ -1,4 +1,5 @@
 var getUserProfileData = require("../lib/getUserProfileData");
+var testEmailUnicity = require("../lib/testEmailUnicity");
 
 //import dependencies
 var UserModule = (function () {
@@ -10,6 +11,7 @@ var UserModule = (function () {
         var routerModule = this.moduleManager.get("router");
         routerModule.addRoutes(function (router) {
             router.get("/data/:id", getUserProfileData.bind(null, db));
+            router.get("/testEmail/:email", testEmailUnicity.bind(null, db));
             return "/user";
         });
 

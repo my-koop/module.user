@@ -1,5 +1,6 @@
 import express = require("express");
 import getUserProfileData = require("../lib/getUserProfileData");
+import testEmailUnicity = require("../lib/testEmailUnicity");
 //import dependencies
 
 class UserModule implements mykoopuser.Module {
@@ -12,6 +13,7 @@ class UserModule implements mykoopuser.Module {
     var routerModule = <mykoop.Router>this.moduleManager.get("router");
     routerModule.addRoutes(function (router: express.Router) {
       router.get("/data/:id", getUserProfileData.bind(null, db));
+      router.get("/testEmail/:email", testEmailUnicity.bind(null, db));
       return "/user";
     });
 

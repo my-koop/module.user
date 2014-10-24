@@ -1,4 +1,9 @@
-function updateUserPassword(db,res,req,id,pwdhash){
+import express = require("express");
+
+function updateUserPassword(db: mkdatabase.Module,res: express.Response,req: express.Request){
+  var id = req.param("id",null);
+  var pwdhash = req.param("pwdhash",null);
+
   if(db){
     db.getConnection(function(err,connection){
       var updateData = {
@@ -10,11 +15,11 @@ function updateUserPassword(db,res,req,id,pwdhash){
         function (err,rows){
           if(err){
             throw err;
-          } 
+          }
         }
       );
     });
     //Confirm update
   }
 };
-module.exports = updateUserPassword;
+export = updateUserPassword;
