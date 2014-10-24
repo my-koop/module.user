@@ -5,5 +5,6 @@ module.exports = {
   MyAccountPage:      require("./MyAccountPage.jsx"),
   PasswordChangeForm: require("./PasswordChangeForm.jsx"),
   ProfileUpdateForm:  require("./ProfileUpdateForm.jsx"),
-  RegisterPage:       require("./RegisterPage.jsx")
+  RegisterPage:       require("./RegisterPage.jsx"),
+  FormInputFactory:   require("./FormInputFactory.jsx")
 };

@@ -12,8 +12,8 @@ function getUserProfileData(db: mkdatabase.Module, req: express.Request, res: ex
   if (db) {
     db.getConnection(function(err,connection) {
       var query = connection.query(
-        'SELECT ?? FROM ?? WHERE id = ??',
-        [UserProfile.COLUMNS,'user',id],
+        "SELECT ?? FROM user WHERE id = ?",
+        [UserProfile.COLUMNS,id],
         function (err,rows){
           if (err || rows.length !== 1) {
             res.status(500).end({ error: err.toString() });

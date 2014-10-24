@@ -6,6 +6,7 @@ var ModuleBridge = (function () {
         this.instance = new UserModule();
     }
     ModuleBridge.prototype.onAllModulesInitialized = function (moduleManager) {
+        console.log("Yo yo yo user module is in the house.");
         this.instance.init(moduleManager);
     };
 

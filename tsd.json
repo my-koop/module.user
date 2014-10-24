@@ -15,7 +15,8 @@
   "dependencies": {
     "mykoop": {},
     "mykoop-core": {},
-    "mykoop-database": {}
+    "mykoop-database": {},
+    "mykoop-utils": {}
   },
   "owned": {
     "mykoop-user": {}

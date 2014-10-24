@@ -22,7 +22,7 @@ class UserProfile {
         "label": "First Name",
         "valueLink": true
       },
-      "type": "firstname"
+      "type": "text"
     },
     {
       "properties": {
@@ -59,12 +59,12 @@ class UserProfile {
   ];
 
   constructor (userRow: any) {
-    this.email     = userRow['email'],
-    this.firstname = userRow['firstname'],
-    this.lastname  = userRow['lastname'],
-    this.birthdate = userRow['birthdate'],
-    this.phone     = userRow['phone'],
-    this.origin    = userRow['origin']
+    this.email     = userRow.email,
+    this.firstname = userRow.firstname,
+    this.lastname  = userRow.lastname,
+    this.birthdate = userRow.birthdate,
+    this.phone     = userRow.phone,
+    this.origin    = userRow.origin
   }
 
 }

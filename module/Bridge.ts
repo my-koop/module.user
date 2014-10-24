@@ -9,6 +9,7 @@ class ModuleBridge implements mykoop.IModuleBridge {
   }
 
   onAllModulesInitialized(moduleManager: mykoop.ModuleManager){
+    console.log("Yo yo yo user module is in the house.");
     this.instance.init(moduleManager);
   }
 

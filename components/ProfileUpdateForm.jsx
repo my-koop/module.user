@@ -2,6 +2,9 @@
 var BSInput = require("react-bootstrap/Input");
 var UserProfile = require("../classes/UserProfile");
 var ajax = require("ajax");
+var MKFormInputFactory = require("./FormInputFactory");
+
+var updateFormProperties = UserProfile.FORM;
 
 var ProfileUpdateForm = React.createClass({
   propTypes: {
@@ -28,15 +31,6 @@ var ProfileUpdateForm = React.createClass({
       }
     );
   },
-
-  onSubmit: function(e){
-    e.preventDefault();
-    //If email changed ,test for unicity
-    //if new email unique
-      //build new userprofil object
-      //call update profile fonction
-  },
-
   handleFieldChange: function(field, newValue) {
     var profile = this.state.profileData;
     profile[field] = newValue;
@@ -50,40 +44,31 @@ var ProfileUpdateForm = React.createClass({
     }
   },
 
+  onSubmit: function(e){
+    e.preventDefault();
+    //If email changed ,test for unicity
+    //if new email unique
+      //build new userprofil object
+      //call update profile fonction
+  },
+
+
   render: function() {
+    var self = this;
+    var userFormFields = updateFormProperties.map(function(formField,key){
+        return (
+          React.addons.cloneWithProps(
+            MKFormInputFactory(formField.type,formField.properties,key),
+            {
+              valueLink: self.makeValueLink(formField.properties.name),
+              defaultValue: self.state.profileData[formField.properties.name]
+            })
+        )
+    });
     return (
       <div>
         <form onSubmit={this.onSubmit}>
-          <BSInput
-            type="text"
-            label="E-Mail"
-            valueLink={this.makeValueLink("email")}
-          />
-          <BSInput
-            type="text"
-            label="First Name"
-             valueLink={this.makeValueLink("firstname")}
-          />
-          <BSInput
-            type="text"
-            label="Last Name"
-             valueLink={this.makeValueLink("lastname")}
-          />
-          <BSInput
-            type="text"
-            label="Birthdate"
-             valueLink={this.makeValueLink("birthdate")}
-          />
-          <BSInput
-            type="text"
-            label="Phone"
-             valueLink={this.makeValueLink("phone")}
-          />
-          <BSInput
-            type="text"
-            label="Origin"
-             valueLink={this.makeValueLink("origin")}
-          />
+          {userFormFields}
           <BSInput type="submit" bsStyle="primary" value="Update Profile" />
         </form>
       </div>
