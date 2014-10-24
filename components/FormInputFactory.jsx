@@ -35,6 +35,18 @@ var BSInput = require("react-bootstrap/Input");
    );
  }
 
+generatePasswordInput = function(properties,key){
+   return (
+     <BSInput
+       type        ="password"
+       key         ={key}
+       label       ={properties.label}
+       name        ={properties.name}
+       placeholder ={properties.placeholder}
+      />
+   );
+ }
+
  generateRadioInputGroup = function(properties,key){
     var name = properties.name;
     var group = properties.values.map(function(radio,key){
@@ -73,6 +85,8 @@ var BSInput = require("react-bootstrap/Input");
         case "radio":  element = generateRadioInputGroup(properties,key);
                         break;
         case "checkbox" : element = generateCheckboxInput(properties,key);
+                          break;
+        case "password" : element = generatePasswordInput(properties,key);
                           break;
         default: break;
       };
