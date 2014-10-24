@@ -8,48 +8,42 @@ var UserProfile = (function () {
         {
             "properties": {
                 "name": "email",
-                "label": "Email",
-                "valueLink": true
+                "label": "Email"
             },
             "type": "text"
         },
         {
             "properties": {
                 "name": "firstname",
-                "label": "First Name",
-                "valueLink": true
+                "label": "First Name"
             },
             "type": "text"
         },
         {
             "properties": {
                 "name": "lastname",
-                "label": "Lastname",
-                "valueLink": true
+                "label": "Lastname"
             },
             "type": "text"
         },
         {
             "properties": {
                 "name": "birthdate",
-                "label": "Birthdate",
-                "valueLink": true
+                "label": "Birthdate"
             },
             "type": "text"
         },
         {
             "properties": {
                 "name": "phone",
-                "label": "Phone",
-                "valueLink": true
+                "label": "Phone"
             },
             "type": "text"
         },
         {
             "properties": {
                 "name": "origin",
-                "label": "Origin",
-                "valueLink": true
+                "label": "Origin"
             },
             "type": "text"
         }

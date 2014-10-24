@@ -12,7 +12,6 @@ class UserProfile {
       "properties": {
         "name": "email",
         "label": "Email",
-        "valueLink": true
       },
       "type": "text"
     },
@@ -20,7 +19,6 @@ class UserProfile {
       "properties": {
         "name": "firstname",
         "label": "First Name",
-        "valueLink": true
       },
       "type": "text"
     },
@@ -28,7 +26,6 @@ class UserProfile {
       "properties": {
         "name": "lastname",
         "label": "Lastname",
-        "valueLink": true
       },
       "type": "text"
     },
@@ -36,7 +33,6 @@ class UserProfile {
       "properties": {
         "name": "birthdate",
         "label": "Birthdate",
-        "valueLink": true
       },
       "type": "text"
     },
@@ -44,7 +40,6 @@ class UserProfile {
       "properties": {
         "name": "phone",
         "label": "Phone",
-        "valueLink": true
       },
       "type": "text"
     },
@@ -52,7 +47,6 @@ class UserProfile {
       "properties": {
         "name": "origin",
         "label": "Origin",
-        "valueLink": true
       },
       "type": "text"
     }
