@@ -1,4 +1,4 @@
-﻿var React = require("react/addons");
+var React = require("react/addons");
 var PropTypes = React.PropTypes;
 var BSInput = require("react-bootstrap/Input");
 var BSButton = require("react-bootstrap/Button");
@@ -38,14 +38,70 @@ var LoginBox = React.createClass({
     }
   },
 
+  tryGetSalt: function(email){
+    var self = this;
+    var salt = null;
+    var req = ajax.request( {endpoint: "/user/getSalt/" + email},
+      function(err, res){
+        if (err) {
+          console.error(status, err.toString());
+          return;
+        }
+        // use res object
+        salt = res.body.salt;
+      }
+    );
+    return salt;
+  },
+  encryptPasswordWithSalt: function(password,salt){
+    var passwordHash;
+    //do actual encryption
+    passwordHash = password;
+    //return result
+    return passwordHash;
+  },
+  tryLogin:function(email,passwordHash){
+    var login = false;
+    var req = ajax.request( {endpoint: "/user/tryLogin/" + email + "/" + passwordHash},
+      function(err, res){
+        if (err) {
+          console.error(status, err.toString());
+          return;
+        }
+        // use res object
+        login = (res.body.isValid == 1)?true:false;
+      }
+    );
+    return login;
+  },
+
   onSubmit: function(e){
     e.preventDefault();
 
-    // Mock request for login
-    // 1 = Success, 2 = Error, 3 = Warning
-    // todo:: use enum if this code is to live longer than v0.1
-    var emailState = Math.floor( Math.random() * 3 ) + 1;
-    var pwdState = (emailState === 1 && Math.floor( Math.random() * 2) + 1 ) || 0;
+    //If both fields are filled
+
+    // try get salt with  entered email
+    var salt = tryGetSalt(this.state.email);
+    if(salt === null){
+      //Email not in DB
+      emailState = 2;
+    } else {
+      //We have user's salt
+      this.state.salt = salt;
+      //encrypt pwd with salt
+      var passwordHash = encryptPasswordWithSalt(this.state.password,this.state.salt);
+      //test pwd match db
+      var isLogin = this.tryLogin(this.state.email,passwordHash);
+      //if match
+      if(isLogin){
+        //login
+      } else {
+        //Password/email dont match
+      }
+
+    }
+
+
     var errorMessage =
       (emailState === 2 && "Invalid E-Mail address") ||
       (emailState === 3 && "Unrecognised E-Mail address") ||

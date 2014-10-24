@@ -58,15 +58,15 @@ var ProfileUpdateForm = React.createClass({
       //Warn user
       return;
     }
-
-      //build new userprofil object
-      //call update profile fonction
+    //Waiting until request API is completed
+    //build new userprofil object
+    //call update profile fonction
   },
 
   emailIsUnique: function(email){
     var self = this;
     var isUnique = false;
-    var req = ajax.request( {endpoint: "/user/testEmail/:" + email},
+    var req = ajax.request( {endpoint: "/user/testEmail/" + email},
       function(err, res){
         if (err) {
           console.error(status, err.toString());
