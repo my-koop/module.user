@@ -4,6 +4,7 @@ var BSInput = require("react-bootstrap/Input");
 var BSButton = require("react-bootstrap/Button");
 var BSButtonGroup = require("react-bootstrap/ButtonGroup");
 var BSAlert = require("react-bootstrap/Alert");
+var ajax = require("ajax");
 
 var LoginBox = React.createClass({
 
@@ -48,7 +49,7 @@ var LoginBox = React.createClass({
           return;
         }
         // use res object
-        salt = res.body.salt;
+        salt = res.body;
       }
     );
     return salt;
@@ -81,15 +82,15 @@ var LoginBox = React.createClass({
     //If both fields are filled
 
     // try get salt with  entered email
-    var salt = tryGetSalt(this.state.email);
+    var salt = this.tryGetSalt(this.state.email);
     if(salt === null){
       //Email not in DB
-      emailState = 2;
+      var emailState = 2;
     } else {
       //We have user's salt
       this.state.salt = salt;
       //encrypt pwd with salt
-      var passwordHash = encryptPasswordWithSalt(this.state.password,this.state.salt);
+      var passwordHash = this.encryptPasswordWithSalt(this.state.password,this.state.salt);
       //test pwd match db
       var isLogin = this.tryLogin(this.state.email,passwordHash);
       //if match
@@ -101,7 +102,7 @@ var LoginBox = React.createClass({
 
     }
 
-
+/*
     var errorMessage =
       (emailState === 2 && "Invalid E-Mail address") ||
       (emailState === 3 && "Unrecognised E-Mail address") ||
@@ -121,7 +122,7 @@ var LoginBox = React.createClass({
           self.props.onLoginSuccess();
         }
       }
-    });
+    });*/
   },
 
   render: function() {
@@ -135,7 +136,7 @@ var LoginBox = React.createClass({
         <form onSubmit={this.onSubmit}>
           <BSInput
             type="email"
-            placeholder="E-Mail"
+            placeholder="EMail"
             label="E-Mail"
             labelClassName="sr-only"
             bsStyle={this.getSuccessStyle(this.state.emailState)}

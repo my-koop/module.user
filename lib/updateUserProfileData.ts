@@ -1,6 +1,6 @@
 import express = require("express");
 import UserProfil = require("../classes/UserProfil");
-function updateUserProfilData(db: mkdatabase.Module,res: express.Response,req: express.Request){
+function updateUserProfilData(db: mkdatabase.Module,req: express.Request,res: express.Response){
   if(db){
     db.getConnection(function(err,connection){
       var updateData = {

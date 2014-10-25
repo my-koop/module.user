@@ -1,6 +1,6 @@
 import express = require("express");
 
-function tryLogin(db: mkdatabase.Module,res: express.Response,req: express.Request){
+function tryLogin(db: mkdatabase.Module,req: express.Request,res: express.Response){
   var isValid = false;
   var email = req.param("email",null);
   var passwordHash = req.param("pwdhash",null);
@@ -14,14 +14,15 @@ function tryLogin(db: mkdatabase.Module,res: express.Response,req: express.Reque
             res.status(500).end({error: err.toString()});
             return;
           }
-          if(rows[0].isValid == '1'){
+          if(rows[0].isValid == 1){
             //Email is unique
             isValid = true;
           }
+          res.json(isValid);
         }
       );
     });
-    res.json(isValid);
+
   }
 };
 export = tryLogin;

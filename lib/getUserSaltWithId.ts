@@ -1,5 +1,5 @@
 import express = require("express");
-function getUserSaltWithID(db: mkdatabase.Module,res: express.Response,req: express.Request){
+function getUserSaltWithID(db: mkdatabase.Module,req: express.Request,res: express.Response){
   var salt;
   var id = req.param("id",null);
   if(db){

@@ -1,6 +1,6 @@
 import express = require("express");
 
-function testEmailUnicity(db: mkdatabase.Module,res: express.Response,req: express.Request){
+function testEmailUnicity(db: mkdatabase.Module,req: express.Request,res: express.Response){
   var isUnique = false;
   var email = req.param("email",null);
   if(db){
@@ -16,12 +16,12 @@ function testEmailUnicity(db: mkdatabase.Module,res: express.Response,req: expre
           if(rows[0].isUnique == '1'){
             //Email is unique
             isUnique = true;
-
+            res.json(isUnique);
           }
         }
       );
     });
-    res.json(isUnique);
+
   }
 };
 export = testEmailUnicity;

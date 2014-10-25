@@ -1,6 +1,6 @@
 import express = require("express");
 
-function updateUserPassword(db: mkdatabase.Module,res: express.Response,req: express.Request){
+function updateUserPassword(db: mkdatabase.Module,req: express.Request,res: express.Response){
   var id = req.param("id",null);
   var pwdhash = req.param("pwdhash",null);
 

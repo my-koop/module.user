@@ -2,7 +2,7 @@
 var BSButton = require("react-bootstrap/Button");
 var MKAbstractModal = require("components/AbstractModal");
 
-var MKLoginBox = require("components/LoginBox");
+var MKLoginBox = require("./LoginBox");
 
 var loginState = {};
 var saveLoginState = function(state){

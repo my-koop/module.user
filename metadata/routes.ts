@@ -6,4 +6,10 @@ export function addRoutes(metaData: utils.MetaData) {
     name: "My Account",
     path: "myaccount"
   });
+   metaData.addRoute({
+    idPath: ["public","loginpage"],
+    component: "LoginPage",
+    name: "Login Page",
+    path: "loginpage"
+  });
 }

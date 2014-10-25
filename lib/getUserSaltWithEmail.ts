@@ -1,12 +1,12 @@
 import express = require("express");
-function getUserSaltWithEmail(db: mkdatabase.Module,res: express.Response,req: express.Request){
+function getUserSaltWithEmail(db: mkdatabase.Module,req: express.Request,res: express.Response){
   var salt;
   var email = req.param("email",null);
   if(db){
     db.getConnection(function(err,connection){
       var query = connection.query(
-        'SELECT ?? FROM user WHERE email = ?',
-        ['salt',email],
+        'SELECT salt FROM user WHERE email = ?',
+        [email],
         function (err,rows){
           if(err){
             throw err;
@@ -15,10 +15,11 @@ function getUserSaltWithEmail(db: mkdatabase.Module,res: express.Response,req: e
             //We have salt, what about pepper?
             salt = rows[0].salt;
           }
+          res.json(salt);
         }
       );
     });
-    res.json(salt);
+
   }
 };
 export = getUserSaltWithEmail;
