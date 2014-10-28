@@ -28,7 +28,8 @@ class UserModule implements mykoopuser.Module {
         [email,passwordHash],
         function(err, rows) {
           if (err){
-            throw err;
+            res.status(500).end({ error: err.toString() });
+            return;
           }
 
           if(rows[0].isValid == 1){
@@ -49,7 +50,8 @@ class UserModule implements mykoopuser.Module {
         [email],
         function(err, rows) {
           if (err){
-            throw err;
+            res.status(500).end({ error: err.toString() });
+            return;
           }
           if(rows.length == 1){
             //We have salt, what about pepper?
@@ -69,7 +71,8 @@ class UserModule implements mykoopuser.Module {
         [id],
         function(err, rows) {
           if (err){
-            throw err;
+            res.status(500).end({ error: err.toString() });
+            return;
           }
           if(rows.length == 1){
             //We have salt, what about pepper?
@@ -89,7 +92,8 @@ class UserModule implements mykoopuser.Module {
         [email],
         function(err, rows) {
           if (err){
-            throw err;
+            res.status(500).end({ error: err.toString() });
+            return;
           }
           if(rows[0].isUnique == '1'){
             //Email is unique
