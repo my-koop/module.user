@@ -1,10 +1,7 @@
 import express = require("express");
 import UserModuleControllers = require("./controllers");
-import getUserProfileData = require("../lib/getUserProfileData");
-import testEmailUnicity = require("../lib/testEmailUnicity");
-import getUserSaltWithEmail = require("../lib/getUserSaltWithEmail");
-import tryLogin = require("../lib/tryLogin");
-//import dependencies
+//Import request classes
+import UserProfile = require("../classes/UserProfile");
 
 class UserModule implements mykoopuser.Module {
   moduleManager: mykoop.ModuleManager;
@@ -23,10 +20,107 @@ class UserModule implements mykoopuser.Module {
       this.db = db;
     }
   }
+  //Ajouter la reception des parametres
+  tryLogin(callback: (err: Error, result: bool) => void) {
+    this.db.getConnection(function(err, connection, cleanup) {
+      var query = connection.query(
+        "SELECT (count(id)= 1) as isValid FROM user WHERE email = ? AND pwdhash = ?",
+        [email,passwordHash],
+        function(err, rows) {
+          if (err){
+            throw err;
+          }
 
-  get(): string {
-    return "trollolol";
+          if(rows[0].isValid == 1){
+            //Email is unique
+            isValid = true;
+          } 
+          cleanup();
+          callback(null, isValid);
+      });
+    });
   }
+   //FIX ME : Must pass email parameter to request
+  getSaltWithEmail(callback: (err: Error, result: string) => void) {
+    var salt;
+    this.db.getConnection(function(err, connection, cleanup) {
+      var query = connection.query(
+        "SELECT salt FROM user WHERE email = ?",
+        [email],
+        function(err, rows) {
+          if (err){
+            throw err;
+          }
+          if(rows.length == 1){
+            //We have salt, what about pepper?
+            salt = rows[0].salt;
+          } 
+          cleanup();
+          callback(null, salt);
+      });
+    });
+  }
+  //FIX ME : Must pass id parameter to request
+  getSaltWithId(callback: (err: Error, result: string) => void) {
+    var salt;
+    this.db.getConnection(function(err, connection, cleanup) {
+      var query = connection.query(
+        "SELECT salt FROM user WHERE id = ?",
+        [id],
+        function(err, rows) {
+          if (err){
+            throw err;
+          }
+          if(rows.length == 1){
+            //We have salt, what about pepper?
+            salt = rows[0].salt;
+          } 
+          cleanup();
+          callback(null, salt);
+      });
+    });
+  }
+  //FIX ME : Must pass email parameter to request
+  testEmailUnique(callback: (err: Error, result: boolean) => void) {
+    var isUnique = false;
+    this.db.getConnection(function(err, connection, cleanup) {
+      var query = connection.query(
+        "SELECT (count(id)= 0) as isUnique FROM user WHERE email = ?",
+        [email],
+        function(err, rows) {
+          if (err){
+            throw err;
+          }
+          if(rows[0].isUnique == '1'){
+            //Email is unique
+            isUnique = true;
+          }
+          cleanup();
+          callback(null, isUnique);
+      });
+    });
+  }
+  //FIX ME : Must pass id parameter to request
+  getProfile(callback: (err: Error, result: boolean) => void) {
+    var isUnique = false;
+    this.db.getConnection(function(err, connection, cleanup) {
+      var query = connection.query(
+        "SELECT ?? FROM user WHERE id = ?",
+        [UserProfile.COLUMNS,id],
+        function(err, rows) {
+          if (err || rows.length !== 1) {
+            res.status(500).end({ error: err.toString() });
+            return;
+          }
+          var userRow = rows[0];
+          profil = new UserProfile(userRow);
+          
+          cleanup();
+          callback(null, profil);
+      });
+    });
+  }
+  
 }
 
 export = UserModule;

@@ -1,5 +1,4 @@
-//FIXME: Many of these routes are temporary/as a demo, until a better demo is
-// documented or showcased in module.base.
+
 var endpoints = {
   user: {
     getSaltWithEmail: {
