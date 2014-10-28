@@ -1,33 +1,33 @@
 import metaData = require("../metadata/index");
 
 // Controllers.
-var tryLogin = require("./tryLogin");
-var getSaltWithEmail = require("./getSaltWithEmail");
-var getSaltWithId = require("./getSaltWithId");
-var getProfile = require("./getProfile");
-var testEmailUnique = require("./testEmailUnique");
+import tryLogin = require("./tryLogin");
+import getSaltWithEmail = require("./getSaltWithEmail");
+import getSaltWithId = require("./getSaltWithId");
+import getProfile = require("./getProfile");
+import testEmailUnique = require("./testEmailUnique");
 
 var endPoints = metaData.endpoints;
 
 export function attachControllers(userModuleControllers) {
   userModuleControllers.attach(
     {endPoint: endPoints.user.tryLogin},
-    tryLogin,
+    tryLogin
   );
   userModuleControllers.attach(
     {endPoint: endPoints.user.getSaltWithEmail},
-    getSaltWithEmail,
+    getSaltWithEmail
   );
   userModuleControllers.attach(
     {endPoint: endPoints.user.getSaltWithId},
-    getSaltWithId,
+    getSaltWithId
   );
   userModuleControllers.attach(
     {endPoint: endPoints.user.getProfile},
-    getProfile,
+    getProfile
   );
   userModuleControllers.attach(
     {endPoint: endPoints.user.testEmailUnique},
-    testEmailUnique,
+    testEmailUnique
   );
 }

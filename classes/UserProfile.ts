@@ -1,12 +1,6 @@
 
-class UserProfile {
+class UserProfile extends mkuser.UserProfile {
   public static COLUMNS = ['email','firstname','lastname','birthdate','phone','origin'];
-  public email    : string;
-  public firstname: string;
-  public lastname : string;
-  public birthdate: string;
-  public phone    : string;
-  public origin   : string;
   public static FORM = [
     {
       "properties": {
@@ -53,6 +47,7 @@ class UserProfile {
   ];
 
   constructor (userRow: any) {
+    super();
     this.email     = userRow.email,
     this.firstname = userRow.firstname,
     this.lastname  = userRow.lastname,

@@ -17,7 +17,7 @@ class UserModuleControllers {
       next?: Function
     ) => void
   ) {
-    this.routerModule.addRoute(params, controller.bind(this.inventory));
+    this.routerModule.addRoute(params, controller.bind(this.user));
   }
 }
 

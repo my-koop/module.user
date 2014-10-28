@@ -1,10 +1,15 @@
 import express = require("express");
 
 function testEmailUnique(req: express.Request, res: express.Response) {
-  this.testEmailUnique(function(err, isUnique: bool) {
+  var email = req.params.email;
+  if(!email) {
+    return res.send(500);
+  }
+
+  var self: mkuser.Module = this;
+  self.testEmailUnique(email, function(err, isUnique: boolean) {
     if (err) {
-      res.send(500);
-      return;
+      return res.send(500);
     }
 
     res.send({

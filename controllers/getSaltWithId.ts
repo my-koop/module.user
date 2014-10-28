@@ -1,10 +1,15 @@
 import express = require("express");
 
-function getEmailWithId(req: express.Request, res: express.Response) {
-  this.getEmailWithId(function(err, salt: string) {
+function getSaltWithId(req: express.Request, res: express.Response) {
+  var self: mkuser.Module = this;
+  var id = parseInt(req.params("id", -1));
+  if(id === -1) {
+    return res.send(400);
+  }
+
+  self.getSaltWithId(id, function(err, salt: string) {
     if (err) {
-      res.send(500);
-      return;
+      return res.send(500);
     }
 
     res.send({
@@ -13,4 +18,4 @@ function getEmailWithId(req: express.Request, res: express.Response) {
   });
 };
 
-export = getEmailWithId;
+export = getSaltWithId;

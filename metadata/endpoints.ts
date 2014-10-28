@@ -13,14 +13,14 @@ var endpoints = {
       path: "/user/tryLogin/:email/:pwdhash",
       method: "get"
     },
-    getProfile{
-      path: "user/getProfile/:id",
+    getProfile: {
+      path: "/user/getProfile/:id",
       method: "get"
     },
-    testEmailUnique{
-      path: "user/testEmailUnique/:email",
+    testEmailUnique: {
+      path: "/user/testEmailUnique/:email",
       method: "get"
-    },
+    }
   }
 };
 
