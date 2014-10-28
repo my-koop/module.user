@@ -102,7 +102,7 @@ class UserModule implements mykoopuser.Module {
   }
   //FIX ME : Must pass id parameter to request
   getProfile(callback: (err: Error, result: boolean) => void) {
-    var isUnique = false;
+    var profil;
     this.db.getConnection(function(err, connection, cleanup) {
       var query = connection.query(
         "SELECT ?? FROM user WHERE id = ?",
