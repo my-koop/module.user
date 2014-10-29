@@ -9,7 +9,7 @@ function addRoutes(metaData) {
         idPath: ["public", "loginpage"],
         component: "LoginPage",
         name: "Login Page",
-        path: "/loginpage"
+        path: "/login"
     });
 }
 exports.addRoutes = addRoutes;

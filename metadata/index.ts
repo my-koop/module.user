@@ -1,6 +1,6 @@
 import utils = require("mykoop-utils");
 import routes = require("./routes");
-var translations = require("../locales/index");
+import translations = require("../locales/index");
 import endpoints = require("./endpoints");
 
 var metaData = new utils.MetaData();

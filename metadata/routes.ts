@@ -10,6 +10,6 @@ export function addRoutes(metaData: utils.MetaData) {
     idPath: ["public","loginpage"],
     component: "LoginPage",
     name: "Login Page",
-    path: "/loginpage"
+    path: "/login"
   });
 }
