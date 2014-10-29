@@ -4,7 +4,7 @@ var logger = getLogger(module);
 
 function getSaltWithEmail(req: express.Request, res: express.Response) {
   var self: mkuser.Module = this;
-  var email = req.params("email");
+  var email = req.params.email;
   if(!email) {
     logger.debug("Invalid input for request getSaltWithEmail");
     return res.send(400);

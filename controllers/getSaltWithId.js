@@ -3,7 +3,7 @@ var logger = getLogger(module);
 
 function getSaltWithId(req, res) {
     var self = this;
-    var id = parseInt(req.params("id", -1));
+    var id = parseInt(req.param("id", -1));
     if (id === -1) {
         logger.debug("Invalid input for request getSaltWithId");
         return res.send(400);
