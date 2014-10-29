@@ -1,23 +1,25 @@
-var UserModuleControllers = require("./controllers");
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
 var controllerList = require("../controllers/index");
 
 //Import request classes
 var UserProfile = require("../classes/UserProfile");
+var utils = require("mykoop-utils");
 
-var UserModule = (function () {
+var UserModule = (function (_super) {
+    __extends(UserModule, _super);
     function UserModule() {
+        _super.apply(this, arguments);
     }
-    UserModule.prototype.getModuleManager = function () {
-        return this.moduleManager;
-    };
+    UserModule.prototype.init = function () {
+        var db = this.getModuleManager().get("database");
+        var routerModule = this.getModuleManager().get("router");
 
-    UserModule.prototype.init = function (moduleManager) {
-        this.moduleManager = moduleManager;
-        var db = this.moduleManager.get("database");
-        var routerModule = this.moduleManager.get("router");
-
-        this.controllers = new UserModuleControllers(this);
-        controllerList.attachControllers(this.controllers);
+        controllerList.attachControllers(new utils.ModuleControllersBinder(this));
 
         this.db = db;
     };
@@ -120,6 +122,6 @@ var UserModule = (function () {
         });
     };
     return UserModule;
-})();
+})(utils.BaseModule);
 
 module.exports = UserModule;

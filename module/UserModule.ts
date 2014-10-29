@@ -1,25 +1,17 @@
 import express = require("express");
-import UserModuleControllers = require("./controllers");
 import controllerList = require("../controllers/index");
 //Import request classes
 import UserProfile = require("../classes/UserProfile");
+import utils = require("mykoop-utils");
 
-class UserModule implements mkuser.Module {
-  moduleManager: mykoop.ModuleManager;
+class UserModule extends utils.BaseModule implements mkuser.Module {
   db: mkdatabase.Module;
-  private controllers: UserModuleControllers;
 
-  getModuleManager(): mykoop.ModuleManager {
-    return this.moduleManager;
-  }
+  init() {
+    var db = <mkdatabase.Module>this.getModuleManager().get("database");
+    var routerModule = <mykoop.Router>this.getModuleManager().get("router");
 
-  init(moduleManager: mykoop.ModuleManager) {
-    this.moduleManager = moduleManager;
-    var db = <mkdatabase.Module>this.moduleManager.get("database");
-    var routerModule = <mykoop.Router>this.moduleManager.get("router");
-
-    this.controllers = new UserModuleControllers(this);
-    controllerList.attachControllers(this.controllers);
+    controllerList.attachControllers(new utils.ModuleControllersBinder(this));
 
     this.db = db;
   }
