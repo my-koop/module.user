@@ -1,5 +1,11 @@
 {
   "name": "mykoop-user",
+  "role": "user",
+  "mykoop": {
+    "dependencies": {
+      "database": true
+    }
+  },
   "version": "0.0.1",
   "description": "user module for My Koop",
   "main": "index.js",
