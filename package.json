@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/my-koop/module.user",
   "dependencies": {
+    "mykoop-logger": "git://github.com/my-koop/module.logger",
     "mykoop-utils": "git://github.com/my-koop/module.utils"
   }
 }

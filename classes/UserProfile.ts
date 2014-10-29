@@ -1,5 +1,5 @@
 
-class UserProfile extends mkuser.UserProfile {
+class UserProfile implements mkuser.UserProfile {
   public static COLUMNS = ['email','firstname','lastname','birthdate','phone','origin'];
   public static FORM = [
     {
@@ -46,8 +46,14 @@ class UserProfile extends mkuser.UserProfile {
     }
   ];
 
+  public email    : string;
+  public firstname: string;
+  public lastname : string;
+  public birthdate: string;
+  public phone    : string;
+  public origin   : string;
+
   constructor (userRow: any) {
-    super();
     this.email     = userRow.email,
     this.firstname = userRow.firstname,
     this.lastname  = userRow.lastname,

@@ -1,5 +1,6 @@
 import express = require("express");
-import UserProfile = require("../classes/UserProfile");
+import getLogger = require("mykoop-logger");
+var logger = getLogger(module);
 
 function getProfile(req: express.Request, res: express.Response) {
   var id = parseInt(req.params("id", -1));
@@ -8,7 +9,7 @@ function getProfile(req: express.Request, res: express.Response) {
   }
 
   var self: mkuser.Module = this;
-  self.getProfile(id, function(err, profile: UserProfile) {
+  self.getProfile(id, function(err, profile) {
     if (err) {
       return res.send(500);
     }

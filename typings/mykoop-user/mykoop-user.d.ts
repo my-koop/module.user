@@ -6,13 +6,13 @@
 /// <reference path="../mykoop/mykoop.d.ts" />
 declare module mkuser {
 
-  export class UserProfile {
-    public email    : string;
-    public firstname: string;
-    public lastname : string;
-    public birthdate: string;
-    public phone    : string;
-    public origin   : string;
+  export interface UserProfile {
+    email    : string;
+    firstname: string;
+    lastname : string;
+    birthdate: string;
+    phone    : string;
+    origin   : string;
   }
 
   export class Module implements mykoop.IModule {

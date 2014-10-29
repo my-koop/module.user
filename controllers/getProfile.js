@@ -1,3 +1,6 @@
+var getLogger = require("mykoop-logger");
+var logger = getLogger(module);
+
 function getProfile(req, res) {
     var id = parseInt(req.params("id", -1));
     if (id === -1) {
