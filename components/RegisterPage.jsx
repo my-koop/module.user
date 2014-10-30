@@ -151,10 +151,24 @@ var RegisterPage = React.createClass({
                 </BSAlert>
               : null}
               <BSInput
+                type="text"
+                label="Firstname"
+                placeholder="Firstname"
+                autoFocus
+                ref="firstname"
+                required
+              />
+              <BSInput
+                type="text"
+                label="lastname"
+                placeholder="Last Name"
+                ref="lastname"
+                required
+              />
+              <BSInput
                 type="email"
                 label="E-Mail"
                 placeholder="E-Mail"
-                autoFocus
                 ref="email"
                 required
               />
@@ -175,12 +189,18 @@ var RegisterPage = React.createClass({
             </BSPanel>
 
             <BSPanel header="Optionnal Info" key={1}>
-              <BSInput
-                type="number"
-                label="Age"
-                placeholder="Age"
-                ref="age"
+            <BSInput
+                type="text"
+                label="Phone Number"
+                placeholder="Phone number"
+                ref="phone"
                 onKeyDown={this.checkGoingUpKey}
+              />
+              <BSInput
+                type="text"
+                label="Birthdate"
+                placeholder="Birthdate (YYYY/MM/DD)"
+                ref="Birthdate"
               />
               <BSInput
                 type="select"
@@ -211,6 +231,15 @@ var RegisterPage = React.createClass({
                 <option value="fewMonth">Few times a month</option>
                 <option value="fewYear">Few times a year</option>
                 <option value="never">Never</option>
+              </BSInput>
+              <BSInput
+                type="select"
+                defaultValue="udem"
+                label="Your origin"
+              >
+                <option value="udem">Université de Montréal</option>
+                <option value="brebeuf">College Jean-De-Brébeuf</option>
+                <option value="other">Other</option>
               </BSInput>
               <BSInput
                 type="text"
