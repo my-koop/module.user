@@ -29,3 +29,4 @@ node_modules
 *.sublime-workspace
 /typings/mykoop-core/mykoop-core.d.ts
 /typings/mykoop/mykoop.d.ts
+/typings/mykoop-database/mykoop-database.d.ts

@@ -7,10 +7,16 @@
   "installed": {
     "mykoop/mykoop.d.ts": {
       "commit": "752be10a0060330c01ff0ffc9b84abec3f289e3f"
+    },
+    "mysql/mysql.d.ts": {
+      "commit": "70c72771ee81502e36ce3138c287944e1be32173"
     }
   },
   "dependencies": {
     "mykoop": {},
-    "mykoop-core": {}
+    "mykoop-database": {}
+  },
+  "owned": {
+    "mykoop-user": {}
   }
 }
