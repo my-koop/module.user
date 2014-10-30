@@ -1,50 +1,6 @@
 
 class UserProfile implements mkuser.UserProfile {
-  public static COLUMNS = ['email','firstname','lastname','birthdate','phone','origin'];
-  public static FORM = [
-    {
-      "properties": {
-        "name": "email",
-        "label": "Email",
-      },
-      "type": "text"
-    },
-    {
-      "properties": {
-        "name": "firstname",
-        "label": "First Name",
-      },
-      "type": "text"
-    },
-    {
-      "properties": {
-        "name": "lastname",
-        "label": "Lastname",
-      },
-      "type": "text"
-    },
-    {
-      "properties": {
-        "name": "birthdate",
-        "label": "Birthdate",
-      },
-      "type": "text"
-    },
-    {
-      "properties": {
-        "name": "phone",
-        "label": "Phone",
-      },
-      "type": "text"
-    },
-    {
-      "properties": {
-        "name": "origin",
-        "label": "Origin",
-      },
-      "type": "text"
-    }
-  ];
+  public static COLUMNS = ["email","firstname","lastname","birthdate","phone","origin"];
 
   public email    : string;
   public firstname: string;
