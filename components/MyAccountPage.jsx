@@ -8,10 +8,6 @@ var MKProfileUpdateForm  = require("./ProfileUpdateForm");
 
 var MyAccountPage = React.createClass({
 
-  onSubmitPasswordChange: function(e){
-    return false;
-  },
-
   render: function() {
     return (
       <BSCol>
