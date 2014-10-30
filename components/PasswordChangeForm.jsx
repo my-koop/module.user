@@ -23,7 +23,7 @@ var PasswordChangeForm = React.createClass({
       hasNewPwdError: false,
       hasConfirmPwdError: false
     };
-
+     //Fix ME : Password Validation will be shared between front/backend in a common file
     if(!this.state.password || !this.state.passwordRepeat || !this.state.oldPassword){
       formState.message = "All fields must be filled";
       formState.hasMessageError = true;
