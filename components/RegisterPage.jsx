@@ -189,7 +189,7 @@ var RegisterPage = React.createClass({
             </BSPanel>
 
             <BSPanel header="Optionnal Info" key={1}>
-            <BSInput
+              <BSInput
                 type="text"
                 label="Phone Number"
                 placeholder="Phone number"
