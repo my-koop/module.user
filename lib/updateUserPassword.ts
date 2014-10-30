@@ -14,12 +14,14 @@ function updateUserPassword(db: mkdatabase.Module,req: express.Request,res: expr
         [updateData,id],
         function (err,rows){
           if(err){
-            throw err;
+           res.status(500).end( {
+                error : err.toString()
+              });
           }
         }
       );
     });
-    //Confirm update
+    //FIX ME: Confirm update
   }
 };
 export = updateUserPassword;
