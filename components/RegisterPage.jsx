@@ -51,7 +51,7 @@ var RegisterPage = React.createClass({
   getMessage: function(){
     switch(this.state.success){
     case 1: return "Successfully created profile, redirecting to homepage";
-    case 2: return "Error(s) in form"
+    case 2: return "Error(s) in form";
     default: return null;
     }
   },
@@ -60,7 +60,7 @@ var RegisterPage = React.createClass({
   getMessageStyle: function(){
     switch(this.state.success){
     case 1: return "success";
-    case 2: return "danger"
+    case 2: return "danger";
     default: return null;
     }
   },
@@ -235,8 +235,18 @@ var RegisterPage = React.createClass({
             </BSPanel>
 
           </BSAccordion>
-          <MKConfirmationTrigger message="Are you sure all the information is valid?" onYes={this.submitForm()} ref="confirmationBox" />
-          <BSInput type="submit" bsStyle="primary" bsSize="large" value="Submit" className="pull-right" />
+          <MKConfirmationTrigger
+            message="Are you sure all the information is valid?"
+            onYes={this.submitForm()}
+            ref="confirmationBox"
+          />
+          <BSInput
+            type="submit"
+            bsStyle="primary"
+            bsSize="large"
+            value="Submit"
+            className="pull-right"
+          />
         </form>
       </BSPanel>
     );
