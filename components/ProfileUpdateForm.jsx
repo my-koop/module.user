@@ -2,9 +2,6 @@
 var BSInput = require("react-bootstrap/Input");
 var UserProfile = require("../classes/UserProfile");
 var ajax = require("ajax");
-var MKFormInputFactory = require("./FormInputFactory");
-
-var updateFormProperties = UserProfile.FORM;
 
 var ProfileUpdateForm = React.createClass({
   propTypes: {
@@ -80,20 +77,11 @@ var ProfileUpdateForm = React.createClass({
   },
   render: function() {
     var self = this;
-    var userFormFields = updateFormProperties.map(function(formField,key){
-        return (
-          React.addons.cloneWithProps(
-            MKFormInputFactory(formField.type,formField.properties,key),
-            {
-              valueLink: self.makeValueLink(formField.properties.name),
-              defaultValue: self.state.profileData[formField.properties.name]
-            })
-        )
-    });
+
     return (
       <div>
         <form onSubmit={this.onSubmit}>
-          {userFormFields}
+           //FIX ME : Add static profile form
           <BSInput type="submit" bsStyle="primary" value="Update Profile" />
         </form>
       </div>

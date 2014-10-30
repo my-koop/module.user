@@ -6,7 +6,3 @@ export var LoginPage     = require("./LoginPage");
 export var MyAccountPage = require("./MyAccountPage");
 export var PasswordChangeForm = require("./PasswordChangeForm");
 export var ProfileUpdateForm = require("./ProfileUpdateForm");
-export var FormInputFactory = require("./FormInputFactory");
-
-
-
