@@ -10,13 +10,20 @@ function testEmailUnicity(db: mkdatabase.Module,req: express.Request,res: expres
         [email],
         function (err,rows){
           if(err){
-            res.end({error: err.toString()});
+            res.status(500).end({
+              error: err.toString()
+            });
             return;
           }
-          if(rows[0].isUnique == '1'){
+          if(rows[0].isUnique === '1'){
             //Email is unique
-            isUnique = true;
-            res.json(isUnique);
+            res.json({
+                unique: true
+              });
+          } else {
+            res.json({
+                unique: false
+              });
           }
         }
       );
