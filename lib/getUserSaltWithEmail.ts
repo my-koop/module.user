@@ -1,4 +1,7 @@
 import express = require("express");
+import getLogger = require("mykoop-logger");
+var logger = getLogger(module);
+
 function getUserSaltWithEmail(db: mkdatabase.Module,req: express.Request,res: express.Response){
   var salt;
   var email = req.param("email",null);
@@ -9,9 +12,11 @@ function getUserSaltWithEmail(db: mkdatabase.Module,req: express.Request,res: ex
         [email],
         function (err,rows){
           if(err){
-            throw err;
+            res.status(500).end( {
+                error : err.toString()
+              });
           }
-          if(rows.length == 1){
+          if(rows.length === 1){
             //We have salt, what about pepper?
             salt = rows[0].salt;
           }
