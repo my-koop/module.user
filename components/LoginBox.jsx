@@ -39,90 +39,13 @@ var LoginBox = React.createClass({
     }
   },
 
-  tryGetSalt: function(email){
-    var self = this;
-    var salt = null;
-    var req = ajax.request( {endpoint: "/user/getSalt/" + email},
-      function(err, res){
-        if (err) {
-          console.error(status, err.toString());
-          return;
-        }
-        // use res object
-        salt = res.body;
-      }
-    );
-    return salt;
-  },
-  encryptPasswordWithSalt: function(password,salt){
-    var passwordHash;
-    //do actual encryption
-    passwordHash = password;
-    //return result
-    return passwordHash;
-  },
-  tryLogin:function(email,passwordHash){
-    var login = false;
-    var req = ajax.request( {endpoint: "/user/tryLogin/" + email + "/" + passwordHash},
-      function(err, res){
-        if (err) {
-          console.error(status, err.toString());
-          return;
-        }
-        // use res object
-        login = (res.body.isValid == 1)?true:false;
-      }
-    );
-    return login;
-  },
+
 
   onSubmit: function(e){
     e.preventDefault();
+    //FIX ME: Task #7 - Implement login submit
 
-    //If both fields are filled
-
-    // try get salt with  entered email
-    var salt = this.tryGetSalt(this.state.email);
-    if(salt === null){
-      //Email not in DB
-      var emailState = 2;
-    } else {
-      //We have user's salt
-      this.state.salt = salt;
-      //encrypt pwd with salt
-      var passwordHash = this.encryptPasswordWithSalt(this.state.password,this.state.salt);
-      //test pwd match db
-      var isLogin = this.tryLogin(this.state.email,passwordHash);
-      //if match
-      if(isLogin){
-        //login
-      } else {
-        //Password/email dont match
-      }
-
-    }
-
-/*
-    var errorMessage =
-      (emailState === 2 && "Invalid E-Mail address") ||
-      (emailState === 3 && "Unrecognised E-Mail address") ||
-      (pwdState === 2 && "Invalid Password") ||
-      "";
-
-    var hasErrors = emailState > 1 || pwdState > 1;
-    var loginSuccessful = !hasErrors;
-    var self = this;
-    this.setState({
-      emailState: emailState,
-      pwdState: pwdState,
-      errorMessage: errorMessage
-    }, function(){
-      if(loginSuccessful){
-        if(self.props.onLoginSuccess){
-          self.props.onLoginSuccess();
-        }
-      }
-    });*/
+    //FIX ME: Add input validation
   },
 
   render: function() {
@@ -157,7 +80,8 @@ var LoginBox = React.createClass({
         </form>
         {/*FIXME:: style on the node is to make vertical buttongroup take 100% width
                    currently no known official way to do this*/}
-        <BSButtonGroup vertical style={{display:"block"}}>
+          //FIXME:: Implement proper redirect on button click
+        <BSButtonGroup className="btn-block" vertical>
           <BSButton block bsStyle="primary">Create your account</BSButton>
           <BSButton block bsStyle="info" >Forgot your password</BSButton>
         </BSButtonGroup>
