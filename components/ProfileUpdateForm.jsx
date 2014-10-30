@@ -6,31 +6,18 @@ var ajax = require("ajax");
 var ProfileUpdateForm = React.createClass({
   propTypes: {
     profileData: React.PropTypes.object,
-    previousEmail: React.PropTypes.string
   },
 
   getInitialState: function() {
     return {
       profileData: {},
-      previousEmail: null
     }
   },
 
   componentWillMount: function() {
     var self = this;
-    var req = ajax.request(
-      {endpoint: "/user/data/2"},
-      function(err, res){
-        if (err) {
-          console.error(status, err.toString());
-          return;
-        }
-        // use res object
-        self.setState({profileData:res.body});
-      }
-    );
-    //Keep original email saved to test for change
-    self.props.previousEmail = self.state.profileData.email;
+    //FIX ME: Get user profile from id  - Replace ajax call with proper action channel
+    //Keep original email saved to test if it changed
   },
 
   handleFieldChange: function(field, newValue) {
@@ -48,36 +35,14 @@ var ProfileUpdateForm = React.createClass({
 
   onSubmit: function(e){
     e.preventDefault();
-    //If email changed ,test if it is unique
-    if(this.props.previousEmail !== this.state.profileData.email
-        && !this.emailIsUnique(this.state.profileData.email)){
-      //Someone is already using this email
-      //Warn user
-      return;
-    }
-    //Waiting until request API is completed
+    //FIX ME: Complete update steps
     //build new userprofil object
     //call update profile fonction
   },
 
-  emailIsUnique: function(email){
-    var self = this;
-    var isUnique = false;
-    var req = ajax.request( {endpoint: "/user/testEmail/" + email},
-      function(err, res){
-        if (err) {
-          console.error(status, err.toString());
-          return;
-        }
-        // use res object
-        isUnique = res.body.isUnique;
-      }
-    );
-    return isUnique;
-  },
+
   render: function() {
     var self = this;
-
     return (
       <div>
         <form onSubmit={this.onSubmit}>
