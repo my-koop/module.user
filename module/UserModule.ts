@@ -83,6 +83,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
       salt : salt,
       signupDate: currentDate
     };
+
      this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
         return callback(err, null);

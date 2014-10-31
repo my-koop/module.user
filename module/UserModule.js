@@ -83,6 +83,7 @@ var UserModule = (function (_super) {
             salt: salt,
             signupDate: currentDate
         };
+
         this.db.getConnection(function (err, connection, cleanup) {
             if (err) {
                 return callback(err, null);

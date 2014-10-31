@@ -7,7 +7,7 @@ var BSAccordion = require("react-bootstrap/Accordion");
 var Router = require("react-router");
 var RouteInfo = require("routeInformation");
 
-var MKConfirmationTrigger = require("components/ConfirmationTrigger");
+var MKConfirmationTrigger = require("mykoop-core/components/ConfirmationTrigger");
 
 // Variables used to traverse panels
 var totalPanels = 3;
@@ -160,7 +160,7 @@ var RegisterPage = React.createClass({
               />
               <BSInput
                 type="text"
-                label="lastname"
+                label="Lastname"
                 placeholder="Last Name"
                 ref="lastname"
                 required
