@@ -25,7 +25,8 @@ var RegisterPage = React.createClass({
   getInitialState: function(){
     return {
       key: 0,
-      success: 0
+      success: 0,
+      formData: {}
     };
   },
 
@@ -117,6 +118,19 @@ var RegisterPage = React.createClass({
     this.selectPanel(selectedKey);
   },
 
+  handleFieldChange: function(field, newValue) {
+    var profile = this.state.formData;
+    profile[field] = newValue;
+    this.setState({formData: profile});
+  },
+
+  makeValueLink: function(field) {
+    return {
+      value: this.state.formData[field],
+      requestChange: this.handleFieldChange.bind(this, field)
+    }
+  },
+
   submitForm: function(){
     var self = this;
     return function(){
@@ -156,6 +170,7 @@ var RegisterPage = React.createClass({
                 placeholder="Firstname"
                 autoFocus
                 ref="firstname"
+                valueLink = {this.makeValueLink("firstname")}
                 required
               />
               <BSInput
@@ -163,6 +178,7 @@ var RegisterPage = React.createClass({
                 label="Lastname"
                 placeholder="Last Name"
                 ref="lastname"
+                valueLink = {this.makeValueLink("lastname")}
                 required
               />
               <BSInput
@@ -170,18 +186,23 @@ var RegisterPage = React.createClass({
                 label="E-Mail"
                 placeholder="E-Mail"
                 ref="email"
+                valueLink = {this.makeValueLink("email")}
                 required
               />
               <BSInput
                 type="password"
                 label="Password"
                 placeholder="Password"
+                ref="password"
+                valueLink = {this.makeValueLink("password")}
                 required
               />
               <BSInput
                 type="password"
                 label="Confirm Password"
                 placeholder="Confirm Password"
+                ref="confpassword"
+                valueLink = {this.makeValueLink("confpassword")}
                 onKeyDown={this.checkGoingDownKey}
                 required
               />
@@ -194,30 +215,32 @@ var RegisterPage = React.createClass({
                 label="Phone Number"
                 placeholder="Phone number"
                 ref="phone"
+                valueLink = {this.makeValueLink("phone")}
                 onKeyDown={this.checkGoingUpKey}
               />
               <BSInput
                 type="text"
                 label="Birthdate"
                 placeholder="Birthdate (YYYY/MM/DD)"
-                ref="Birthdate"
+                valueLink = {this.makeValueLink("birthdate")}
+                ref="birthdate"
               />
               <BSInput
                 type="select"
                 defaultValue="visit"
                 label="How did you find us"
-                valueLink={this.linkState("referral")}
+                valueLink={this.makeValueLink("referral")}
               >
                 <option value="visit">On-Site Visit</option>
                 <option value="friend">Friend referral</option>
                 <option value="ads">Ads</option>
                 <option value="other">Other</option>
               </BSInput>
-              {this.state.referral === "other" ?
+              {this.state.formData.referral === "other" ?
                 <BSInput
                   type="text"
                   label="Please Specify"
-                  valueLink={this.linkState("referralSpecify")}
+                  valueLink={this.makeValueLink("referralSpecify")}
                 />
               : null
               }
@@ -225,6 +248,8 @@ var RegisterPage = React.createClass({
                 type="select"
                 defaultValue="everyday"
                 label="Bike usage"
+                ref="usage"
+                valueLink = {this.makeValueLink("usage")}
               >
                 <option value="everyday">Every Day</option>
                 <option value="fewWeek">Few times a week</option>
@@ -236,6 +261,8 @@ var RegisterPage = React.createClass({
                 type="select"
                 defaultValue="udem"
                 label="Your origin"
+                ref="origin"
+                valueLink = {this.makeValueLink("origin")}
               >
                 <option value="udem">Université de Montréal</option>
                 <option value="brebeuf">College Jean-De-Brébeuf</option>
@@ -245,7 +272,9 @@ var RegisterPage = React.createClass({
                 type="text"
                 label="Why do you use a bike"
                 placeholder="Describe why you mainly use your bike"
+                ref="usageNote"
                 onKeyDown={this.checkGoingDownKey}
+                valueLink = {this.makeValueLink("usageNote")}
               />
               <BSButton onClick={this.nextPanel} className="pull-right">Next</BSButton>
             </BSPanel>
