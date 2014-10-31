@@ -43,7 +43,6 @@ var UserModule = (function (_super) {
 
     //FIX ME : define id type
     UserModule.prototype.getProfile = function (id, callback) {
-        var profil;
         this.db.getConnection(function (err, connection, cleanup) {
             if (err) {
                 return callback(err, null);
@@ -58,6 +57,45 @@ var UserModule = (function (_super) {
                     return callback(null, new UserProfile(rows[0]));
                 }
                 callback(new Error("No result"), null);
+            });
+        });
+    };
+
+    UserModule.prototype.registerNewUser = function (profile, callback) {
+        //FIX ME : Add validation
+        //FIX ME : Add salt generation and password encryption
+        //TEMP UNTIL ABOVE ARE FIXED
+        var salt = "salty and sweet";
+        var pwdhash = "WERTUERTF";
+        var currentDate = new Date();
+
+        var updateData = {
+            email: profile.email,
+            firstname: profile.firstname,
+            lastname: profile.lastname,
+            birthdate: profile.birthdate,
+            phone: profile.phone,
+            origin: profile.origin,
+            usageFrequency: profile.usageFrequency,
+            usageNote: profile.usageNote,
+            referral: profile.referral,
+            pwdhash: pwdhash,
+            salt: salt,
+            signupDate: currentDate
+        };
+        this.db.getConnection(function (err, connection, cleanup) {
+            if (err) {
+                return callback(err, null);
+            }
+            var query = connection.query("INSERT INTO user SET ? ", [updateData], function (err, rows) {
+                cleanup();
+                if (err) {
+                    return callback(err, false);
+                }
+
+                if (rows.length === 1) {
+                    return callback(null, true);
+                }
             });
         });
     };

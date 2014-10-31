@@ -60,11 +60,29 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     });
   }
 
-  registerUser(profile,callback: (err: Error, result: boolean)){
-    var updateData = {
+  registerNewUser(profile: UserInterfaces.RegisterNewUser,callback: (err: Error, result: boolean) => void){
+    //FIX ME : Add validation
+    //FIX ME : Add salt generation and password encryption
+
+    //TEMP UNTIL ABOVE ARE FIXED
+    var salt = "salty and sweet";
+    var pwdhash ="WERTUERTF";
+    var currentDate = new Date();
+
+    var updateData: dbQueryStruct.RegisterUser = {
       email: profile.email,
-      firstname:
-    }
+      firstname: profile.firstname,
+      lastname : profile.lastname,
+      birthdate: profile.birthdate,
+      phone: profile.phone,
+      origin: profile.origin,
+      usageFrequency: profile.usageFrequency,
+      usageNote : profile.usageNote,
+      referral : profile.referral,
+      pwdhash : pwdhash,
+      salt : salt,
+      signupDate: currentDate
+    };
      this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
         return callback(err, null);
