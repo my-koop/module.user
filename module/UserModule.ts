@@ -38,7 +38,6 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
 
   //FIX ME : define id type
   getProfile(id, callback: (err: Error, result: UserProfile) => void) {
-    var profil;
     this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
         return callback(err, null);
@@ -59,6 +58,34 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
 
       });
     });
+  }
+
+  registerUser(profile,callback: (err: Error, result: boolean)){
+    var updateData = {
+      email: profile.email,
+      firstname:
+    }
+     this.db.getConnection(function(err, connection, cleanup) {
+      if(err) {
+        return callback(err, null);
+      }
+      var query = connection.query(
+        "INSERT INTO user SET ? ",
+        [updateData],
+        function(err, rows) {
+          cleanup();
+          if (err) {
+            return callback(err, false);
+          }
+
+          if(rows.length === 1) {
+            return callback(null, true);
+          }
+
+
+      });
+    });
+
   }
 }
 
