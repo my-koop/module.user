@@ -9,6 +9,8 @@ var controllerList = require("../controllers/index");
 //Import request classes
 var UserProfile = require("../classes/UserProfile");
 var utils = require("mykoop-utils");
+var getLogger = require("mykoop-logger");
+var logger = getLogger(module);
 
 var UserModule = (function (_super) {
     __extends(UserModule, _super);
@@ -64,6 +66,7 @@ var UserModule = (function (_super) {
     UserModule.prototype.registerNewUser = function (profile, callback) {
         //FIX ME : Add validation
         //FIX ME : Add salt generation and password encryption
+        //FIX ME : Add unique email verification
         //TEMP UNTIL ABOVE ARE FIXED
         var salt = "salty and sweet";
         var pwdhash = "WERTUERTF";
@@ -86,15 +89,16 @@ var UserModule = (function (_super) {
 
         this.db.getConnection(function (err, connection, cleanup) {
             if (err) {
+                logger.debug(err);
                 return callback(err, null);
             }
             var query = connection.query("INSERT INTO user SET ? ", [updateData], function (err, rows) {
                 cleanup();
                 if (err) {
+                    logger.debug(err);
                     return callback(err, false);
                 }
-
-                if (rows.length === 1) {
+                if (rows.affectedRows === 1) {
                     return callback(null, true);
                 }
             });

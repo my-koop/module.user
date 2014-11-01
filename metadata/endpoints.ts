@@ -9,6 +9,10 @@ var endpoints = {
       path: "/user/getProfile/:id",
       method: "get"
     },
+    register: {
+      path: "/user/register/",
+      method: "post"
+    }
 
   }
 };

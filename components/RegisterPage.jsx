@@ -6,6 +6,8 @@ var BSButton = require("react-bootstrap/Button");
 var BSAccordion = require("react-bootstrap/Accordion");
 var Router = require("react-router");
 var RouteInfo = require("routeInformation");
+var __                = require("language").__;
+var actions           = require("actions");
 
 var MKConfirmationTrigger = require("mykoop-core/components/ConfirmationTrigger");
 
@@ -135,11 +137,28 @@ var RegisterPage = React.createClass({
     var self = this;
     return function(){
       if( self.canSendRequest() && (self.pendingRequest = true) ){
+        actions.user.register({
+          data: {
+              email:          self.state.formData["email"],
+              firstname:      self.state.formData["firstname"],
+              lastname:       self.state.formData["lastname"],
+              phone:          self.state.formData["phone"],
+              origin:         self.state.formData["origin"],
+              birthday:       self.state.formData["birthdate"],
+              usageNote:      self.state.formData["usageNote"],
+              usageFrequency: self.state.formData["usage"],
+              referral:       self.state.formData["referral"],
+              passwordToHash: self.state.formData["password"],
+              confPassword:   self.state.formData["confpassword"]
+            }
+        },function (err, res) {
+          if (err) {
+            console.error(err);
+            self.state.success = 0;
+          }
+          console.log(res);
+          self.state.success = 1;
 
-        // For now randomly generate a success/error for the request
-        self.setState({
-          success: Math.floor( Math.random() * 2 ) + 1
-        }, function(){
           self.pendingRequest = false;
           if(self.hasSentSuccessfully()){
             // Redirect to homepage after 2 seconds

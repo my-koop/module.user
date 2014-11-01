@@ -3,6 +3,8 @@ import controllerList = require("../controllers/index");
 //Import request classes
 import UserProfile = require("../classes/UserProfile");
 import utils = require("mykoop-utils");
+import getLogger = require("mykoop-logger");
+var logger = getLogger(module);
 
 class UserModule extends utils.BaseModule implements mkuser.Module {
   db: mkdatabase.Module;
@@ -63,7 +65,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
   registerNewUser(profile: UserInterfaces.RegisterNewUser,callback: (err: Error, result: boolean) => void){
     //FIX ME : Add validation
     //FIX ME : Add salt generation and password encryption
-
+    //FIX ME : Add unique email verification
     //TEMP UNTIL ABOVE ARE FIXED
     var salt = "salty and sweet";
     var pwdhash ="WERTUERTF";
@@ -86,6 +88,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
 
      this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
+        logger.debug(err);
         return callback(err, null);
       }
       var query = connection.query(
@@ -94,10 +97,10 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         function(err, rows) {
           cleanup();
           if (err) {
+            logger.debug(err);
             return callback(err, false);
           }
-
-          if(rows.length === 1) {
+          if(rows.affectedRows === 1 ) {
             return callback(null, true);
           }
 
