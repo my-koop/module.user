@@ -17,9 +17,6 @@ declare module mkuser {
 
   export interface Module extends mykoop.IModule {
     tryLogin(email: string, passwordHash: string, callback: (err: Error, result: boolean) => void): void;
-    getSaltWithEmail(email: string, callback: (err: Error, result: string) => void): void;
-    getSaltWithId(id: number, callback: (err: Error, result: string) => void): void;
-    testEmailUnique(email: string, callback: (err: Error, result: boolean) => void): void;
     getProfile(id: number, callback: (err: Error, result: UserProfile) => void): void;
   }
 

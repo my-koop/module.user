@@ -5,7 +5,8 @@ var BSAlert = require("react-bootstrap/Alert");
 var BSButton = require("react-bootstrap/Button");
 var BSAccordion = require("react-bootstrap/Accordion");
 var Router = require("react-router");
-var RouteInfo = require("routeInformation");
+var routeData = require("dynamic-metadata").routes;
+
 
 var MKConfirmationTrigger = require("mykoop-core/components/ConfirmationTrigger");
 
@@ -130,7 +131,7 @@ var RegisterPage = React.createClass({
           if(self.hasSentSuccessfully()){
             // Redirect to homepage after 2 seconds
             setTimeout(function(){
-              Router.transitionTo(RouteInfo.homepage.name);
+              Router.transitionTo(routeData.public.name);
             },2000);
           }
         });
