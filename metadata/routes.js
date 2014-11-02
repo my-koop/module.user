@@ -1,15 +1,25 @@
-function addRoutes(metaData) {
-    metaData.addRoute({
+function addRoutes(metaDataBuilder) {
+    /* Public routes. */
+    metaDataBuilder.addFrontendRoute({
         idPath: ["public", "myaccount"],
         component: "MyAccountPage",
-        name: "My Account",
+        name: "myAccount",
         path: "/myaccount"
     });
-    metaData.addRoute({
-        idPath: ["public", "loginpage"],
+
+    /* Simple routes. */
+    metaDataBuilder.addFrontendRoute({
+        idPath: ["simple", "login"],
         component: "LoginPage",
-        name: "Login Page",
-        path: "/login"
+        name: "login",
+        path: "login"
+    });
+
+    metaDataBuilder.addFrontendRoute({
+        idPath: ["simple", "register"],
+        component: "RegisterPage",
+        name: "register",
+        path: "register"
     });
 }
 exports.addRoutes = addRoutes;
