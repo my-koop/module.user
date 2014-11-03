@@ -106,8 +106,8 @@ var UserModule = (function (_super) {
                         return callback(null, true);
                     }
                 });
-            });
-        });
+            }); //getConnection
+        }); //hash
     };
     return UserModule;
 })(utils.BaseModule);

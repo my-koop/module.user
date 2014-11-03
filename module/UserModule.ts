@@ -109,11 +109,11 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
             if(rows.affectedRows === 1 ) {
               return callback(null, true);
             }
-        });
-      });
-     });
-
-  }
-}
+          }//function
+        );//query
+      });//getConnection
+     });//hash
+  }//registerNewUser
+}//class
 
 export = UserModule;

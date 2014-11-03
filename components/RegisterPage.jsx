@@ -152,7 +152,7 @@ var RegisterPage = React.createClass({
               confPassword:   self.state.formData["confpassword"]
             }
         },function (err, res) {
-          if (err) {
+          if (err || res.registered !== 1) {
             console.error(err);
             self.state.success = 0;
           }
