@@ -66,7 +66,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     //FIX ME : Add validation
     //FIX ME : Add unique email verification
     //TEMP UNTIL ABOVE ARE FIXED
-
+    var self = this;
     nodepwd.hash(profile.passwordToHash, function(err, salt, hash) {
       if(err){
         logger.debug(err);
@@ -92,7 +92,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         signupDate: currentDate
       };
 
-      this.db.getConnection(function(err, connection, cleanup) {
+      self.db.getConnection(function(err, connection, cleanup) {
         if(err) {
           return callback(err, null);
         }
