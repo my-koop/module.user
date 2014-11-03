@@ -5,6 +5,9 @@ var BSButton = require("react-bootstrap/Button");
 var BSButtonGroup = require("react-bootstrap/ButtonGroup");
 var BSAlert = require("react-bootstrap/Alert");
 var ajax = require("ajax");
+var actions  = require("actions");
+var Router = require("react-router");
+var routeData = require("dynamic-metadata").routes;
 
 var LoginBox = React.createClass({
 
@@ -28,7 +31,8 @@ var LoginBox = React.createClass({
       password: null,
       emailFieldState: null,
       passwordFieldState : null,
-      errorMessage: null
+      errorMessage: null,
+      loggedIn: null
     };
   },
 
@@ -45,13 +49,14 @@ var LoginBox = React.createClass({
     }
   },
 
-
+  hasLoggedIn: function(){
+    return this.state.loggedIn;
+  },
 
   onSubmit: function(e){
     e.preventDefault();
-
     //form validation before submit;
-
+    var self = this;
     //FIX ME: Task #7 - Implement login submit
     actions.user.tryLogin(
       {
@@ -61,19 +66,43 @@ var LoginBox = React.createClass({
         }
       },
       function (err, res) {
-        if (err || !res.success ) {
+        if (err) {
           console.error(err);
-          self.state.status = 2;
+		  //handle error
         }
-        console.log(res);
-        self.state.success = 1;
-        //Transition after success
-        //this.props.onLoginSuccess();
+        self.setState({ loggedIn: res.success});
+        if(self.hasLoggedIn()){
+          //deal with login
+          //FIX ME: REMOVE this message once login handling is implemented
+          self.setState({
+            errorMessage: "You logged in!",
+            emailFieldState: 1,
+            passwordFieldState: 1
+          });
+        } else {
+          self.setState({
+            errorMessage: "The information did not match any user.",
+            emailFieldState: 2,
+            passwordFieldState: 2
+          });
+        }
       }
     );
 
   },
+  redirect: function(location){
+    console.log("redirecting");
+    switch(location){
+      case "register":
+        Router.transitionTo(routeData.simple.children.register.name);
+        break;
+      case "forgotPassword":
+        //FIX ME Add redirect to forgot password page once it is implemented
+        break;
+      default: break;
+    };
 
+  },
   render: function() {
     return (
       <div>
@@ -88,7 +117,7 @@ var LoginBox = React.createClass({
             placeholder="EMail"
             label="E-Mail"
             labelClassName="sr-only"
-            bsStyle={this.getSuccessStyle(this.state.emailState)}
+            bsStyle={this.getSuccessStyle(this.state.emailFieldState)}
             hasFeedback
             valueLink={this.linkState("email")}
           />
@@ -97,7 +126,7 @@ var LoginBox = React.createClass({
             placeholder="Password"
             label="Password"
             labelClassName="sr-only"
-            bsStyle={this.getSuccessStyle(this.state.pwdState)}
+            bsStyle={this.getSuccessStyle(this.state.passwordFieldState)}
             hasFeedback
             valueLink={this.linkState("password")}
           />
@@ -105,8 +134,10 @@ var LoginBox = React.createClass({
           <BSInput block type="submit" bsStyle="success" bsSize="large" value="Login" />
         </form>
         {/*FIXME:: style on the node is to make vertical buttongroup take 100% width
-                   currently no known official way to do this*/}
-          //FIXME:: Implement proper redirect on button click
+                   currently no known official way to do this
+          //FIXME:: Implement proper redirect on button click*/
+           }
+
         <BSButtonGroup className="btn-block" vertical>
           <BSButton block bsStyle="primary">Create your account</BSButton>
           <BSButton block bsStyle="info" >Forgot your password</BSButton>

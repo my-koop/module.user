@@ -28,7 +28,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
       var email = loginInfo.email;
 
       var query = connection.query(
-        "SELECT ?? user WHERE email = ? ",
+        "SELECT ?? FROM user WHERE email = ? ",
         [tableRows,email],
         function(err, rows) {
           cleanup();

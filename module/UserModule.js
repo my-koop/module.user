@@ -34,7 +34,7 @@ var UserModule = (function (_super) {
             var tableRows = ['id', 'salt', 'pwdhash'];
             var email = loginInfo.email;
 
-            var query = connection.query("SELECT ?? user WHERE email = ? ", [tableRows, email], function (err, rows) {
+            var query = connection.query("SELECT ?? FROM user WHERE email = ? ", [tableRows, email], function (err, rows) {
                 cleanup();
                 if (err) {
                     return callback(err, null);
