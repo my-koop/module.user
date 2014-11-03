@@ -5,8 +5,6 @@ var ajax = require("ajax");
 
 var ProfileUpdateForm = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin],
-
   propTypes: {
     profileData: React.PropTypes.object,
   },
@@ -89,14 +87,14 @@ var ProfileUpdateForm = React.createClass({
                 type="select"
                 defaultValue="visit"
                 label="How did you find us"
-                valueLink={this.linkState("referral")}
+                valueLink={this.makeValueLink("referral")}
               >
                 <option value="visit">On-Site Visit</option>
                 <option value="friend">Friend referral</option>
                 <option value="ads">Ads</option>
                 <option value="other">Other</option>
               </BSInput>
-              {this.state.referral === "other" ?
+              {this.state.profileData.referral === "other" ?
                 <BSInput
                   type="text"
                   label="Please Specify"
