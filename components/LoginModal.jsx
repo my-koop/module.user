@@ -1,6 +1,5 @@
 ﻿var React = require("react");
 var BSButton = require("react-bootstrap/Button");
-//FIX ME: Require AbstractModal from module.core
 var MKAbstractModal = require("mykoop-core/components/AbstractModal");
 var MKLoginBox = require("./LoginBox");
 
