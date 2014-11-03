@@ -93,18 +93,14 @@ var UserModule = (function (_super) {
 
             this.db.getConnection(function (err, connection, cleanup) {
                 if (err) {
-                    logger.debug(err);
                     return callback(err, null);
                 }
                 var query = connection.query("INSERT INTO user SET ? ", [updateData], function (err, rows) {
                     cleanup();
                     if (err) {
-                        logger.debug(err);
                         return callback(err, false);
                     }
-                    if (rows.affectedRows === 1) {
-                        return callback(null, true);
-                    }
+                    return callback(null, rows.affectedRows === 1);
                 });
             }); //getConnection
         }); //hash

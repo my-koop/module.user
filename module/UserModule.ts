@@ -62,12 +62,12 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     });
   }
 
-  registerNewUser(profile: UserInterfaces.RegisterNewUser,callback: (err: Error, result: boolean) => void){
+  registerNewUser(profile: UserInterfaces.RegisterNewUser, callback: (err: Error, result: boolean) => void){
     //FIX ME : Add validation
     //FIX ME : Add unique email verification
     //TEMP UNTIL ABOVE ARE FIXED
 
-    nodepwd.hash(profile.passwordToHash, function(err,salt,hash) {
+    nodepwd.hash(profile.passwordToHash, function(err, salt, hash) {
       if(err){
         logger.debug(err);
         return callback(err,null);
@@ -94,7 +94,6 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
 
       this.db.getConnection(function(err, connection, cleanup) {
         if(err) {
-          logger.debug(err);
           return callback(err, null);
         }
         var query = connection.query(
@@ -103,12 +102,9 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           function(err, rows) {
             cleanup();
             if (err) {
-              logger.debug(err);
               return callback(err, false);
             }
-            if(rows.affectedRows === 1 ) {
-              return callback(null, true);
-            }
+              return callback(null, rows.affectedRows === 1);
           }//function
         );//query
       });//getConnection

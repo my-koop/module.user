@@ -21,7 +21,7 @@ function registerUser(req, res) {
 
     self.registerNewUser(profile, function (err, registered) {
         if (err) {
-            logger.debug(err);
+            logger.verbose(err);
             return res.status(500).send({
                 error: err.toString()
             });
