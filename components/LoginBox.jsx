@@ -23,7 +23,13 @@ var LoginBox = React.createClass({
   },
 
   getInitialState: function(){
-    return this.props.state || {};
+    return {
+      email: null,
+      password: null,
+      emailFieldState: null,
+      passwordFieldState : null,
+      errorMessage: null
+    };
   },
 
   componentWillUnmount: function(){
@@ -43,9 +49,29 @@ var LoginBox = React.createClass({
 
   onSubmit: function(e){
     e.preventDefault();
-    //FIX ME: Task #7 - Implement login submit
 
-    //FIX ME: Add input validation
+    //form validation before submit;
+
+    //FIX ME: Task #7 - Implement login submit
+    actions.user.tryLogin(
+      {
+        data: {
+          email: self.state.email,
+          password: self.state.password
+        }
+      },
+      function (err, res) {
+        if (err || !res.success ) {
+          console.error(err);
+          self.state.status = 2;
+        }
+        console.log(res);
+        self.state.success = 1;
+        //Transition after success
+        //this.props.onLoginSuccess();
+      }
+    );
+
   },
 
   render: function() {
