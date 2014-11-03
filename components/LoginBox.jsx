@@ -53,8 +53,30 @@ var LoginBox = React.createClass({
     return this.state.loggedIn;
   },
 
+  basicFormValidation: function(){
+    var isValid = true;
+    if(!this.state.email){
+      this.setState({
+        emailFieldState: 2,
+        errorMessage: "Both fields must be filled."
+      });
+      isValid = false;
+    }
+    if(!this.state.password){
+      this.setState({
+        passwordFieldState: 2,
+        errorMessage: "Both fields must be filled."
+      });
+      isValid = false;
+    }
+    return isValid;
+  },
+
   onSubmit: function(e){
     e.preventDefault();
+    if(!this.basicFormValidation()){
+      return;
+    }
     //form validation before submit;
     var self = this;
     //FIX ME: Task #7 - Implement login submit
