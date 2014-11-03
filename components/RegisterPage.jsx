@@ -1,4 +1,4 @@
-﻿var React = require("react/addons");
+﻿var React = require("react");
 var BSPanel = require("react-bootstrap/Panel");
 var BSInput = require("react-bootstrap/Input");
 var BSAlert = require("react-bootstrap/Alert");
@@ -8,8 +8,6 @@ var Router = require("react-router");
 var routeData = require("dynamic-metadata").routes;
 var __                = require("language").__;
 var actions           = require("actions");
-
-var MKConfirmationTrigger = require("mykoop-core/components/ConfirmationTrigger");
 
 var MKConfirmationTrigger = require("mykoop-core/components/ConfirmationTrigger");
 
@@ -139,35 +137,43 @@ var RegisterPage = React.createClass({
     var self = this;
     return function(){
       if( self.canSendRequest() && (self.pendingRequest = true) ){
+        var formData = self.state.formData;
         actions.user.register({
           data: {
-              email:          self.state.formData["email"],
-              firstname:      self.state.formData["firstname"],
-              lastname:       self.state.formData["lastname"],
-              phone:          self.state.formData["phone"],
-              origin:         self.state.formData["origin"],
-              birthday:       self.state.formData["birthdate"],
-              usageNote:      self.state.formData["usageNote"],
-              usageFrequency: self.state.formData["usage"],
-              referral:       self.state.formData["referral"],
-              passwordToHash: self.state.formData["password"],
-              confPassword:   self.state.formData["confpassword"]
-            }
-        },function (err, res) {
+            email:          formData.email,
+            firstname:      formData.firstname,
+            lastname:       formData.lastname,
+            phone:          formData.phone,
+            origin:         formData.origin,
+            birthday:       formData.birthdate,
+            usageNote:      formData.usageNote,
+            usageFrequency: formData.usage,
+            referral:       formData.referral,
+            passwordToHash: formData.password,
+            confPassword:   formData.confpassword
+          }
+        },
+        function (err, res) {
+          var registerSuccess;
           if (err || res.registered !== 1) {
             console.error(err);
-            self.state.success = 0;
+            registerSuccess = 0;
           }
           console.log(res);
-          self.state.success = 1;
+          registerSuccess = 1;
 
-          self.pendingRequest = false;
-          if(self.hasSentSuccessfully()){
-            // Redirect to homepage after 2 seconds
-            setTimeout(function(){
-              Router.transitionTo(routeData.public.name);
-            },2000);
-          }
+          self.setState({
+            success: registerSuccess
+          },
+          function(){
+            self.pendingRequest = false;
+            if(self.hasSentSuccessfully()){
+              // Redirect to homepage after 2 seconds
+              setTimeout(function(){
+                Router.transitionTo(routeData.public.name);
+              },2000);
+            }
+          });
         });
       }
     }
