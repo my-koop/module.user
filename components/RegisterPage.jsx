@@ -1,4 +1,4 @@
-﻿var React = require("react/addons");
+﻿var React = require("react");
 var BSPanel = require("react-bootstrap/Panel");
 var BSInput = require("react-bootstrap/Input");
 var BSAlert = require("react-bootstrap/Alert");
@@ -6,7 +6,8 @@ var BSButton = require("react-bootstrap/Button");
 var BSAccordion = require("react-bootstrap/Accordion");
 var Router = require("react-router");
 var routeData = require("dynamic-metadata").routes;
-
+var __                = require("language").__;
+var actions           = require("actions");
 
 var MKConfirmationTrigger = require("mykoop-core/components/ConfirmationTrigger");
 
@@ -26,7 +27,8 @@ var RegisterPage = React.createClass({
   getInitialState: function(){
     return {
       key: 0,
-      success: 0
+      success: 0,
+      formData: {}
     };
   },
 
@@ -118,22 +120,60 @@ var RegisterPage = React.createClass({
     this.selectPanel(selectedKey);
   },
 
+  handleFieldChange: function(field, newValue) {
+    var profile = this.state.formData;
+    profile[field] = newValue;
+    this.setState({formData: profile});
+  },
+
+  makeValueLink: function(field) {
+    return {
+      value: this.state.formData[field],
+      requestChange: this.handleFieldChange.bind(this, field)
+    }
+  },
+
   submitForm: function(){
     var self = this;
     return function(){
       if( self.canSendRequest() && (self.pendingRequest = true) ){
-
-        // For now randomly generate a success/error for the request
-        self.setState({
-          success: Math.floor( Math.random() * 2 ) + 1
-        }, function(){
-          self.pendingRequest = false;
-          if(self.hasSentSuccessfully()){
-            // Redirect to homepage after 2 seconds
-            setTimeout(function(){
-              Router.transitionTo(routeData.public.name);
-            },2000);
+        var formData = self.state.formData;
+        actions.user.register({
+          data: {
+            email:          formData.email,
+            firstname:      formData.firstname,
+            lastname:       formData.lastname,
+            phone:          formData.phone,
+            origin:         formData.origin,
+            birthday:       formData.birthdate,
+            usageNote:      formData.usageNote,
+            usageFrequency: formData.usage,
+            referral:       formData.referral,
+            passwordToHash: formData.password,
+            confPassword:   formData.confpassword
           }
+        },
+        function (err, res) {
+          var registerSuccess;
+          if (err || res.registered !== 1) {
+            console.error(err);
+            registerSuccess = 0;
+          }
+          console.log(res);
+          registerSuccess = 1;
+
+          self.setState({
+            success: registerSuccess
+          },
+          function(){
+            self.pendingRequest = false;
+            if(self.hasSentSuccessfully()){
+              // Redirect to homepage after 2 seconds
+              setTimeout(function(){
+                Router.transitionTo(routeData.public.name);
+              },2000);
+            }
+          });
         });
       }
     }
@@ -152,23 +192,44 @@ var RegisterPage = React.createClass({
                 </BSAlert>
               : null}
               <BSInput
+                type="text"
+                label="Firstname"
+                placeholder="Firstname"
+                autoFocus
+                ref="firstname"
+                valueLink = {this.makeValueLink("firstname")}
+                required
+              />
+              <BSInput
+                type="text"
+                label="Lastname"
+                placeholder="Last Name"
+                ref="lastname"
+                valueLink = {this.makeValueLink("lastname")}
+                required
+              />
+              <BSInput
                 type="email"
                 label="E-Mail"
                 placeholder="E-Mail"
-                autoFocus
                 ref="email"
+                valueLink = {this.makeValueLink("email")}
                 required
               />
               <BSInput
                 type="password"
                 label="Password"
                 placeholder="Password"
+                ref="password"
+                valueLink = {this.makeValueLink("password")}
                 required
               />
               <BSInput
                 type="password"
                 label="Confirm Password"
                 placeholder="Confirm Password"
+                ref="confpassword"
+                valueLink = {this.makeValueLink("confpassword")}
                 onKeyDown={this.checkGoingDownKey}
                 required
               />
@@ -177,28 +238,36 @@ var RegisterPage = React.createClass({
 
             <BSPanel header="Optionnal Info" key={1}>
               <BSInput
-                type="number"
-                label="Age"
-                placeholder="Age"
-                ref="age"
+                type="text"
+                label="Phone Number"
+                placeholder="Phone number"
+                ref="phone"
+                valueLink = {this.makeValueLink("phone")}
                 onKeyDown={this.checkGoingUpKey}
+              />
+              <BSInput
+                type="text"
+                label="Birthdate"
+                placeholder="Birthdate (YYYY/MM/DD)"
+                valueLink = {this.makeValueLink("birthdate")}
+                ref="birthdate"
               />
               <BSInput
                 type="select"
                 defaultValue="visit"
                 label="How did you find us"
-                valueLink={this.linkState("referral")}
+                valueLink={this.makeValueLink("referral")}
               >
                 <option value="visit">On-Site Visit</option>
                 <option value="friend">Friend referral</option>
                 <option value="ads">Ads</option>
                 <option value="other">Other</option>
               </BSInput>
-              {this.state.referral === "other" ?
+              {this.state.formData.referral === "other" ?
                 <BSInput
                   type="text"
                   label="Please Specify"
-                  valueLink={this.linkState("referralSpecify")}
+                  valueLink={this.makeValueLink("referralSpecify")}
                 />
               : null
               }
@@ -206,6 +275,8 @@ var RegisterPage = React.createClass({
                 type="select"
                 defaultValue="everyday"
                 label="Bike usage"
+                ref="usage"
+                valueLink = {this.makeValueLink("usage")}
               >
                 <option value="everyday">Every Day</option>
                 <option value="fewWeek">Few times a week</option>
@@ -214,10 +285,23 @@ var RegisterPage = React.createClass({
                 <option value="never">Never</option>
               </BSInput>
               <BSInput
+                type="select"
+                defaultValue="udem"
+                label="Your origin"
+                ref="origin"
+                valueLink = {this.makeValueLink("origin")}
+              >
+                <option value="udem">Université de Montréal</option>
+                <option value="brebeuf">College Jean-De-Brébeuf</option>
+                <option value="other">Other</option>
+              </BSInput>
+              <BSInput
                 type="text"
                 label="Why do you use a bike"
                 placeholder="Describe why you mainly use your bike"
+                ref="usageNote"
                 onKeyDown={this.checkGoingDownKey}
+                valueLink = {this.makeValueLink("usageNote")}
               />
               <BSButton onClick={this.nextPanel} className="pull-right">Next</BSButton>
             </BSPanel>
