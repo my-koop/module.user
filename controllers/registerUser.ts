@@ -23,7 +23,7 @@ function registerUser(req: express.Request, res: express.Response) {
 
   self.registerNewUser(profile, function(err, registered: boolean) {
     if (err) {
-      logger.debug(err);
+      logger.verbose(err);
       return res.status(500).send({
         error: err.toString()
         }
