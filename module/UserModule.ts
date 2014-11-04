@@ -44,7 +44,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           var enteredPassword = loginInfo.password;
 
           //Hash password with salt
-          nodepwd.hash(enteredPassword,salt, function(err,hash){
+          nodepwd.hash(enteredPassword, salt, function(err,hash){
             //compare hashed password with db
             if(hash === storedHash) {
               //Match

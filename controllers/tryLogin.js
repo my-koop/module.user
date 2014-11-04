@@ -3,15 +3,15 @@ var logger = getLogger(module);
 
 function tryLogin(req, res) {
     var self = this;
-    var email = req.param("email", null);
-    var password = req.param("password", null);
-    if (!email || !password) {
+    var paramEmail = req.param("email", null);
+    var paramPassword = req.param("password", null);
+    if (!paramEmail || !paramPassword) {
         logger.debug("Invalid input for request tryLogin");
         return res.status(400).send("Invalud input for request");
     }
     var loginInfo = {
-        email: req.param("email", null),
-        password: req.param("password", null)
+        email: paramEmail,
+        password: paramPassword
     };
     self.tryLogin(loginInfo, function (err, isLogin) {
         if (err) {
