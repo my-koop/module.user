@@ -61,6 +61,10 @@ var LoginBox = React.createClass({
         errorMessage: "Both fields must be filled."
       });
       isValid = false;
+    } else {
+      this.setState({
+        emailFieldState: 1
+      });
     }
     if(!this.state.password){
       this.setState({
@@ -68,6 +72,10 @@ var LoginBox = React.createClass({
         errorMessage: "Both fields must be filled."
       });
       isValid = false;
+    } else {
+      this.setState({
+        passwordFieldState: 1
+      });
     }
     return isValid;
   },
@@ -79,7 +87,6 @@ var LoginBox = React.createClass({
     }
     //form validation before submit;
     var self = this;
-    //FIX ME: Task #7 - Implement login submit
     actions.user.tryLogin(
       {
         data: {
@@ -88,12 +95,8 @@ var LoginBox = React.createClass({
         }
       },
       function (err, res) {
-        if (err) {
-          console.error(err);
-		  //handle error
-        }
         self.setState({ loggedIn: res.success});
-        if(self.hasLoggedIn()){
+        if(res.success && err === null){
           //deal with login
           //FIX ME: REMOVE this message once login handling is implemented
           self.setState({
