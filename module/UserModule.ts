@@ -129,7 +129,9 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
             if(rows[0].isUnique !== 1){
               //Duplicate email
               cleanup();
-              return callback(new Error('Duplicate Email'),null);
+              var myError = new Error("Duplicate Email");
+              logger.verbose(myError,{});
+              return callback(myError,null);
             } else {
               var query = connection.query(
                 "UPDATE user SET ? WHERE id = ? ",
