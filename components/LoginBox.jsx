@@ -159,13 +159,23 @@ var LoginBox = React.createClass({
           <BSInput block type="submit" bsStyle="success" bsSize="large" value="Login" />
         </form>
         {/*FIXME:: style on the node is to make vertical buttongroup take 100% width
-                   currently no known official way to do this
-          //FIXME:: Implement proper redirect on button click*/
-           }
+                   currently no known official way to do this*/}
 
         <BSButtonGroup className="btn-block" vertical>
-          <BSButton block bsStyle="primary">Create your account</BSButton>
-          <BSButton block bsStyle="info" >Forgot your password</BSButton>
+          <BSButton
+            block
+            bsStyle="primary"
+            onClick={this.redirect.bind(null,"register")}
+          >
+            Create your account
+          </BSButton>
+          <BSButton
+          block
+          bsStyle="info"
+          onclick={this.redirect.bind(null,"forgotPassword")}
+          >
+            Forgot your password
+          </BSButton>
         </BSButtonGroup>
       </div>
     );
