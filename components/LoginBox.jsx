@@ -16,7 +16,12 @@ var LoginBox = React.createClass({
   propTypes: {
     state: PropTypes.object,
     saveStateCallback: PropTypes.func.isRequired,
-    onLoginSuccess: PropTypes.func
+    onLoginSuccess: PropTypes.func,
+    email: PropTypes.string,
+    password: PropTypes.string,
+    emailFieldState: PropTypes.number,
+    passwordFieldState: PropTypes.number,
+    errorMessage: PropTypes.string
   },
 
   getDefaultProps: function(){
@@ -27,12 +32,11 @@ var LoginBox = React.createClass({
 
   getInitialState: function(){
     return {
-      email: null,
-      password: null,
-      emailFieldState: null,
-      passwordFieldState : null,
-      errorMessage: null,
-      loggedIn: null
+      email: this.props.email,
+      password: this.props.password,
+      emailFieldState: this.props.emailFieldState,
+      passwordFieldState : this.props.passwordFieldState,
+      errorMessage: this.props.errorMessage
     };
   },
 
@@ -49,9 +53,6 @@ var LoginBox = React.createClass({
     }
   },
 
-  hasLoggedIn: function(){
-    return this.state.loggedIn;
-  },
 
   basicFormValidation: function(){
     var isValid = true;
@@ -95,15 +96,17 @@ var LoginBox = React.createClass({
         }
       },
       function (err, res) {
-        self.setState({ loggedIn: res.success});
         if(res.success && err === null){
-          //deal with login
-          //FIX ME: REMOVE this message once login handling is implemented
           self.setState({
-            errorMessage: "You logged in!",
+            errorMessage: "You logged in! Redirecting to homepage.",
             emailFieldState: 1,
             passwordFieldState: 1
-          });
+          },function(err,res) {
+            setTimeout( function(){
+              Router.transitionTo(routeData.homepage.name);
+            },2000)
+          }
+          );
         } else {
           self.setState({
             errorMessage: "The information did not match any user.",
