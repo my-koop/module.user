@@ -39,7 +39,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
   }
 
   //FIX ME : define id type
-  getProfile(id, callback: (err: Error, result: UserProfile) => void) {
+  getProfile(id:number, callback: (err: Error, result: UserProfile) => void) {
     this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
         return callback(err, null);

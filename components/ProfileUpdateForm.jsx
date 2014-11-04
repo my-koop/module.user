@@ -2,7 +2,7 @@
 var BSInput = require("react-bootstrap/Input");
 var UserProfile = require("../classes/UserProfile");
 var ajax = require("ajax");
-
+var actions = require("actions");
 var ProfileUpdateForm = React.createClass({
 
   propTypes: {
@@ -18,6 +18,21 @@ var ProfileUpdateForm = React.createClass({
   componentWillMount: function() {
     var self = this;
     //FIX ME: Get user profile from id  - Replace ajax call with proper action channel
+    actions.user.getProfile(
+    {
+      data: {
+        id: 2
+      }
+    }, function(err,result){
+        if(err) {
+          //display error
+
+        }
+        self.setState({
+          profileData : result.userProfile
+        })
+
+    });
     //Keep original email saved to test if it changed
   },
 

@@ -11,7 +11,7 @@ declare module mkuser {
     email    : string;
     firstname: string;
     lastname : string;
-    birthdate?: string;
+    birthdate?: Date;
     phone    ?: string;
     origin   ?: string;
     usageFrequency?: string;

@@ -11,11 +11,11 @@ function getProfile(req: express.Request, res: express.Response) {
   var self: mkuser.Module = this;
   self.getProfile(id, function(err, profile) {
     if (err) {
-      return res.send(500);
+      return res.status(500).send("Unable to get profile");
     }
 
     res.send({
-      profile: profile
+      userProfile: profile
     });
   });
 };

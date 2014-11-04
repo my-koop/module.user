@@ -15,7 +15,7 @@ class UserProfile implements mkuser.UserProfile {
   public email          : string;
   public firstname      : string;
   public lastname       : string;
-  public birthdate      : string;
+  public birthdate      : Date;
   public phone          : string;
   public origin         : string;
   public referral       : string;
