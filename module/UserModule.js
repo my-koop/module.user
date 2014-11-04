@@ -66,6 +66,7 @@ var UserModule = (function (_super) {
         //FIX ME : Add validation
         //FIX ME : Add unique email verification
         //TEMP UNTIL ABOVE ARE FIXED
+        var self = this;
         nodepwd.hash(profile.passwordToHash, function (err, salt, hash) {
             if (err) {
                 logger.debug(err);
@@ -91,7 +92,7 @@ var UserModule = (function (_super) {
                 signupDate: currentDate
             };
 
-            this.db.getConnection(function (err, connection, cleanup) {
+            self.db.getConnection(function (err, connection, cleanup) {
                 if (err) {
                     return callback(err, null);
                 }
