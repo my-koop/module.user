@@ -12,8 +12,11 @@ var endpoints = {
     register: {
       path: "/user/register/",
       method: "post"
+    },
+    updateProfile: {
+      path: "/user/updateProfile/:id",
+      method: "post"
     }
-
   }
 };
 

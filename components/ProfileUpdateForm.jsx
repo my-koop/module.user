@@ -17,7 +17,7 @@ var ProfileUpdateForm = React.createClass({
 
   componentWillMount: function() {
     var self = this;
-    //FIX ME: Get user profile from id  - Replace ajax call with proper action channel
+    //FIX ME: Get ID from SESSION
     actions.user.getProfile(
     {
       data: {
@@ -31,6 +31,7 @@ var ProfileUpdateForm = React.createClass({
         self.setState({
           profileData : result.userProfile
         })
+        //Additional treatment on
 
     });
     //Keep original email saved to test if it changed
@@ -51,9 +52,32 @@ var ProfileUpdateForm = React.createClass({
 
   onSubmit: function(e){
     e.preventDefault();
-    //FIX ME: Complete update steps
-    //build new userprofil object
-    //call update profile fonction
+    var self = this;
+    //FIX ME Get ID From session
+    var profileData = self.state.profileData;
+    actions.user.updateProfile(
+      {
+        data: {
+          id:             2,
+          email:          profileData.email,
+          firstname:      profileData.firstname,
+          lastname:       profileData.lastname,
+          phone:          profileData.phone,
+          origin:         profileData.origin,
+          birthdate:      profileData.birthdate,
+          usageNote:      profileData.usageNote,
+          usageFrequency: profileData.usage,
+          referral:       profileData.referral
+        }
+      }, function(err, result){
+           if(err || !result.updateSuccess){
+            //Display error
+            console.log(err);
+           }
+           //Display Success
+           console.log(result);
+      }
+    );
   },
 
 

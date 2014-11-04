@@ -23,6 +23,7 @@ declare module mkuser {
     tryLogin(email: string, passwordHash: string, callback: (err: Error, result: boolean) => void): void;
     getProfile(id: number, callback: (err: Error, result: UserProfile) => void): void;
     registerNewUser(profile: UserInterfaces.RegisterNewUser, callback: (err: Error, result: boolean) => void ) : void;
+    updateProfile(id:number, profile: mkuser.UserProfile, callback: (err: Error, result: boolean) => void ) : void;
   }
 
 }
