@@ -3,21 +3,24 @@ var logger = getLogger(module);
 
 function tryLogin(req, res) {
     var self = this;
-    var email = req.param("email", null);
-    var passwordHash = req.param("pwdhash", null);
-    if (!email || !passwordHash) {
+    var paramEmail = req.param("email", null);
+    var paramPassword = req.param("password", null);
+    if (!paramEmail || !paramPassword) {
         logger.debug("Invalid input for request tryLogin");
-        return res.send(400);
+        return res.status(400).send("Invalud input for request");
     }
-
-    self.tryLogin(email, passwordHash, function (err, isLogin) {
+    var loginInfo = {
+        email: paramEmail,
+        password: paramPassword
+    };
+    self.tryLogin(loginInfo, function (err, isLogin) {
         if (err) {
             logger.debug(err);
-            return res.send(500);
+            return res.status(500).send(err.toString());
         }
 
         res.send({
-            isLogin: isLogin
+            success: isLogin
         });
     });
 }

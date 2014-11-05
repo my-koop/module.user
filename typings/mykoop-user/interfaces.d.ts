@@ -18,4 +18,9 @@ declare module UserInterfaces {
     newPassword: string;
     confNewPassword: string;
   }
+
+  export interface TryLogin {
+    email: string;
+    password: string;
+  }
 }
