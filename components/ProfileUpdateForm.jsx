@@ -21,7 +21,6 @@ var ProfileUpdateForm = React.createClass({
       message: this.props.message,
       messageStyle: this.props.messageStyle,
       emailStyle : this.props.emailStyle,
-      emailCopy: this.props.emailCopy
     }
   },
 
@@ -36,11 +35,10 @@ var ProfileUpdateForm = React.createClass({
     }, function(err,result){
         if(err) {
           //display error
-
+          return console.log(err);
         }
         self.setState({
           profileData : result.userProfile,
-          emailCopy : result.userProfile.email
         })
         //Additional treatment on profile data
         //IE: Format date to YYYY/MM/DD
@@ -61,8 +59,8 @@ var ProfileUpdateForm = React.createClass({
     }
   },
 
-  setMessage: function(Message,isError){
-    var style = (isError)?"warning":"success";
+  setMessage: function(Message, isError){
+    var style = (isError) ? "warning" : "success";
     this.setState({
       message: Message,
       messageStyle: style
@@ -96,10 +94,8 @@ var ProfileUpdateForm = React.createClass({
             if(err.message == "Error: Duplicate Email"){
               self.setMessage("Someone is already using this email :" + profileData.email, isError = true);
               var profile = self.state.profileData;
-              profile.email = self.state.emailCopy
               self.setState({
                 emailStyle: "warning",
-                profileData : profile
               });
             } else {
               self.setMessage("Unable to update your profile", isError = true);

@@ -14,7 +14,7 @@ var endpoints = {
         },
         updateProfile: {
             path: "/user/updateProfile/:id",
-            method: "post"
+            method: "put"
         }
     }
 };

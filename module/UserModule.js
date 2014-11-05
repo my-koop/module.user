@@ -118,21 +118,14 @@ var UserModule = (function (_super) {
                     cleanup();
                     return callback(err, false);
                 }
-                logger.verbose(rows);
                 if (rows[0].isUnique !== 1) {
                     //Duplicate email
                     cleanup();
-                    var myError = new Error("Duplicate Email");
-                    logger.verbose(myError, {});
-                    return callback(myError, null);
+                    return callback(new Error("Duplicate Email"), null);
                 } else {
                     var query = connection.query("UPDATE user SET ? WHERE id = ? ", [newProfile, id], function (err, rows) {
-                        logger.verbose(rows);
                         cleanup();
-                        if (err) {
-                            return callback(err, false);
-                        }
-                        return callback(null, rows.affectedRows === 1);
+                        return callback(err, !err && rows.affectedRows === 1);
                     });
                 }
             });
