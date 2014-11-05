@@ -167,11 +167,10 @@ var UserModule = (function (_super) {
                 return callback(err, null);
             }
             var query = connection.query("SELECT ?? FROM user  WHERE id = ? ", [['salt', 'pwdhash'], id], function (err, rows) {
-                if (err) {
+                if (err || !rows[0]) {
                     cleanup();
                     return callback(err, false);
                 }
-                logger.verbose(rows[0]);
                 var oldHash = rows[0].pwdhash;
                 var userSalt = rows[0].salt;
 
@@ -185,8 +184,6 @@ var UserModule = (function (_super) {
                     if (hash !== oldHash) {
                         //No match
                         cleanup();
-                        logger.verbose(hash);
-                        logger.verbose("Old password doesnt match");
                         return callback(null, false);
                     } else {
                         //Match
@@ -196,7 +193,6 @@ var UserModule = (function (_super) {
                                 cleanup();
                                 return callback(err, null);
                             }
-                            logger.verbose(newHash);
                             var query = connection.query("UPDATE user SET pwdhash = ? WHERE id = ? ", [newHash, id], function (err, rows) {
                                 cleanup();
                                 if (err) {

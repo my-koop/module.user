@@ -186,11 +186,10 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         "SELECT ?? FROM user  WHERE id = ? ",
         [['salt','pwdhash'],id],
         function(err, rows) {
-          if (err) {
+          if (err || !rows[0]) {
             cleanup();
             return callback(err, false);
           }
-          logger.verbose(rows[0]);
           var oldHash = rows[0].pwdhash;
           var userSalt = rows[0].salt;
           //Hash old password and compare with stored Password
@@ -203,8 +202,6 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
             if(hash !== oldHash){
               //No match
               cleanup();
-              logger.verbose(hash);
-              logger.verbose("Old password doesnt match");
               return callback(null,false);
             } else {
               //Match
@@ -214,7 +211,6 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
                   cleanup();
                   return callback(err,null);
                 }
-                logger.verbose(newHash);
                 var query = connection.query(
                   "UPDATE user SET pwdhash = ? WHERE id = ? ",
                   [newHash,id],
