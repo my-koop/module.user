@@ -1,6 +1,7 @@
 ﻿var React = require("react/addons");
 var BSInput = require("react-bootstrap/Input");
 var BSAlert = require("react-bootstrap/Alert");
+var actions = require("actions");
 
 var PasswordChangeForm = React.createClass({
 
@@ -17,8 +18,9 @@ var PasswordChangeForm = React.createClass({
 
   onSubmit: function(e){
     e.preventDefault();
+    var self = this;
     var formState = {
-      message: "Success",
+      message: null,
       hasMessageError: false,
       hasNewPwdError: false,
       hasConfirmPwdError: false
@@ -40,6 +42,41 @@ var PasswordChangeForm = React.createClass({
 
     }
     this.setState(formState);
+    if(formState.hasMessageError){
+      //Validation error, stop request
+      return;
+    } else {
+      //Send request down the chain
+
+      //FIX ME: Get ID from SESSION
+      actions.user.updatePassword({
+        data: {
+          id:              2,
+          oldPassword:     this.state.oldPassword,
+          newPassword:     this.state.password,
+          confNewPassword: this.state.passwordRepeat
+        }
+      }, function(err, res) {
+           if(err) {
+            console.log(err);
+            return;
+           }
+           if( !err && res.updateSuccess === false){
+             formState.message = "Current password is incorrect."
+             formState.hasConfirmPwdError = false;
+             formState.hasNewPwdError = false;
+             formState.hasMessageError = true;
+           }
+           if(res.updateSuccess){
+             formState.message = "Password updated successfully"
+             formState.hasMessageError = false;
+             formState.hasConfirmPwdError = false;
+             formState.hasNewPwdError = false;
+           }
+           self.setState(formState);
+
+      });
+    }
   },
 
   getMessageStyle: function(){

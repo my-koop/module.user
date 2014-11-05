@@ -13,4 +13,9 @@ declare module UserInterfaces {
     passwordToHash: string;
     confPassword: string;
   }
+  export interface updatePassword {
+    oldPassword: string;
+    newPassword: string;
+    confNewPassword: string;
+  }
 }

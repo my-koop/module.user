@@ -150,6 +150,73 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
       );//test email unique query
     });//getConnection
   }
+  updatePassword(id:number, passwords: UserInterfaces.updatePassword, callback: (err: Error, result: boolean) => void) {
+    var self: mkuser.Module = this;
+    //basic validation
+    if(passwords.newPassword !== passwords.confNewPassword
+      || passwords.newPassword  === null
+      || passwords.confNewPassword === null
+      || passwords.oldPassword === null){
+      return callback(new Error('Missing parameters in request'),null);
+    }
+      //get salt and password hash with ID
+    this.db.getConnection(function(err, connection, cleanup) {
+      if(err) {
+        return callback(err, null);
+      }
+      var query = connection.query(
+        "SELECT ?? FROM user  WHERE id = ? ",
+        [['salt','pwdhash'],id],
+        function(err, rows) {
+          if (err) {
+            cleanup();
+            return callback(err, false);
+          }
+          logger.verbose(rows[0]);
+          var oldHash = rows[0].pwdhash;
+          var userSalt = rows[0].salt;
+          //Hash old password and compare with stored Password
+          nodepwd.hash(passwords.oldPassword, userSalt, function(err, hash){
+            if(err){
+              cleanup();
+              logger.verbose("Hashing error");
+              return callback(err,null);
+            }
+            if(hash !== oldHash){
+              //No match
+              cleanup();
+              logger.verbose(hash);
+              logger.verbose("Old password doesnt match");
+              return callback(null,false);
+            } else {
+              //Match
+              //Hash new password using salt
+              nodepwd.hash(passwords.newPassword, userSalt, function(err, newHash) {
+                if(err){
+                  cleanup();
+                  return callback(err,null);
+                }
+                logger.verbose(newHash);
+                var query = connection.query(
+                  "UPDATE user SET pwdhash = ? WHERE id = ? ",
+                  [newHash,id],
+                  function(err, rows) {
+                    cleanup();
+                    if(err) {
+                      return callback(err,null);
+                    }
+                    logger.verbose(rows);
+                    return callback(null, rows.affectedRows === 1);
+                  }
+                );
+
+              });// hash new password
+            }// match
+          });
+        }//function
+      ); // Select query
+    });//getConnection
+  }// updatePassword
 }//class
 
 export = UserModule;
