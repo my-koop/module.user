@@ -15,6 +15,7 @@ function updateProfile(req: express.Request, res: express.Response) {
     phone          : req.param("phone"),
     origin         : req.param("origin"),
     referral       : req.param("referral"),
+    referralSpecify: req.param("referralSpecify"),
     usageFrequency : req.param("usageFrequency"),
     usageNote      : req.param("usageNote")
   };

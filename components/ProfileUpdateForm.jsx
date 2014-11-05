@@ -77,16 +77,17 @@ var ProfileUpdateForm = React.createClass({
     actions.user.updateProfile(
       {
         data: {
-          id:             2,
-          email:          profileData.email,
-          firstname:      profileData.firstname,
-          lastname:       profileData.lastname,
-          phone:          profileData.phone,
-          origin:         profileData.origin,
-          birthdate:      profileData.birthdate,
-          usageNote:      profileData.usageNote,
-          usageFrequency: profileData.usage,
-          referral:       profileData.referral
+          id:              2,
+          email:           profileData.email,
+          firstname:       profileData.firstname,
+          lastname:        profileData.lastname,
+          phone:           profileData.phone,
+          origin:          profileData.origin,
+          birthdate:       profileData.birthdate,
+          usageNote:       profileData.usageNote,
+          usageFrequency:  profileData.usageFrequency,
+          referral:        profileData.referral,
+          referralSpecify: profileData.referralSpecify
         }
       },function(err, result){
           if(err || !result.updateSuccess){
