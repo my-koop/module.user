@@ -31,7 +31,7 @@ function registerUser(req: express.Request, res: express.Response) {
     }
 
     res.send({
-      registered: true
+      registered: registered
     });
   });
 };

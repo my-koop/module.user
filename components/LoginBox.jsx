@@ -5,6 +5,9 @@ var BSButton = require("react-bootstrap/Button");
 var BSButtonGroup = require("react-bootstrap/ButtonGroup");
 var BSAlert = require("react-bootstrap/Alert");
 var ajax = require("ajax");
+var actions  = require("actions");
+var Router = require("react-router");
+var routeData = require("dynamic-metadata").routes;
 
 var LoginBox = React.createClass({
 
@@ -13,7 +16,7 @@ var LoginBox = React.createClass({
   propTypes: {
     state: PropTypes.object,
     saveStateCallback: PropTypes.func.isRequired,
-    onLoginSuccess: PropTypes.func
+    onLoginSuccess: PropTypes.func,
   },
 
   getDefaultProps: function(){
@@ -23,7 +26,13 @@ var LoginBox = React.createClass({
   },
 
   getInitialState: function(){
-    return this.props.state || {};
+    return {
+      email: this.props.state.email,
+      password: this.props.state.password,
+      emailFieldState: this.props.state.emailFieldState,
+      passwordFieldState : this.props.state.passwordFieldState,
+      errorMessage: this.props.state.errorMessage
+    };
   },
 
   componentWillUnmount: function(){
@@ -40,14 +49,83 @@ var LoginBox = React.createClass({
   },
 
 
+  basicFormValidation: function(){
+    var isValid = true;
+    if(!this.state.email){
+      this.setState({
+        emailFieldState: 2,
+        errorMessage: "Both fields must be filled."
+      });
+      isValid = false;
+    } else {
+      this.setState({
+        emailFieldState: 1
+      });
+    }
+    if(!this.state.password){
+      this.setState({
+        passwordFieldState: 2,
+        errorMessage: "Both fields must be filled."
+      });
+      isValid = false;
+    } else {
+      this.setState({
+        passwordFieldState: 1
+      });
+    }
+    return isValid;
+  },
 
   onSubmit: function(e){
     e.preventDefault();
-    //FIX ME: Task #7 - Implement login submit
+    if(!this.basicFormValidation()){
+      return;
+    }
+    //form validation before submit;
+    var self = this;
+    actions.user.tryLogin(
+      {
+        data: {
+          email: self.state.email,
+          password: self.state.password
+        }
+      },
+      function (err, res) {
+        if(res.success && err === null){
+          self.setState({
+            errorMessage: "You logged in! Redirecting to homepage.",
+            emailFieldState: 1,
+            passwordFieldState: 1
+          },function(err,res) {
+            setTimeout( function(){
+              Router.transitionTo(routeData.homepage.name);
+            },2000)
+          }
+          );
+        } else {
+          self.setState({
+            errorMessage: "The information did not match any user.",
+            emailFieldState: 2,
+            passwordFieldState: 2
+          });
+        }
+      }
+    );
 
-    //FIX ME: Add input validation
   },
+  redirect: function(location){
+    console.log("redirecting");
+    switch(location){
+      case "register":
+        Router.transitionTo(routeData.simple.children.register.name);
+        break;
+      case "forgotPassword":
+        //FIX ME Add redirect to forgot password page once it is implemented
+        break;
+      default: break;
+    };
 
+  },
   render: function() {
     return (
       <div>
@@ -62,7 +140,7 @@ var LoginBox = React.createClass({
             placeholder="EMail"
             label="E-Mail"
             labelClassName="sr-only"
-            bsStyle={this.getSuccessStyle(this.state.emailState)}
+            bsStyle={this.getSuccessStyle(this.state.emailFieldState)}
             hasFeedback
             valueLink={this.linkState("email")}
           />
@@ -71,7 +149,7 @@ var LoginBox = React.createClass({
             placeholder="Password"
             label="Password"
             labelClassName="sr-only"
-            bsStyle={this.getSuccessStyle(this.state.pwdState)}
+            bsStyle={this.getSuccessStyle(this.state.passwordFieldState)}
             hasFeedback
             valueLink={this.linkState("password")}
           />
@@ -80,10 +158,22 @@ var LoginBox = React.createClass({
         </form>
         {/*FIXME:: style on the node is to make vertical buttongroup take 100% width
                    currently no known official way to do this*/}
-          //FIXME:: Implement proper redirect on button click
+
         <BSButtonGroup className="btn-block" vertical>
-          <BSButton block bsStyle="primary">Create your account</BSButton>
-          <BSButton block bsStyle="info" >Forgot your password</BSButton>
+          <BSButton
+            block
+            bsStyle="primary"
+            onClick={this.redirect.bind(null,"register")}
+          >
+            Create your account
+          </BSButton>
+          <BSButton
+          block
+          bsStyle="info"
+          onclick={this.redirect.bind(null,"forgotPassword")}
+          >
+            Forgot your password
+          </BSButton>
         </BSButtonGroup>
       </div>
     );
