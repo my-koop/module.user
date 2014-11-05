@@ -17,11 +17,6 @@ var LoginBox = React.createClass({
     state: PropTypes.object,
     saveStateCallback: PropTypes.func.isRequired,
     onLoginSuccess: PropTypes.func,
-    email: PropTypes.string,
-    password: PropTypes.string,
-    emailFieldState: PropTypes.number,
-    passwordFieldState: PropTypes.number,
-    errorMessage: PropTypes.string
   },
 
   getDefaultProps: function(){
@@ -32,11 +27,11 @@ var LoginBox = React.createClass({
 
   getInitialState: function(){
     return {
-      email: this.props.email,
-      password: this.props.password,
-      emailFieldState: this.props.emailFieldState,
-      passwordFieldState : this.props.passwordFieldState,
-      errorMessage: this.props.errorMessage
+      email: this.props.state.email,
+      password: this.props.state.password,
+      emailFieldState: this.props.state.emailFieldState,
+      passwordFieldState : this.props.state.passwordFieldState,
+      errorMessage: this.props.state.errorMessage
     };
   },
 
