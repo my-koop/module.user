@@ -18,25 +18,50 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     this.db = db;
   }
 
-  // FIXME:: add type to args
-  tryLogin(email, passwordHash, callback: (err: Error, result: boolean) => void) {
+  tryLogin(loginInfo : UserInterfaces.TryLogin, callback: (err: Error, result: boolean) => void) {
+    //Get salt and passwordHash with email
     this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
         return callback(err, null);
       }
+      var tableRows = ['id','salt','pwdhash'];
+      var email = loginInfo.email;
+
       var query = connection.query(
-        "SELECT (count(id)= 1) as isValid FROM user WHERE email = ? AND pwdhash = ?",
-        [email,passwordHash],
+        "SELECT ?? FROM user WHERE email = ? ",
+        [tableRows,email],
         function(err, rows) {
           cleanup();
           if (err) {
-            return callback(err, false);
+            return callback(err, null);
           }
+          if(rows.length !== 1){
+            //Email is not associated to a user
+            return callback(null,false);
+          }
+          var salt = rows[0].salt;
+          var storedHash = rows[0].pwdhash;
+          var enteredPassword = loginInfo.password;
 
-          callback(null, rows[0].isValid === 1);
-      });
-    });
-  }
+          //Hash password with salt
+          nodepwd.hash(enteredPassword, salt, function(err,hash){
+            //compare hashed password with db
+            if(hash === storedHash) {
+              //Match
+              //FIX ME: Store id in express session
+              // XX = rows[0].id
+              callback(null,true);
+            } else {
+              //Incorrect password
+              callback(null,false);
+            }
+
+
+          });//hash
+        }//anonymous function
+      );//query
+    });//getConnection
+  }//tryLogin
 
   //FIX ME : define id type
   getProfile(id, callback: (err: Error, result: UserProfile) => void) {

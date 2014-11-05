@@ -13,4 +13,8 @@ declare module UserInterfaces {
     passwordToHash: string;
     confPassword: string;
   }
+  export interface TryLogin {
+    email: string;
+    password: string;
+  }
 }

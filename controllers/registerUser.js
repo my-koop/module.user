@@ -28,7 +28,7 @@ function registerUser(req, res) {
         }
 
         res.send({
-            registered: true
+            registered: registered
         });
     });
 }

@@ -1,8 +1,8 @@
 var endpoints = {
     user: {
         tryLogin: {
-            path: "/user/tryLogin/:email/:pwdhash",
-            method: "get"
+            path: "/user/tryLogin/",
+            method: "post"
         },
         getProfile: {
             path: "/user/getProfile/:id",
