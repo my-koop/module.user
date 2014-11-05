@@ -128,6 +128,31 @@ var UserModule = (function (_super) {
             }); //getConnection
         }); //hash
     };
+
+    UserModule.prototype.updateProfile = function (id, newProfile, callback) {
+        var self = this;
+        this.db.getConnection(function (err, connection, cleanup) {
+            if (err) {
+                return callback(err, null);
+            }
+            var query = connection.query("SELECT (count(*) = 0) as isUnique FROM user WHERE email = ? AND id != ? ", [newProfile.email, id], function (err, rows) {
+                if (err) {
+                    cleanup();
+                    return callback(err, false);
+                }
+                if (rows[0].isUnique !== 1) {
+                    //Duplicate email
+                    cleanup();
+                    return callback(new Error("Duplicate Email"), null);
+                } else {
+                    var query = connection.query("UPDATE user SET ? WHERE id = ? ", [newProfile, id], function (err, rows) {
+                        cleanup();
+                        return callback(err, !err && rows.affectedRows === 1);
+                    });
+                }
+            });
+        }); //getConnection
+    };
     return UserModule;
 })(utils.BaseModule);
 

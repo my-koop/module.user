@@ -8,21 +8,23 @@
 declare module mkuser {
 
   export interface UserProfile {
-    email    : string;
-    firstname: string;
-    lastname : string;
-    birthdate?: string;
-    phone    ?: string;
-    origin   ?: string;
-    usageFrequency?: string;
-    usageNote?: string;
-    referral?: string;
+    email          ?: string;
+    firstname      ?: string;
+    lastname       ?: string;
+    birthdate      ?: Date;
+    phone          ?: string;
+    origin         ?: string;
+    usageFrequency ?: string;
+    usageNote      ?: string;
+    referral       ?: string;
+    referralSpecify?: string;
   }
 
   export interface Module extends mykoop.IModule {
     tryLogin(loginInfo: UserInterfaces.TryLogin, callback: (err: Error, result: boolean) => void): void;
     getProfile(id: number, callback: (err: Error, result: UserProfile) => void): void;
     registerNewUser(profile: UserInterfaces.RegisterNewUser, callback: (err: Error, result: boolean) => void ) : void;
+    updateProfile(id:number, profile: mkuser.UserProfile, callback: (err: Error, result: boolean) => void ) : void;
   }
 
 }
