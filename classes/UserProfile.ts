@@ -8,6 +8,7 @@ class UserProfile implements mkuser.UserProfile {
     "phone",
     "origin",
     "referral",
+    "referralSpecify",
     "usageFrequency",
     "usageNote"
   ];
@@ -19,6 +20,7 @@ class UserProfile implements mkuser.UserProfile {
   public phone          : string;
   public origin         : string;
   public referral       : string;
+  public referralSpecify: string;
   public usageFrequency : string;
   public usageNote      : string;
 
@@ -30,6 +32,7 @@ class UserProfile implements mkuser.UserProfile {
     this.phone          = userRow.phone,
     this.origin         = userRow.origin,
     this.referral       = userRow.referral,
+    this.referralSpecify = userRow.referralSpecify,
     this.usageFrequency = userRow.usageFrequency,
     this.usageNote      = userRow.usageNote
   }

@@ -8,15 +8,16 @@
 declare module mkuser {
 
   export interface UserProfile {
-    email    : string;
-    firstname: string;
-    lastname : string;
-    birthdate?: Date;
-    phone    ?: string;
-    origin   ?: string;
-    usageFrequency?: string;
-    usageNote?: string;
-    referral?: string;
+    email          ?: string;
+    firstname      ?: string;
+    lastname       ?: string;
+    birthdate      ?: Date;
+    phone          ?: string;
+    origin         ?: string;
+    usageFrequency ?: string;
+    usageNote      ?: string;
+    referral       ?: string;
+    referralSpecify?: string;
   }
 
   export interface Module extends mykoop.IModule {
