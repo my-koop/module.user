@@ -1,8 +1,8 @@
 
 var endpoints = {
   user: {
-    tryLogin: {
-      path: "/user/tryLogin/",
+    login: {
+      path: "/user/login",
       method: "post"
     },
     getProfile: {
@@ -10,7 +10,7 @@ var endpoints = {
       method: "get"
     },
     register: {
-      path: "/user/register/",
+      path: "/user/register",
       method: "post"
     },
     updateProfile: {
