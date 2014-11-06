@@ -12,15 +12,16 @@ var onLoginSuccess = function(){
   console.log("success");
 };
 
-var LoginBody   = <MKLoginBox
-                    state={loginState}
-                    saveStateCallback={saveLoginState}
-                    onLoginSuccess={onLoginSuccess}
-                  />
 var LoginTitle  = "Please Sign In";
 
 var LoginModal = React.createClass({
   render: function () {
+    var LoginBody = <MKLoginBox
+                    state={loginState}
+                    saveStateCallback={saveLoginState}
+                    onLoginSuccess={this.props.onRequestHide}
+                  />
+
     return this.transferPropsTo(
       <MKAbstractModal
         title={LoginTitle}

@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/my-koop/module.user",
   "dependencies": {
+    "async": "^0.9.0",
     "mykoop-logger": "git://github.com/my-koop/module.logger",
     "mykoop-utils": "git://github.com/my-koop/module.utils#beta",
     "pwd": "0.0.4"

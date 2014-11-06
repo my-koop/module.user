@@ -3,11 +3,15 @@ var PropTypes = React.PropTypes;
 var BSInput = require("react-bootstrap/Input");
 var BSButton = require("react-bootstrap/Button");
 var BSButtonGroup = require("react-bootstrap/ButtonGroup");
-var BSAlert = require("react-bootstrap/Alert");
+var MKAlert = require("mykoop-core/components/Alert");
+
 var ajax = require("ajax");
-var actions  = require("actions");
+var actions = require("actions");
+var localSession = require("session").local;
 var Router = require("react-router");
 var routeData = require("dynamic-metadata").routes;
+
+var __ = require("language").__;
 
 var LoginBox = React.createClass({
 
@@ -48,8 +52,8 @@ var LoginBox = React.createClass({
     }
   },
 
-
   basicFormValidation: function(){
+    //FIXME: Remove this method.
     var isValid = true;
     if(!this.state.email){
       this.setState({
@@ -83,32 +87,48 @@ var LoginBox = React.createClass({
     }
     //form validation before submit;
     var self = this;
-    actions.user.tryLogin(
+    actions.user.login(
       {
         data: {
           email: self.state.email,
           password: self.state.password
         }
       },
-      function (err, res) {
-        if(res.success && err === null){
-          self.setState({
-            errorMessage: "You logged in! Redirecting to homepage.",
-            emailFieldState: 1,
-            passwordFieldState: 1
-          },function(err,res) {
-            setTimeout( function(){
-              Router.transitionTo(routeData.homepage.name);
-            },2000)
+      function (err, userInfo) {
+        if (err) {
+          var errorMessage;
+
+          if (err.validation) {
+            //TODO.
+          } else {
+            errorMessage = __("errors::error", {context: err.context});
           }
-          );
-        } else {
+
           self.setState({
-            errorMessage: "The information did not match any user.",
+            errorMessage: errorMessage,
+            successMessage: null,
             emailFieldState: 2,
             passwordFieldState: 2
           });
+          return;
         }
+
+        self.setState({
+          successMessage: __("user::loggedin"),
+          errorMessage: null,
+          emailFieldState: 1,
+          passwordFieldState: 1
+        },function(err, res) {
+          setTimeout(function() {
+            if (self.props.onLoginSuccess) {
+              self.props.onLoginSuccess();
+            }
+
+            Router.transitionTo(routeData.public.name);
+          }, 2000);
+        });
+
+        localSession.user = userInfo;
       }
     );
 
@@ -129,11 +149,12 @@ var LoginBox = React.createClass({
   render: function() {
     return (
       <div>
-        {this.state.errorMessage ?
-          <BSAlert bsStyle="warning">
-            {this.state.errorMessage}
-          </BSAlert>
-        : null}
+        <MKAlert bsStyle="danger" permanent>
+          {this.state.errorMessage}
+        </MKAlert>
+        <MKAlert bsStyle="success">
+          {this.state.successMessage}
+        </MKAlert>
         <form onSubmit={this.onSubmit}>
           <BSInput
             type="email"

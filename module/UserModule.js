@@ -4,12 +4,17 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+var async = require("async");
+
 var controllerList = require("../controllers/index");
 var UserProfile = require("../classes/UserProfile");
 var utils = require("mykoop-utils");
-var nodepwd = require('pwd');
+var nodepwd = require("pwd");
 var getLogger = require("mykoop-logger");
 var logger = getLogger(module);
+
+var DatabaseError = utils.errors.DatabaseError;
+var AuthenticationError = require("../classes/AuthenticationError");
 
 var UserModule = (function (_super) {
     __extends(UserModule, _super);
@@ -25,41 +30,63 @@ var UserModule = (function (_super) {
         this.db = db;
     };
 
-    UserModule.prototype.tryLogin = function (loginInfo, callback) {
+    UserModule.prototype.login = function (loginInfo, callback) {
         //Get salt and passwordHash with email
         this.db.getConnection(function (err, connection, cleanup) {
             if (err) {
-                return callback(err, null);
+                //FIXME: Remove error description after
+                // https://github.com/my-koop/service.website/issues/240
+                return callback(new DatabaseError(err, "Database error."));
             }
-            var tableRows = ['id', 'salt', 'pwdhash'];
-            var email = loginInfo.email;
 
-            var query = connection.query("SELECT ?? FROM user WHERE email = ? ", [tableRows, email], function (err, rows) {
-                cleanup();
-                if (err) {
-                    return callback(err, null);
-                }
-                if (rows.length !== 1) {
-                    //Email is not associated to a user
-                    return callback(null, false);
-                }
-                var salt = rows[0].salt;
-                var storedHash = rows[0].pwdhash;
-                var enteredPassword = loginInfo.password;
+            var userInfo;
+            async.waterfall([
+                function makeQuery(next) {
+                    connection.query("SELECT ?? FROM user WHERE email = ? ", [
+                        ["id", "salt", "pwdhash"],
+                        loginInfo.email
+                    ], function (err, rows) {
+                        if (err) {
+                            //FIXME: Remove error description after
+                            // https://github.com/my-koop/service.website/issues/240
+                            return next(new DatabaseError(err, "Database error."));
+                        }
 
-                //Hash password with salt
-                nodepwd.hash(enteredPassword, salt, function (err, hash) {
-                    //compare hashed password with db
-                    if (hash === storedHash) {
-                        //Match
-                        //FIX ME: Store id in express session
-                        // XX = rows[0].id
-                        callback(null, true);
-                    } else {
-                        //Incorrect password
-                        callback(null, false);
+                        next(null, rows);
+                    });
+                },
+                function hasEmail(rows, next) {
+                    if (rows.length !== 1) {
+                        //Email is not associated to a user.
+                        return next(new AuthenticationError(null, "Couldn't find user email."));
                     }
-                }); //hash
+
+                    userInfo = rows[0];
+
+                    next();
+                },
+                function buildHash(next) {
+                    nodepwd.hash(loginInfo.password, userInfo.salt, next);
+                },
+                function compareHashes(hash, next) {
+                    if (hash !== userInfo.pwdhash) {
+                        //Incorrect password
+                        return next(new AuthenticationError(null, "Password doesn't match."));
+                    }
+
+                    next();
+                }
+            ], function result(err) {
+                cleanup();
+
+                if (err) {
+                    return callback(err);
+                }
+
+                callback(null, {
+                    id: userInfo.id,
+                    email: loginInfo.email
+                });
             });
         }); //getConnection
     };
