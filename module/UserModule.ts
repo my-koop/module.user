@@ -184,10 +184,10 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
             function(err, rows) {
               var myError = null;
               if(err) {
-                myError = new DatabaseError(err,"SELECT salt and pwdhash caused an error.");
+                myError = new utils.errors.DatabaseError(err, "SELECT salt and pwdhash caused an error.");
               }
               if (rows.length !== 1) {
-                myError = new ApplicationError(null , "Select did not return a single row");
+                myError = new utils.errors.ApplicationError(null, {} , "Select returned more than a single row");
               }
               callback(myError, rows[0].pwdhash, rows[0].salt);
             }
@@ -197,10 +197,10 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           nodepwd.hash(passwords.oldPassword, userSalt, function(err, hash){
             var myError = null;
             if(err){
-              myError = new DatabaseError(err,"Error while hasing current password.");
+              myError = new utils.errors.DatabaseError(err, "Error while hasing current password.");
             }
             if(hash !== userHash){
-              myError = new ApplicationError(null,{ },"Provided password doesn't match current one");
+              myError = new utils.errors.ApplicationError(null, {}, "Provided password doesn't match current one");
             }
             callback(myError,userSalt);
           });
@@ -209,7 +209,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           nodepwd.hash(passwords.newPassword, userSalt, function(err, newHash) {
             var myError = null;
             if(err){
-              myError = new ApplicationError(err,"Error hashing new password");
+              myError = new utils.errors.ApplicationError(err, {}, "Error hashing new password");
             }
             callback(myError, newHash);
           });
@@ -221,11 +221,11 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
             function(err, rows) {
               var myError = null;
               if(err) {
-                myError = new DatabaseError(err,"Databse error while updating user password");
+                myError = new utils.errors.DatabaseError(err, "Databse error while updating user password");
               }
               logger.debug(rows);
               if( rows.affectedRows !== 1) {
-                myError =  new ApplicationError(null,"Update request did not affect change to user row");
+                myError =  new utils.errors.ApplicationError(null, {}, "Update request did not affect change to user row");
               }
               callback(myError);
             }
