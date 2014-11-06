@@ -58,16 +58,15 @@ var PasswordChangeForm = React.createClass({
         }
       }, function(err, res) {
            if(err) {
-            console.log(err);
-            return;
+             console.error(err);
+             return;
            }
-           if( !err && res.updateSuccess === false){
+           if(!res.updateSuccess){
              formState.message = "Current password is incorrect."
              formState.hasConfirmPwdError = false;
              formState.hasNewPwdError = false;
              formState.hasMessageError = true;
-           }
-           if(res.updateSuccess){
+           } else {
              formState.message = "Password updated successfully"
              formState.hasMessageError = false;
              formState.hasConfirmPwdError = false;

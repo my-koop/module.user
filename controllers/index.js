@@ -1,4 +1,5 @@
 var metaData = require("../metadata/index");
+var validation = require("../lib/validation/index");
 
 // Controllers.
 var tryLogin = require("./tryLogin");
@@ -14,6 +15,9 @@ function attachControllers(userModuleControllers) {
     userModuleControllers.attach({ endPoint: endPoints.user.getProfile }, getProfile);
     userModuleControllers.attach({ endPoint: endPoints.user.register }, registerUser);
     userModuleControllers.attach({ endPoint: endPoints.user.updateProfile }, updateProfile);
-    userModuleControllers.attach({ endPoint: endPoints.user.updatePassword }, updatePassword);
+    userModuleControllers.attach({
+        endPoint: endPoints.user.updatePassword,
+        validation: validation.validateUpdatePassword
+    }, updatePassword);
 }
 exports.attachControllers = attachControllers;

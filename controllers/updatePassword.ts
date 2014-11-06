@@ -13,14 +13,12 @@ function updatePassword(req: express.Request, res: express.Response) {
       oldPassword:     req.param("oldPassword")
   };
   var self: mkuser.Module = this;
-  self.updatePassword(id,passwords, function(err, success) {
+  self.updatePassword(id,passwords, function(err) {
     if (err) {
-      return res.status(500).send(err.toString());
+      return res.error(err);
     }
 
-    res.send({
-      updateSuccess: success
-    });
+    res.end();
   });
 };
 

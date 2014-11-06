@@ -2,7 +2,8 @@ import express = require("express");
 import controllerList = require("../controllers/index");
 import UserProfile = require("../classes/UserProfile");
 import utils = require("mykoop-utils");
-var nodepwd = require('pwd');
+var async = require("async");
+var nodepwd = require("pwd");
 import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
 
@@ -168,67 +169,72 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
       );//test email unique query
     });//getConnection
   }
-  updatePassword(id:number, passwords: UserInterfaces.updatePassword, callback: (err: Error, result: boolean) => void) {
+  updatePassword(id:number, passwords: UserInterfaces.updatePassword, callback: (err: Error) => void) {
     var self: mkuser.Module = this;
-    //basic validation
-    if(passwords.newPassword !== passwords.confNewPassword
-      || passwords.newPassword  === null
-      || passwords.confNewPassword === null
-      || passwords.oldPassword === null){
-      return callback(new Error('Missing parameters in request'),null);
-    }
-      //get salt and password hash with ID
+    //get salt and password hash with ID
     this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
-        return callback(err, null);
+        return callback(err);
       }
-      var query = connection.query(
-        "SELECT ?? FROM user  WHERE id = ? ",
-        [['salt','pwdhash'],id],
-        function(err, rows) {
-          if (err || !rows[0]) {
-            cleanup();
-            return callback(err, false);
-          }
-          var oldHash = rows[0].pwdhash;
-          var userSalt = rows[0].salt;
-          //Hash old password and compare with stored Password
-          nodepwd.hash(passwords.oldPassword, userSalt, function(err, hash){
-            if(err){
-              cleanup();
-              logger.verbose("Hashing error");
-              return callback(err,null);
+      async.waterfall([
+        function(callback) {
+          var query = connection.query(
+            "SELECT ?? FROM user  WHERE id = ? ",
+            [["salt", "pwdhash"], id],
+            function(err, rows) {
+              var myError = null;
+              if(err) {
+                myError = new DatabaseError(err,"SELECT salt and pwdhash caused an error.");
+              }
+              if (rows.length !== 1) {
+                myError = new ApplicationError(null , "Select did not return a single row");
+              }
+              callback(myError, rows[0].pwdhash, rows[0].salt);
             }
-            if(hash !== oldHash){
-              //No match
-              cleanup();
-              return callback(null,false);
-            } else {
-              //Match
-              //Hash new password using salt
-              nodepwd.hash(passwords.newPassword, userSalt, function(err, newHash) {
-                if(err){
-                  cleanup();
-                  return callback(err,null);
-                }
-                var query = connection.query(
-                  "UPDATE user SET pwdhash = ? WHERE id = ? ",
-                  [newHash,id],
-                  function(err, rows) {
-                    cleanup();
-                    if(err) {
-                      return callback(err,null);
-                    }
-                    logger.verbose(rows);
-                    return callback(null, rows.affectedRows === 1);
-                  }
-                );
-
-              });// hash new password
-            }// match
+          );
+        },
+        function(userHash, userSalt, callback){
+          nodepwd.hash(passwords.oldPassword, userSalt, function(err, hash){
+            var myError = null;
+            if(err){
+              myError = new DatabaseError(err,"Error while hasing current password.");
+            }
+            if(hash !== userHash){
+              myError = new ApplicationError(null,{ },"Provided password doesn't match current one");
+            }
+            callback(myError,userSalt);
           });
-        }//function
-      ); // Select query
+        },
+        function(userSalt, callback) {
+          nodepwd.hash(passwords.newPassword, userSalt, function(err, newHash) {
+            var myError = null;
+            if(err){
+              myError = new ApplicationError(err,"Error hashing new password");
+            }
+            callback(myError, newHash);
+          });
+        },
+        function(newHash, callback) {
+          var query = connection.query(
+            "UPDATE user SET pwdhash = ? WHERE id = ? ",
+            [newHash, id],
+            function(err, rows) {
+              var myError = null;
+              if(err) {
+                myError = new DatabaseError(err,"Databse error while updating user password");
+              }
+              logger.debug(rows);
+              if( rows.affectedRows !== 1) {
+                myError =  new ApplicationError(null,"Update request did not affect change to user row");
+              }
+              callback(myError);
+            }
+          );
+        }
+      ], function(err) {
+          cleanup();
+          callback(err);
+      });
     });//getConnection
   }// updatePassword
 }//class

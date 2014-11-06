@@ -18,7 +18,11 @@ var endpoints = {
         },
         updatePassword: {
             path: "/user/updatePassword/:id",
-            method: "put"
+            method: "put",
+            validation: {
+                resolve: "validation",
+                value: "validateUpdatePassword"
+            }
         }
     }
 };
