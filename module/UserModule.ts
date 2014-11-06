@@ -197,12 +197,12 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           nodepwd.hash(passwords.oldPassword, userSalt, function(err, hash){
             var myError = null;
             if(err){
-              myError = new utils.errors.DatabaseError(err, "Error while hasing current password.");
+              myError = new utils.errors.ApplicationError(err, "Error while hasing current password.");
             }
             if(hash !== userHash){
               myError = new utils.errors.ApplicationError(null, {}, "Provided password doesn't match current one");
             }
-            callback(myError,userSalt);
+            callback(myError, userSalt);
           });
         },
         function(userSalt, callback) {
