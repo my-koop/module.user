@@ -45,9 +45,17 @@ var UserModule = (function (_super) {
                     connection.query("SELECT ?? FROM user WHERE email = ? ", [
                         ["id", "salt", "pwdhash"],
                         loginInfo.email
-                    ], next);
+                    ], function (err, rows) {
+                        if (err) {
+                            //FIXME: Remove error description after
+                            // https://github.com/my-koop/service.website/issues/240
+                            return next(new DatabaseError(err, "Database error."));
+                        }
+
+                        next(null, rows);
+                    });
                 },
-                function hasEmail(rows, fields, next) {
+                function hasEmail(rows, next) {
                     if (rows.length !== 1) {
                         //Email is not associated to a user.
                         return next(new AuthenticationError(null, "Couldn't find user email."));
