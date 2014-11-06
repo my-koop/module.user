@@ -79,7 +79,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
 
         callback(null, {
           id: userInfo.id,
-          email: userInfo.email
+          email: loginInfo.email
         });
       });
     });//getConnection

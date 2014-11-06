@@ -75,7 +75,7 @@ var UserModule = (function (_super) {
 
                 callback(null, {
                     id: userInfo.id,
-                    email: userInfo.email
+                    email: loginInfo.email
                 });
             });
         }); //getConnection
