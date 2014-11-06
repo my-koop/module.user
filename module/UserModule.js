@@ -12,6 +12,8 @@ var utils = require("mykoop-utils");
 var nodepwd = require("pwd");
 var getLogger = require("mykoop-logger");
 var logger = getLogger(module);
+
+var DatabaseError = utils.errors.DatabaseError;
 var AuthenticationError = require("../classes/AuthenticationError");
 
 var UserModule = (function (_super) {
@@ -32,12 +34,12 @@ var UserModule = (function (_super) {
         //Get salt and passwordHash with email
         this.db.getConnection(function (err, connection, cleanup) {
             if (err) {
-                return callback(err, null);
+                //FIXME: Remove error description after
+                // https://github.com/my-koop/service.website/issues/240
+                return callback(new DatabaseError(err, "Database error."));
             }
 
             var userInfo;
-            var authError = new AuthenticationError(null, "Unable to authenticate.");
-
             async.waterfall([
                 function makeQuery(next) {
                     connection.query("SELECT ?? FROM user WHERE email = ? ", [
@@ -48,7 +50,7 @@ var UserModule = (function (_super) {
                 function hasEmail(rows, fields, next) {
                     if (rows.length !== 1) {
                         //Email is not associated to a user.
-                        return next(authError);
+                        return next(new AuthenticationError(null, "Couldn't find user email."));
                     }
 
                     userInfo = rows[0];
@@ -61,7 +63,7 @@ var UserModule = (function (_super) {
                 function compareHashes(hash, next) {
                     if (hash !== userInfo.pwdhash) {
                         //Incorrect password
-                        return next(authError);
+                        return next(new AuthenticationError(null, "Password doesn't match."));
                     }
 
                     next();

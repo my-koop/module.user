@@ -6,6 +6,8 @@ import utils = require("mykoop-utils");
 var nodepwd = require("pwd");
 import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
+
+var DatabaseError = utils.errors.DatabaseError;
 import AuthenticationError = require("../classes/AuthenticationError");
 
 class UserModule extends utils.BaseModule implements mkuser.Module {
@@ -27,12 +29,12 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     //Get salt and passwordHash with email
     this.db.getConnection(function(err, connection, cleanup) {
       if (err) {
-        return callback(err, null);
+        //FIXME: Remove error description after
+        // https://github.com/my-koop/service.website/issues/240
+        return callback(new DatabaseError(err, "Database error."));
       }
 
       var userInfo;
-      var authError = new AuthenticationError(null, "Unable to authenticate.");
-
       async.waterfall([
         function makeQuery(next) {
           connection.query(
@@ -47,7 +49,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         function hasEmail(rows, fields, next) {
           if(rows.length !== 1){
             //Email is not associated to a user.
-            return next(authError);
+            return next(new AuthenticationError(null, "Couldn't find user email."));
           }
 
           userInfo = rows[0];
@@ -64,7 +66,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         function compareHashes(hash, next) {
           if(hash !== userInfo.pwdhash) {
             //Incorrect password
-            return next(authError);
+            return next(new AuthenticationError(null, "Password doesn't match."));
           }
 
           next();

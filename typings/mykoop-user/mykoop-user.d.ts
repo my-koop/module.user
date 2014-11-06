@@ -29,7 +29,7 @@ declare module mkuser {
   export interface Module extends mykoop.IModule {
     login(
       loginInfo: UserInterfaces.LoginRequestData,
-      callback: (err: Error, result: LoginResponse
+      callback: (err: Error, result?: LoginResponse
     ) => void): void;
     getProfile(id: number, callback: (err: Error, result: UserProfile) => void): void;
     registerNewUser(profile: UserInterfaces.RegisterNewUser, callback: (err: Error, result: boolean) => void ) : void;
