@@ -1,10 +1,12 @@
+import async = require("async");
 import express = require("express");
 import controllerList = require("../controllers/index");
 import UserProfile = require("../classes/UserProfile");
 import utils = require("mykoop-utils");
-var nodepwd = require('pwd');
+var nodepwd = require("pwd");
 import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
+import AuthenticationError = require("../classes/AuthenticationError");
 
 class UserModule extends utils.BaseModule implements mkuser.Module {
   db: mkdatabase.Module;
@@ -18,48 +20,68 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     this.db = db;
   }
 
-  tryLogin(loginInfo : UserInterfaces.TryLogin, callback: (err: Error, result: boolean) => void) {
+  login(
+    loginInfo : UserInterfaces.LoginRequestData,
+    callback: (err: Error, result?: mkuser.LoginResponse) => void
+  ) {
     //Get salt and passwordHash with email
     this.db.getConnection(function(err, connection, cleanup) {
-      if(err) {
+      if (err) {
         return callback(err, null);
       }
-      var tableRows = ['id','salt','pwdhash'];
-      var email = loginInfo.email;
 
-      var query = connection.query(
-        "SELECT ?? FROM user WHERE email = ? ",
-        [tableRows,email],
-        function(err, rows) {
-          cleanup();
-          if (err) {
-            return callback(err, null);
-          }
+      var userInfo;
+      var authError = new AuthenticationError(null, "Unable to authenticate.");
+
+      async.waterfall([
+        function makeQuery(next) {
+          connection.query(
+            "SELECT ?? FROM user WHERE email = ? ",
+            [
+              ["id", "salt", "pwdhash"],
+              loginInfo.email
+            ],
+            next
+          );
+        },
+        function hasEmail(rows, fields, next) {
           if(rows.length !== 1){
-            //Email is not associated to a user
-            return callback(null,false);
+            //Email is not associated to a user.
+            return next(authError);
           }
-          var salt = rows[0].salt;
-          var storedHash = rows[0].pwdhash;
-          var enteredPassword = loginInfo.password;
 
-          //Hash password with salt
-          nodepwd.hash(enteredPassword, salt, function(err,hash){
-            //compare hashed password with db
-            if(hash === storedHash) {
-              //Match
-              //FIX ME: Store id in express session
-              // XX = rows[0].id
-              callback(null,true);
-            } else {
-              //Incorrect password
-              callback(null,false);
-            }
+          userInfo = rows[0];
 
+          next();
+        },
+        function buildHash(next) {
+          nodepwd.hash(
+            loginInfo.password,
+            userInfo.salt,
+            next
+          );
+        },
+        function compareHashes(hash, next) {
+          if(hash !== userInfo.pwdhash) {
+            //Incorrect password
+            return next(authError);
+          }
 
-          });//hash
-        }//anonymous function
-      );//query
+          next();
+        }
+      ],
+      function result(err) {
+        cleanup();
+
+        if (err) {
+          return callback(err);
+        }
+
+        callback(null, {
+          id: userInfo.id,
+          email: userInfo.email
+        });
+      });
     });//getConnection
   }//tryLogin
 

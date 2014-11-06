@@ -7,6 +7,15 @@
   "installed": {
     "node/node.d.ts": {
       "commit": "bba33bcb0b363ae41db8517a09d1a4d07828616b"
+    },
+    "express-session/express-session.d.ts": {
+      "commit": "b9b6d6b3d5b69349c014f564895cdf6d585ae09b"
+    },
+    "express/express.d.ts": {
+      "commit": "b9b6d6b3d5b69349c014f564895cdf6d585ae09b"
+    },
+    "async/async.d.ts": {
+      "commit": "b9b6d6b3d5b69349c014f564895cdf6d585ae09b"
     }
   }
 }

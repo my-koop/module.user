@@ -1,7 +1,7 @@
 import metaData = require("../metadata/index");
 
 // Controllers.
-import tryLogin = require("./tryLogin");
+import login = require("./login");
 import getProfile = require("./getProfile");
 import registerUser = require("./registerUser");
 import updateProfile = require("./updateProfile");
@@ -10,8 +10,8 @@ var endPoints = metaData.endpoints;
 
 export function attachControllers(userModuleControllers) {
   userModuleControllers.attach(
-    {endPoint: endPoints.user.tryLogin},
-    tryLogin
+    {endPoint: endPoints.user.login},
+    login
   );
   userModuleControllers.attach(
     {endPoint: endPoints.user.getProfile},

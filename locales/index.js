@@ -1,2 +1,4 @@
-exports.en = require("./en/index");
-exports.fr = require("./fr/index");
+module.exports = {
+  en: require("./en"),
+  fr: require("./fr")
+};
