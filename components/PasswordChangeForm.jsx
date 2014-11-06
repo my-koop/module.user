@@ -12,7 +12,8 @@ var PasswordChangeForm = React.createClass({
       message: null,
       hasMessageError: false,
       hasNewPwdError: false,
-      hasConfirmPwdError: false
+      hasConfirmPwdError: false,
+      hasOldPwdError: false
     };
   },
 
@@ -21,7 +22,8 @@ var PasswordChangeForm = React.createClass({
       message: null,
       hasMessageError: false,
       hasNewPwdError: false,
-      hasConfirmPwdError: false
+      hasConfirmPwdError: false,
+      hasOldPwdError: false
     };
 
     if(error){
@@ -39,18 +41,19 @@ var PasswordChangeForm = React.createClass({
             && error.validation.newPassword
             && error.validation.confNewPassword) {
            formState.message = "All fields must be filled";
+           formState.hasOldPwdError = true;
+           formState.hasNewPwdError = true;
+           formState.hasConfirmPwdError = true;
          }
       } else if (error.context === "application") {
         formState.message = "Current password is incorrect.";
+        formState.hasOldPwdError = true;
       } else {
         formState.message = "Unable to update password.";
       }
       formState.hasMessageError = true;
     } else {
       formState.message = "Password updated successfully"
-      formState.hasMessageError = false;
-      formState.hasConfirmPwdError = false;
-      formState.hasNewPwdError = false;
     }
     this.setState(formState);
   },
@@ -76,6 +79,10 @@ var PasswordChangeForm = React.createClass({
     return (this.state.hasMessageError && "danger") || "success";
   },
 
+  getOldPwdStyle: function(){
+    return (this.state.hasOldPwdError && "error") || null;
+  },
+
   getNewPwdStyle: function(){
     return (this.state.hasNewPwdError && "error") || null;
   },
@@ -96,6 +103,7 @@ var PasswordChangeForm = React.createClass({
           <BSInput
             type="password"
             label="Old Password"
+            bsStyle={this.getOldPwdStyle()}
             valueLink={this.linkState("oldPassword")}
           />
           <BSInput
