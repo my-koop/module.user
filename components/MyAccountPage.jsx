@@ -5,6 +5,7 @@ var BSTabbedArea         = require("react-bootstrap/TabbedArea");
 var BSTabPane            = require("react-bootstrap/TabPane");
 var MKPasswordChangeForm = require("./PasswordChangeForm");
 var MKProfileUpdateForm  = require("./ProfileUpdateForm");
+var __                   = require("language").__;
 
 var MyAccountPage = React.createClass({
 

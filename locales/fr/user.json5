@@ -1,4 +1,10 @@
 {
   "signin": "Veuillez vous connecter",
   "loggedin": "Vous êtes connectés! Vous serez redigirés vers l'accueil.",
+  "field_email" : "Courriel",
+  "field_password" : "Mot de passe",
+  "field_remember_me" : "Se souvenir de mes informations",
+  "field_login_submit": "Se connecter",
+  "button_redirect_regiter" : "Créer votre compte",
+  "button_redirect_lostpwd" : "Oublié votre mot de passe?",
 }

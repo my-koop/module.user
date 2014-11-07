@@ -1,13 +1,13 @@
-﻿var React = require("react");
-var BSPanel = require("react-bootstrap/Panel");
-var BSInput = require("react-bootstrap/Input");
-var BSAlert = require("react-bootstrap/Alert");
-var BSButton = require("react-bootstrap/Button");
+﻿var React       = require("react");
+var BSPanel     = require("react-bootstrap/Panel");
+var BSInput     = require("react-bootstrap/Input");
+var BSAlert     = require("react-bootstrap/Alert");
+var BSButton    = require("react-bootstrap/Button");
 var BSAccordion = require("react-bootstrap/Accordion");
-var Router = require("react-router");
-var routeData = require("dynamic-metadata").routes;
-var __                = require("language").__;
-var actions           = require("actions");
+var Router      = require("react-router");
+var routeData   = require("dynamic-metadata").routes;
+var __          = require("language").__;
+var actions     = require("actions");
 
 var MKConfirmationTrigger = require("mykoop-core/components/ConfirmationTrigger");
 

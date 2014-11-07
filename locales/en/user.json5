@@ -1,4 +1,11 @@
 {
   "signin": "Please sign in",
   "loggedin": "You logged in! Redirecting to homepage.",
+  "field_email" : "E-Mail",
+  "field_password" : "Password",
+  "field_remember_me" : "Remember me",
+  "field_login_submit": "Login",
+  "button_redirect_regiter" : "Create your account",
+  "button_redirect_lostpwd" : "Forgot your password?",
+
 }

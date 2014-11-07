@@ -1,3 +1,5 @@
 {
   "error_authentication": "Unable to authenticate credentials.",
+  "error_authentication_both_fields" : "Both fields must be filled.",
+
 }

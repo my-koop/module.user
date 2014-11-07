@@ -1,9 +1,10 @@
-﻿var React = require("react");
-var BSInput = require("react-bootstrap/Input");
+﻿var React       = require("react");
+var BSInput     = require("react-bootstrap/Input");
 var UserProfile = require("../classes/UserProfile");
-var ajax = require("ajax");
-var actions = require("actions");
-var BSAlert = require("react-bootstrap/Alert");
+var ajax        = require("ajax");
+var actions     = require("actions");
+var BSAlert     = require("react-bootstrap/Alert");
+var __          = require("language").__;
 
 var ProfileUpdateForm = React.createClass({
 

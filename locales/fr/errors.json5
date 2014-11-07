@@ -1,3 +1,4 @@
 {
   "error_authentication": "Données de connexion invalides.",
+  "error_authentication_both_fields" : "Les deux champs doivent être remplies",
 }

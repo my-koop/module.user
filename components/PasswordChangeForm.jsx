@@ -1,7 +1,8 @@
-﻿var React = require("react/addons");
+﻿var React   = require("react/addons");
 var BSInput = require("react-bootstrap/Input");
 var BSAlert = require("react-bootstrap/Alert");
 var actions = require("actions");
+var __      = require("language").__;
 
 var PasswordChangeForm = React.createClass({
 
