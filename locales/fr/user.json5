@@ -9,4 +9,9 @@
   "button_redirect_lostpwd" : "Oublié votre mot de passe?",
   "myaccount_tab_profile" : "Profil",
   "myaccount_tab_password" : "Mot de passe",
+  "update_password_success" : "Votre mot de passe a été changé!",
+  "field_old_password" : "Mot de passe Actuel",
+  "field_new_password" : "Nouveau mot de passe",
+  "field_conf_new_password" : "Confirmation du nouveau mot de passe",
+  "field_update_password_submit" : "Mettre à jour",
 }

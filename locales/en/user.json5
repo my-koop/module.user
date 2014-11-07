@@ -9,4 +9,6 @@
   "button_redirect_lostpwd" : "Forgot your password?",
   "myaccount_tab_profile" : "Profile",
   "myaccount_tab_password" : "Password",
+  "update_password_success" : "Password updated successfully!",
+
 }
