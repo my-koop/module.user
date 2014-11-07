@@ -29,13 +29,14 @@ var LoginBox = React.createClass({
     };
   },
 
-  getInitialState: function(){
+  getInitialState: function() {
+    var state = this.props.state || {};
     return {
-      email: this.props.state.email,
-      password: this.props.state.password,
-      emailFieldState: this.props.state.emailFieldState,
-      passwordFieldState : this.props.state.passwordFieldState,
-      errorMessage: this.props.state.errorMessage
+      email: state.email,
+      password: state.password,
+      emailFieldState: state.emailFieldState,
+      passwordFieldState : state.passwordFieldState,
+      errorMessage: state.errorMessage
     };
   },
 
