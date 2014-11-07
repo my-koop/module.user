@@ -7,4 +7,6 @@
   "field_login_submit": "Se connecter",
   "button_redirect_regiter" : "Créer votre compte",
   "button_redirect_lostpwd" : "Oublié votre mot de passe?",
+  "myaccount_tab_profile" : "Profil",
+  "myaccount_tab_password" : "Mot de passe",
 }
