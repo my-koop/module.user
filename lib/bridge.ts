@@ -1,4 +1,4 @@
-import UserModule = require("./UserModule");
+import UserModule = require("./module");
 import metadata = require("../metadata/index");
 
 class ModuleBridge implements mykoop.IModuleBridge {

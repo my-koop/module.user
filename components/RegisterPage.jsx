@@ -6,8 +6,8 @@ var BSButton = require("react-bootstrap/Button");
 var BSAccordion = require("react-bootstrap/Accordion");
 var Router = require("react-router");
 var routeData = require("dynamic-metadata").routes;
-var __                = require("language").__;
-var actions           = require("actions");
+var __   = require("language").__;
+var actions  = require("actions");
 
 var MKConfirmationTrigger = require("mykoop-core/components/ConfirmationTrigger");
 

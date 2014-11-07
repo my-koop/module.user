@@ -1,5 +1,5 @@
-import metaData = require("../metadata/index");
-import validation = require("../lib/validation/index");
+import metaData = require("../../metadata/index");
+import validation = require("../validation/index");
 
 // Controllers.
 import login = require("./login");

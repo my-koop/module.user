@@ -1,14 +1,14 @@
 import async = require("async");
 import express = require("express");
-import controllerList = require("../controllers/index");
-import UserProfile = require("../classes/UserProfile");
+import controllerList = require("./controllers/index");
+import UserProfile = require("./classes/UserProfile");
 import utils = require("mykoop-utils");
 var nodepwd = require("pwd");
 import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
 
 var DatabaseError = utils.errors.DatabaseError;
-import AuthenticationError = require("../classes/AuthenticationError");
+import AuthenticationError = require("./classes/AuthenticationError");
 
 class UserModule extends utils.BaseModule implements mkuser.Module {
   db: mkdatabase.Module;
