@@ -14,8 +14,8 @@ var MKConfirmationTrigger = require("mykoop-core/components/ConfirmationTrigger"
 // Variables used to traverse panels
 var totalPanels = 3;
 var panelsFirstField = [
-  "email",
-  "age",
+  "firstname",
+  "phone",
   "mailing1"
 ];
 
@@ -158,9 +158,10 @@ var RegisterPage = React.createClass({
           if (err || res.registered !== 1) {
             console.error(err);
             registerSuccess = 0;
+          } else {
+            console.log(res);
+            registerSuccess = 1;
           }
-          console.log(res);
-          registerSuccess = 1;
 
           self.setState({
             success: registerSuccess
@@ -196,6 +197,7 @@ var RegisterPage = React.createClass({
                 label="Firstname"
                 placeholder="Firstname"
                 autoFocus
+                // This must be in the array panelsFirstField
                 ref="firstname"
                 valueLink = {this.makeValueLink("firstname")}
                 required
@@ -241,6 +243,7 @@ var RegisterPage = React.createClass({
                 type="text"
                 label="Phone Number"
                 placeholder="Phone number"
+                // This must be in the array panelsFirstField
                 ref="phone"
                 valueLink = {this.makeValueLink("phone")}
                 onKeyDown={this.checkGoingUpKey}
@@ -323,6 +326,7 @@ var RegisterPage = React.createClass({
           <MKConfirmationTrigger
             message="Are you sure all the information is valid?"
             onYes={this.submitForm()}
+            // This must be in the array panelsFirstField
             ref="confirmationBox"
           />
           <BSInput
