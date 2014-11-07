@@ -94,17 +94,17 @@ var ProfileUpdateForm = React.createClass({
           if(err || !result.updateSuccess){
             console.log(err);
             if(err.message == "Error: Duplicate Email"){
-              self.setMessage("Someone is already using this email :" + profileData.email, isError = true);
+              self.setMessage(__("errors::error_duplicate_email") + profileData.email, isError = true);
               var profile = self.state.profileData;
               self.setState({
                 emailStyle: "warning",
               });
             } else {
-              self.setMessage("Unable to update your profile", isError = true);
+              self.setMessage(__("user:update_profile_failure_message"), isError = true);
             }
           } else {
             //Display Success
-            self.setMessage("Your profile has been updated.",isError = false);
+            self.setMessage(__("user:update_profile_success_message"),isError = false);
             self.setState({
               emailStyle: null
             });
@@ -124,91 +124,98 @@ var ProfileUpdateForm = React.createClass({
           </BSAlert>
         : null}
         <form onSubmit={this.onSubmit}>
+          <BSInput
+            type="email"
+            label={__("user::form_profile_label_email")}
+            placeholder={__("user::form_profile_placeholder_email")}
+            ref="email"
+            autofocus
+            bsStyle={this.state.emailStyle}
+            valueLink = {this.makeValueLink("email")}
+          />
            <BSInput
-              type="email"
-              label="E-Mail"
-              placeholder="E-Mail"
-              ref="email"
-              bsStyle={this.state.emailStyle}
-              valueLink = {this.makeValueLink("email")}
-            />
-           <BSInput
-              type="text"
-              label="Firstname"
-              placeholder="Firstname"
-              autoFocus
-              ref="firstname"
-              valueLink = {this.makeValueLink("firstname")}
-            />
+            type="text"
+            label={__("user::form_profile_label_firstname")}
+            placeholder={__("user::form_profile_placeholder_firstname")}
+            ref="firstname"
+            valueLink = {this.makeValueLink("firstname")}
+          />
+          <BSInput
+            type="text"
+            label={__("user::form_profile_label_lastname")}
+            placeholder={__("user::form_profile_placeholder_lastname")}
+            ref="lastname"
+            valueLink = {this.makeValueLink("lastname")}
+          />
+          <BSInput
+            type="text"
+            label={__("user::form_profile_label_phone")}
+            placeholder={__("user::form_profile_placeholder_phone")}
+            ref="phone"
+            valueLink = {this.makeValueLink("phone")}
+          />
+          <BSInput
+            type="text"
+            label={__("user::form_profile_label_birthdate")}
+            placeholder={__("user::form_profile_placeholder_birthdate")}
+            valueLink = {this.makeValueLink("birthdate")}
+            ref="birthdate"
+          />
+          <BSInput
+            type="select"
+            defaultValue="visit"
+            label={__("user::form_profile_label_visit_select")}
+            valueLink={this.makeValueLink("referral")}
+          >
+            <option value="visit">{__("user::form_profile_select_option_visit")}</option>
+            <option value="friend">{__("user::form_profile_select_option_friend")}</option>
+            <option value="ads">{__("user::form_profile_select_option_ads")}</option>
+            <option value="other">{__("user::form_profile_select_option_other")}</option>
+          </BSInput>
+          {this.state.profileData.referral === "other" ?
             <BSInput
               type="text"
-              label="lastname"
-              placeholder="Last Name"
-              ref="lastname"
-              valueLink = {this.makeValueLink("lastname")}
+              label={__("user::form_profile_label_referralSpecify")}
+              valueLink={this.makeValueLink("referralSpecify")}
             />
-            <BSInput
-              type="text"
-              label="Phone Number"
-              placeholder="Phone number"
-              ref="phone"
-              valueLink = {this.makeValueLink("phone")}
-            />
-            <BSInput
-              type="text"
-              label="Birthdate"
-              placeholder="Birthdate (YYYY/MM/DD)"
-              ref="Birthdate"
-              valueLink = {this.makeValueLink("birthdate")}
-            />
-            <BSInput
-              type="select"
-              defaultValue="visit"
-              label="How did you find us"
-              valueLink={this.makeValueLink("referral")}
-            >
-              <option value="visit">On-Site Visit</option>
-              <option value="friend">Friend referral</option>
-              <option value="ads">Ads</option>
-              <option value="other">Other</option>
-            </BSInput>
-            {this.state.profileData.referral === "other" ?
-              <BSInput
-                type="text"
-                label="Please Specify"
-                valueLink={this.makeValueLink("referralSpecify")}
-              />
-            : null
-            }
-            <BSInput
-              type="select"
-              defaultValue="everyday"
-              label="Bike usage"
-              valueLink = {this.makeValueLink("usageFrequency")}
-            >
-              <option value="everyday">Every Day</option>
-              <option value="fewWeek">Few times a week</option>
-              <option value="fewMonth">Few times a month</option>
-              <option value="fewYear">Few times a year</option>
-              <option value="never">Never</option>
-            </BSInput>
-            <BSInput
-              type="select"
-              defaultValue="udem"
-              label="Where do you come from?"
-              valueLink = {this.makeValueLink("origin")}
-            >
-              <option value="udem">Université de Montréal</option>
-              <option value="brebeuf">College Jean-De-Brébeuf</option>
-              <option value="other">Other</option>
-            </BSInput>
-            <BSInput
-              type="text"
-              label="Why do you use a bike"
-              placeholder="Describe why you mainly use your bike"
-              valueLink = {this.makeValueLink("usageNote")}
-            />
-          <BSInput type="submit" bsStyle="primary" value="Update Profile" />
+          : null
+          }
+          <BSInput
+            type="select"
+            defaultValue="everyday"
+            label={__("user::form_profile_label_usage_select")}
+            ref="usage"
+            valueLink = {this.makeValueLink("usage")}
+          >
+            <option value="everyday">{__("user::form_profile_select_option_everyday")}</option>
+            <option value="fewWeek">{__("user::form_profile_select_option_fewWeek")}</option>
+            <option value="fewMonth">{__("user::form_profile_select_option_fewMonth")}</option>
+            <option value="fewYear">{__("user::form_profile_select_option_fewYear")}</option>
+            <option value="never">{__("user::form_profile_select_option_never")}</option>
+          </BSInput>
+          <BSInput
+            type="select"
+            defaultValue="udem"
+            label={__("user::form_profile_label_origin_select")}
+            ref="origin"
+            valueLink = {this.makeValueLink("origin")}
+          >
+            <option value="udem">{__("user::form_profile_select_option_udem")}</option>
+            <option value="brebeuf">{__("user::form_profile_select_option_brebeuf")}</option>
+            <option value="other">{__("user::form_profile_select_option_other")}</option>
+          </BSInput>
+          <BSInput
+            type="text"
+            label={__("user::form_profile_label_usageNote")}
+            placeholder={__("user::form_profile_placeholder_usageNote")}
+            ref="usageNote"
+            valueLink = {this.makeValueLink("usageNote")}
+          />
+
+          <BSInput
+            type="submit"
+            bsStyle="primary"
+            value={__("user::update_profile_submit_button")} />
         </form>
       </div>
     );

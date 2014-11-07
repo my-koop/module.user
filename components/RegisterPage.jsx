@@ -255,7 +255,7 @@ var RegisterPage = React.createClass({
               <BSInput
                 type="text"
                 label={__("user::form_profile_label_birthdate")}
-                placeholder={__("user::form_profile_placeholder_birthdate")}
+                placeholder={__("user::form_profile_placeholder_bidthdate")}
                 valueLink = {this.makeValueLink("birthdate")}
                 ref="birthdate"
               />
@@ -334,7 +334,7 @@ var RegisterPage = React.createClass({
 
           </BSAccordion>
           <MKConfirmationTrigger
-            message=label={__("user::register_trigger_message")}
+            message={__("user::register_trigger_message")}
             onYes={this.submitForm()}
             // This must be in the array panelsFirstField
             ref="confirmationBox"
