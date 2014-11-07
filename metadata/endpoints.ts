@@ -16,6 +16,14 @@ var endpoints = {
     updateProfile: {
       path: "/user/updateProfile/:id",
       method: "put"
+    },
+    updatePassword: {
+      path: "/user/updatePassword/:id",
+      method: "put",
+      validation: {
+        resolve: "validation",
+        value  : "validateUpdatePassword"
+      }
     }
   }
 };

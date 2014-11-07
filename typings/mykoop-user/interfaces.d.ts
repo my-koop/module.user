@@ -17,4 +17,9 @@ declare module UserInterfaces {
     email: string;
     password: string;
   }
+  export interface updatePassword {
+    oldPassword: string;
+    newPassword: string;
+    confNewPassword: string;
+  }
 }
