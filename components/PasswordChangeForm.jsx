@@ -31,30 +31,30 @@ var PasswordChangeForm = React.createClass({
       console.error(error);
       if(error.context === "validation"){
         if(error.validation.newPassword === "New password must be different from current password"){
-            formState.message = __("errors:validation_new_password_equals_old");
+            formState.message = __("errors::validation_new_password_equals_old");
             formState.hasNewPwdError = true;
          }
          if(error.validation.confNewPassword === "New passwords must match"){
-            formState.message = __("errors:validation_confpassword_mismatch");
+            formState.message = __("errors::validation_confpassword_mismatch");
             formState.hasConfirmPwdError = true;
          }
          if(error.validation.oldPassword
             && error.validation.newPassword
             && error.validation.confNewPassword) {
-           formState.message = __("errors:validation_fill_all");
+           formState.message = __("errors::validation_fill_all");
            formState.hasOldPwdError = true;
            formState.hasNewPwdError = true;
            formState.hasConfirmPwdError = true;
          }
       } else if (error.context === "application") {
-        formState.message = __("errors:validation_wrong_password");
+        formState.message = __("errors::validation_wrong_password");
         formState.hasOldPwdError = true;
       } else {
-        formState.message = __("errors:error_unable_to_update");
+        formState.message = __("errors::error_unable_to_update");
       }
       formState.hasMessageError = true;
     } else {
-      formState.message = __("user:");
+      formState.message = __("user::update_password_success");
     }update_password_success
     this.setState(formState);
   },
