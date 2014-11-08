@@ -255,7 +255,7 @@ var RegisterPage = React.createClass({
               <BSInput
                 type="text"
                 label={__("user::form_profile_label_birthdate")}
-                placeholder={__("user::form_profile_placeholder_bidthdate")}
+                placeholder={__("user::form_profile_placeholder_birthdate")}
                 valueLink = {this.makeValueLink("birthdate")}
                 ref="birthdate"
               />
