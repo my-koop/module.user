@@ -1,14 +1,13 @@
-﻿var React = require("react");
-var BSPanel = require("react-bootstrap/Panel");
-var BSInput = require("react-bootstrap/Input");
-var BSAlert = require("react-bootstrap/Alert");
-var BSButton = require("react-bootstrap/Button");
-var BSAccordion = require("react-bootstrap/Accordion");
-var Router = require("react-router");
-var routeData = require("dynamic-metadata").routes;
-var __                = require("language").__;
-var actions           = require("actions");
-
+﻿var React                 = require("react");
+var BSPanel               = require("react-bootstrap/Panel");
+var BSInput               = require("react-bootstrap/Input");
+var BSAlert               = require("react-bootstrap/Alert");
+var BSButton              = require("react-bootstrap/Button");
+var BSAccordion           = require("react-bootstrap/Accordion");
+var Router                = require("react-router");
+var routeData             = require("dynamic-metadata").routes;
+var __                    = require("language").__;
+var actions               = require("actions");
 var MKConfirmationTrigger = require("mykoop-core/components/ConfirmationTrigger");
 
 // Variables used to traverse panels
@@ -53,8 +52,8 @@ var RegisterPage = React.createClass({
   // Get message to display in the form (null = no message)
   getMessage: function(){
     switch(this.state.success){
-    case 1: return "Successfully created profile, redirecting to homepage";
-    case 2: return "Error(s) in form";
+    case 1: return __("user::register_success_message");
+    case 2: return __("user::register_failure_message");
     default: return null;
     }
   },
@@ -182,11 +181,11 @@ var RegisterPage = React.createClass({
 
   render: function() {
     return (
-      <BSPanel header="Register Form" >
+      <BSPanel header={__("user::register_panel_header")} >
         <form name="registerForm" onSubmit={this.onSubmit}>
           <BSAccordion activeKey={this.state.key} onSelect={this.handleSelect}>
 
-            <BSPanel header="Account Info" key={0}>
+            <BSPanel header={__("user::register_header_acc_info")} key={0}>
               {this.state.success ?
                 <BSAlert bsStyle={this.getMessageStyle()}>
                   {this.getMessage()}
@@ -194,8 +193,8 @@ var RegisterPage = React.createClass({
               : null}
               <BSInput
                 type="text"
-                label="Firstname"
-                placeholder="Firstname"
+                label={__("user::form_profile_label_firstname")}
+                placeholder={__("user::form_profile_placeholder_firstname")}
                 autoFocus
                 // This must be in the array panelsFirstField
                 ref="firstname"
@@ -204,45 +203,50 @@ var RegisterPage = React.createClass({
               />
               <BSInput
                 type="text"
-                label="Lastname"
-                placeholder="Last Name"
+                label={__("user::form_profile_label_lastname")}
+                placeholder={__("user::form_profile_placeholder_lastname")}
                 ref="lastname"
                 valueLink = {this.makeValueLink("lastname")}
                 required
               />
               <BSInput
                 type="email"
-                label="E-Mail"
-                placeholder="E-Mail"
+                label={__("user::form_profile_label_email")}
+                placeholder={__("user::form_profile_placeholder_email")}
                 ref="email"
                 valueLink = {this.makeValueLink("email")}
                 required
               />
               <BSInput
                 type="password"
-                label="Password"
-                placeholder="Password"
+                label={__("user::form_profile_label_password")}
+                placeholder={__("user::form_profile_placeholder_password")}
                 ref="password"
                 valueLink = {this.makeValueLink("password")}
                 required
               />
               <BSInput
                 type="password"
-                label="Confirm Password"
-                placeholder="Confirm Password"
+                label={__("user::form_profile_label_conf_password")}
+                placeholder={__("user::form_profile_placeholder_conf_password")}
                 ref="confpassword"
                 valueLink = {this.makeValueLink("confpassword")}
                 onKeyDown={this.checkGoingDownKey}
                 required
               />
-              <BSButton onClick={this.nextPanel} className="pull-right">Next</BSButton>
+              <BSButton
+                onClick={this.nextPanel}
+                className="pull-right"
+              >
+                {__("user::register_panel_next")}
+              </BSButton>
             </BSPanel>
 
-            <BSPanel header="Optionnal Info" key={1}>
+            <BSPanel header={__("user::register_header_opt_info")} key={1}>
               <BSInput
                 type="text"
-                label="Phone Number"
-                placeholder="Phone number"
+                label={__("user::form_profile_label_phone")}
+                placeholder={__("user::form_profile_placeholder_phone")}
                 // This must be in the array panelsFirstField
                 ref="phone"
                 valueLink = {this.makeValueLink("phone")}
@@ -250,26 +254,26 @@ var RegisterPage = React.createClass({
               />
               <BSInput
                 type="text"
-                label="Birthdate"
-                placeholder="Birthdate (YYYY/MM/DD)"
+                label={__("user::form_profile_label_birthdate")}
+                placeholder={__("user::form_profile_placeholder_birthdate")}
                 valueLink = {this.makeValueLink("birthdate")}
                 ref="birthdate"
               />
               <BSInput
                 type="select"
                 defaultValue="visit"
-                label="How did you find us"
+                label={__("user::form_profile_label_visit_select")}
                 valueLink={this.makeValueLink("referral")}
               >
-                <option value="visit">On-Site Visit</option>
-                <option value="friend">Friend referral</option>
-                <option value="ads">Ads</option>
-                <option value="other">Other</option>
+                <option value="visit">{__("user::form_profile_select_option_visit")}</option>
+                <option value="friend">{__("user::form_profile_select_option_friend")}</option>
+                <option value="ads">{__("user::form_profile_select_option_ads")}</option>
+                <option value="other">{__("user::form_profile_select_option_other")}</option>
               </BSInput>
               {this.state.formData.referral === "other" ?
                 <BSInput
                   type="text"
-                  label="Please Specify"
+                  label={__("user::form_profile_label_referralSpecify")}
                   valueLink={this.makeValueLink("referralSpecify")}
                 />
               : null
@@ -277,54 +281,60 @@ var RegisterPage = React.createClass({
               <BSInput
                 type="select"
                 defaultValue="everyday"
-                label="Bike usage"
+                label={__("user::form_profile_label_usage_select")}
                 ref="usage"
                 valueLink = {this.makeValueLink("usage")}
               >
-                <option value="everyday">Every Day</option>
-                <option value="fewWeek">Few times a week</option>
-                <option value="fewMonth">Few times a month</option>
-                <option value="fewYear">Few times a year</option>
-                <option value="never">Never</option>
+                <option value="everyday">{__("user::form_profile_select_option_everyday")}</option>
+                <option value="fewWeek">{__("user::form_profile_select_option_fewWeek")}</option>
+                <option value="fewMonth">{__("user::form_profile_select_option_fewMonth")}</option>
+                <option value="fewYear">{__("user::form_profile_select_option_fewYear")}</option>
+                <option value="never">{__("user::form_profile_select_option_never")}</option>
               </BSInput>
               <BSInput
                 type="select"
                 defaultValue="udem"
-                label="Your origin"
+                label={__("user::form_profile_label_origin_select")}
                 ref="origin"
                 valueLink = {this.makeValueLink("origin")}
               >
-                <option value="udem">Université de Montréal</option>
-                <option value="brebeuf">College Jean-De-Brébeuf</option>
-                <option value="other">Other</option>
+                <option value="udem">{__("user::form_profile_select_option_udem")}</option>
+                <option value="brebeuf">{__("user::form_profile_select_option_brebeuf")}</option>
+                <option value="other">{__("user::form_profile_select_option_other")}</option>
               </BSInput>
               <BSInput
                 type="text"
-                label="Why do you use a bike"
-                placeholder="Describe why you mainly use your bike"
+                label={__("user::form_profile_label_usageNote")}
+                placeholder={__("user::form_profile_placeholder_usageNote")}
                 ref="usageNote"
                 onKeyDown={this.checkGoingDownKey}
                 valueLink = {this.makeValueLink("usageNote")}
               />
-              <BSButton onClick={this.nextPanel} className="pull-right">Next</BSButton>
+              <BSButton
+                onClick={this.nextPanel}
+                className="pull-right"
+              >
+                {__("user::register_panel_next")}
+              </BSButton>
             </BSPanel>
 
-            <BSPanel header="Subscribe Options" key={2}>
+            <BSPanel header={__("user::register_header_sub_info")} key={2}>
               <BSInput
                 type="checkbox"
-                label="General Mailing List"
+                label={__("user::form_profile_mailing_general")}
                 ref="mailing1"
                 onKeyDown={this.checkGoingUpKey}
               />
               <BSInput
                 type="checkbox"
-                label="Events Mailing List"
+                label={__("user::form_profile_mailing_events")}
+                ref="mailing2"
               />
             </BSPanel>
 
           </BSAccordion>
           <MKConfirmationTrigger
-            message="Are you sure all the information is valid?"
+            message={__("user::register_trigger_message")}
             onYes={this.submitForm()}
             // This must be in the array panelsFirstField
             ref="confirmationBox"
@@ -333,7 +343,7 @@ var RegisterPage = React.createClass({
             type="submit"
             bsStyle="primary"
             bsSize="large"
-            value="Submit"
+            value={__("user::register_submit_button")}
             className="pull-right"
           />
         </form>

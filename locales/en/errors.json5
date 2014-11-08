@@ -1,3 +1,10 @@
 {
   "error_authentication": "Unable to authenticate credentials.",
+  "error_authentication_both_fields" : "Both fields must be filled.",
+  "error_unable_to_update" : "Unable to update password.",
+  "validation_new_password_equals_old" : "New password cannot be the same as the old one",
+  "validation_confpassword_mismatch" : "Password confirmation doesn't match",
+  "validation_fill_all" : "All fields are required",
+  "validation_wrong_password" : "Current password is incorrect.",
+  "error_duplicate_email" : "Someone is already using this email"
 }

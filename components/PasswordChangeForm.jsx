@@ -1,7 +1,8 @@
-﻿var React = require("react/addons");
+﻿var React   = require("react/addons");
 var BSInput = require("react-bootstrap/Input");
 var BSAlert = require("react-bootstrap/Alert");
 var actions = require("actions");
+var __      = require("language").__;
 
 var PasswordChangeForm = React.createClass({
 
@@ -30,30 +31,30 @@ var PasswordChangeForm = React.createClass({
       console.error(error);
       if(error.context === "validation"){
         if(error.validation.newPassword === "New password must be different from current password"){
-            formState.message = "New password cannot be the same as the old one";
+            formState.message = __("errors::validation_new_password_equals_old");
             formState.hasNewPwdError = true;
          }
          if(error.validation.confNewPassword === "New passwords must match"){
-            formState.message = "Password confirmation doesn't match";
+            formState.message = __("errors::validation_confpassword_mismatch");
             formState.hasConfirmPwdError = true;
          }
          if(error.validation.oldPassword
             && error.validation.newPassword
             && error.validation.confNewPassword) {
-           formState.message = "All fields must be filled";
+           formState.message = __("errors::validation_fill_all");
            formState.hasOldPwdError = true;
            formState.hasNewPwdError = true;
            formState.hasConfirmPwdError = true;
          }
       } else if (error.context === "application") {
-        formState.message = "Current password is incorrect.";
+        formState.message = __("errors::validation_wrong_password");
         formState.hasOldPwdError = true;
       } else {
-        formState.message = "Unable to update password.";
+        formState.message = __("errors::error_unable_to_update");
       }
       formState.hasMessageError = true;
     } else {
-      formState.message = "Password updated successfully"
+      formState.message = __("user::update_password_success");
     }
     this.setState(formState);
   },
@@ -102,25 +103,28 @@ var PasswordChangeForm = React.createClass({
         <form onSubmit={this.onSubmit}>
           <BSInput
             type="password"
-            label="Old Password"
+            label={__("user::field_old_password")}
             bsStyle={this.getOldPwdStyle()}
             valueLink={this.linkState("oldPassword")}
           />
           <BSInput
             type="password"
-            label="New Password"
+            label={__("user::field_new_password")}
             valueLink={this.linkState("password")}
             bsStyle={this.getNewPwdStyle()}
             hasFeedback
           />
           <BSInput
             type="password"
-            label="Confirm Password"
+            label={__("user::field_conf_new_password")}
             valueLink={this.linkState("passwordRepeat")}
             bsStyle={this.getConfPwdStyle()}
             hasFeedback
           />
-          <BSInput type="submit" bsStyle="primary" value="Update Password" />
+          <BSInput
+            type="submit"
+            bsStyle="primary"
+            value={__("user::field_update_password_submit")} />
         </form>
       </div>
     );
