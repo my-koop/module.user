@@ -55,7 +55,7 @@ var PasswordChangeForm = React.createClass({
       formState.hasMessageError = true;
     } else {
       formState.message = __("user::update_password_success");
-    }update_password_success
+    }
     this.setState(formState);
   },
 
