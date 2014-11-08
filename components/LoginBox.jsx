@@ -195,7 +195,7 @@ var LoginBox = React.createClass({
             bsStyle="primary"
             onClick={this.redirect.bind(null,"register")}
           >
-            {__("user::button_redirect_regiter")}
+            {__("user::button_redirect_register")}
           </BSButton>
           <BSButton
           block

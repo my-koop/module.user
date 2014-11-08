@@ -100,11 +100,11 @@ var ProfileUpdateForm = React.createClass({
                 emailStyle: "warning",
               });
             } else {
-              self.setMessage(__("user:update_profile_failure_message"), isError = true);
+              self.setMessage(__("user::update_profile_failure_message"), isError = true);
             }
           } else {
             //Display Success
-            self.setMessage(__("user:update_profile_success_message"),isError = false);
+            self.setMessage(__("user::update_profile_success_message"), isError = false);
             self.setState({
               emailStyle: null
             });

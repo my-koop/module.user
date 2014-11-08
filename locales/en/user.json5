@@ -36,7 +36,7 @@
   "form_profile_label_phone" : "Phone number",
   "form_profile_placeholder_phone" : "Phone number",
   "form_profile_label_birthdate" : "Birthdate",
-  "form_profile_placeholder_bidthdate" : "Format (YYYY/MM/DD)",
+  "form_profile_placeholder_birthdate" : "Format (YYYY/MM/DD)",
   "form_profile_label_visit_select" : "How did you find out about us?",
   "form_profile_select_option_visit" : "On-Site visit",
   "form_profile_select_option_friend" : "Friend",

@@ -52,8 +52,8 @@ var RegisterPage = React.createClass({
   // Get message to display in the form (null = no message)
   getMessage: function(){
     switch(this.state.success){
-    case 1: return __("user:register_success_message");
-    case 2: return __("user:register_failure_message");
+    case 1: return __("user::register_success_message");
+    case 2: return __("user::register_failure_message");
     default: return null;
     }
   },
