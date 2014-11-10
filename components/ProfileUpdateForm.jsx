@@ -13,7 +13,7 @@ var ProfileUpdateForm = React.createClass({
     message: React.PropTypes.string,
     messageStyle : React.PropTypes.string,
     emailStyle : React.PropTypes.string,
-    emailCopy: React.PropTypes.string
+    userId : React.PropTypes.number
   },
 
   getInitialState: function() {
@@ -31,7 +31,7 @@ var ProfileUpdateForm = React.createClass({
     actions.user.getProfile(
     {
       data: {
-        id: 2
+        id: self.props.userId
       }
     }, function(err,result){
         if(err) {
@@ -78,7 +78,7 @@ var ProfileUpdateForm = React.createClass({
     actions.user.updateProfile(
       {
         data: {
-          id:              2,
+          id:              self.props.userId,
           email:           profileData.email,
           firstname:       profileData.firstname,
           lastname:        profileData.lastname,
@@ -95,7 +95,6 @@ var ProfileUpdateForm = React.createClass({
             console.log(err);
             if(err.message == "Error: Duplicate Email"){
               self.setMessage(__("errors::error_duplicate_email") + profileData.email, isError = true);
-              var profile = self.state.profileData;
               self.setState({
                 emailStyle: "warning",
               });
