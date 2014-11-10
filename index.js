@@ -1,3 +1,3 @@
 /// <reference path="typings/tsd.d.ts" />
-var index = require("./module/Bridge");
+var index = require("./lib/bridge");
 module.exports = index;
