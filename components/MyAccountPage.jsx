@@ -5,6 +5,7 @@ var BSTabbedArea         = require("react-bootstrap/TabbedArea");
 var BSTabPane            = require("react-bootstrap/TabPane");
 var MKPasswordChangeForm = require("./PasswordChangeForm");
 var MKProfileUpdateForm  = require("./ProfileUpdateForm");
+var __                   = require("language").__;
 
 var MyAccountPage = React.createClass({
 
@@ -12,13 +13,13 @@ var MyAccountPage = React.createClass({
     return (
       <BSCol>
         <BSTabbedArea defaultActiveKey={1}>
-          <BSTabPane key={1} tab="Profile">
+          <BSTabPane key={1} tab={__("user::myaccount_tab_profile")}>
             <BSCol md={4} sm={6}>
               <MKProfileUpdateForm />
             </BSCol>
           </BSTabPane>
 
-          <BSTabPane key={2} tab="Password">
+          <BSTabPane key={2} tab={__("user::myaccount_tab_password")}>
             <BSCol md={4} sm={6}>
               <MKPasswordChangeForm />
             </BSCol>

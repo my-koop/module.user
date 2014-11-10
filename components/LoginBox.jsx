@@ -1,17 +1,15 @@
-var React = require("react/addons");
-var PropTypes = React.PropTypes;
-var BSInput = require("react-bootstrap/Input");
-var BSButton = require("react-bootstrap/Button");
+var React         = require("react/addons");
+var PropTypes     = React.PropTypes;
+var BSInput       = require("react-bootstrap/Input");
+var BSButton      = require("react-bootstrap/Button");
 var BSButtonGroup = require("react-bootstrap/ButtonGroup");
-var MKAlert = require("mykoop-core/components/Alert");
-
-var ajax = require("ajax");
-var actions = require("actions");
-var localSession = require("session").local;
-var Router = require("react-router");
-var routeData = require("dynamic-metadata").routes;
-
-var __ = require("language").__;
+var MKAlert       = require("mykoop-core/components/Alert");
+var ajax          = require("ajax");
+var actions       = require("actions");
+var localSession  = require("session").local;
+var Router        = require("react-router");
+var routeData     = require("dynamic-metadata").routes;
+var __            = require("language").__;
 
 var LoginBox = React.createClass({
 
@@ -59,7 +57,7 @@ var LoginBox = React.createClass({
     if(!this.state.email){
       this.setState({
         emailFieldState: 2,
-        errorMessage: "Both fields must be filled."
+        errorMessage: __("errors::error_authentication_both_fields")
       });
       isValid = false;
     } else {
@@ -70,7 +68,7 @@ var LoginBox = React.createClass({
     if(!this.state.password){
       this.setState({
         passwordFieldState: 2,
-        errorMessage: "Both fields must be filled."
+        errorMessage: __("errors::error_authentication_both_fields")
       });
       isValid = false;
     } else {
@@ -159,8 +157,8 @@ var LoginBox = React.createClass({
         <form onSubmit={this.onSubmit}>
           <BSInput
             type="email"
-            placeholder="EMail"
-            label="E-Mail"
+            placeholder={__("user::field_email")}
+            label={__("user::field_email")}
             labelClassName="sr-only"
             bsStyle={this.getSuccessStyle(this.state.emailFieldState)}
             hasFeedback
@@ -168,15 +166,25 @@ var LoginBox = React.createClass({
           />
           <BSInput
             type="password"
-            placeholder="Password"
-            label="Password"
+            placeholder={__("user::field_password")}
+            label={__("user::field_password")}
             labelClassName="sr-only"
             bsStyle={this.getSuccessStyle(this.state.passwordFieldState)}
             hasFeedback
             valueLink={this.linkState("password")}
           />
-          <BSInput type="checkbox" label="Remember Me" checkedLink={this.linkState("rememberMe")}/>
-          <BSInput block type="submit" bsStyle="success" bsSize="large" value="Login" />
+          <BSInput
+            type="checkbox"
+            label={__("user::field_remember_me")}
+            checkedLink={this.linkState("rememberMe")}
+          />
+          <BSInput
+            block
+            type="submit"
+            bsStyle="success"
+            bsSize="large"
+            value={__("user::field_login_submit")}
+          />
         </form>
         {/*FIXME:: style on the node is to make vertical buttongroup take 100% width
                    currently no known official way to do this*/}
@@ -187,14 +195,14 @@ var LoginBox = React.createClass({
             bsStyle="primary"
             onClick={this.redirect.bind(null,"register")}
           >
-            Create your account
+            {__("user::button_redirect_register")}
           </BSButton>
           <BSButton
           block
           bsStyle="info"
           onclick={this.redirect.bind(null,"forgotPassword")}
           >
-            Forgot your password
+            {__("user::button_redirect_lostpwd")}
           </BSButton>
         </BSButtonGroup>
       </div>
