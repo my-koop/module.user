@@ -22,16 +22,17 @@ var ProfileUpdateForm = React.createClass({
       message: this.props.message,
       messageStyle: this.props.messageStyle,
       emailStyle : this.props.emailStyle,
+      userId : this.props.userId
     }
   },
 
-  componentWillMount: function() {
+  getProfile: function(){
     var self = this;
     //FIX ME: Get ID from SESSION
     actions.user.getProfile(
     {
       data: {
-        id: self.props.userId
+        id: self.state.userId
       }
     }, function(err,result){
         if(err) {
@@ -45,6 +46,19 @@ var ProfileUpdateForm = React.createClass({
         //IE: Format date to YYYY/MM/DD
 
     });
+  },
+
+  componentWillReceiveProps: function(){
+    this.setState({
+      userId: this.props.userId
+    }, function(){
+      this.getProfile();
+    });
+
+  },
+
+  componentWillMount: function() {
+    this.getProfile();
   },
 
   handleFieldChange: function(field, newValue) {
