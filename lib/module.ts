@@ -29,9 +29,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     //Get salt and passwordHash with email
     this.db.getConnection(function(err, connection, cleanup) {
       if (err) {
-        //FIXME: Remove error description after
-        // https://github.com/my-koop/service.website/issues/240
-        return callback(new DatabaseError(err, "Database error."));
+        return callback(new DatabaseError(err));
       }
 
       var userInfo;
@@ -45,9 +43,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
             ],
             function (err, rows) {
               if (err) {
-                //FIXME: Remove error description after
-                // https://github.com/my-koop/service.website/issues/240
-                return next(new DatabaseError(err, "Database error."));
+                return next(new DatabaseError(err));
               }
 
               next(null, rows);
