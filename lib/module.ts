@@ -8,6 +8,7 @@ import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
 
 var DatabaseError = utils.errors.DatabaseError;
+var ApplicationError = utils.errors.ApplicationError;
 import AuthenticationError = require("./classes/AuthenticationError");
 
 class UserModule extends utils.BaseModule implements mkuser.Module {
@@ -264,6 +265,23 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
       });
     });//getConnection
   }// updatePassword
+
+  checkEmailExists(params, callback) {
+    this.db.getConnection(function(err, connection, cleanup) {
+      if(err) {
+        return callback(new DatabaseError(err));
+      }
+      connection.query(
+        "SELECT email FROM user WHERE email = ?",
+        params.email,
+        function(err, result) {
+          cleanup();
+          callback(err && new DatabaseError(err), result.length !== 0);
+        }
+      );
+    });
+  }
+
 }//class
 
 export = UserModule;
