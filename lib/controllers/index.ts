@@ -1,5 +1,9 @@
-import metaData = require("../../metadata/index");
+import endPoints = require("../../metadata/endpoints");
 import validation = require("../validation/index");
+import utils = require("mykoop-utils");
+import assert = require("assert");
+// Assertions
+assert.equal(endPoints.user.emailExists.method, "get");
 
 // Controllers.
 import login = require("./login");
@@ -8,29 +12,37 @@ import registerUser = require("./registerUser");
 import updateProfile = require("./updateProfile");
 import updatePassword = require("./updatePassword");
 
-var endPoints = metaData.endpoints;
-
-export function attachControllers(userModuleControllers) {
-  userModuleControllers.attach(
+export function attachControllers(
+  binder: utils.ModuleControllersBinder<mkuser.Module>
+) {
+  binder.attach(
     {endPoint: endPoints.user.login},
     login
   );
-  userModuleControllers.attach(
+  binder.attach(
     {endPoint: endPoints.user.getProfile},
     getProfile
   );
-  userModuleControllers.attach(
+  binder.attach(
     {endPoint: endPoints.user.register},
     registerUser
   );
-  userModuleControllers.attach(
+  binder.attach(
     {endPoint: endPoints.user.updateProfile},
     updateProfile
   );
-  userModuleControllers.attach({
+  binder.attach({
       endPoint: endPoints.user.updatePassword,
       validation: validation.validateUpdatePassword
     },
     updatePassword
+  )
+  binder.attach(
+    {
+      endPoint: endPoints.user.emailExists
+    },
+    binder.makeSimpleController("checkEmailExists", function(req) {
+      return req.query;
+    })
   )
 }

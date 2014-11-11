@@ -23,6 +23,10 @@ var endpoints = {
                 resolve: "validation",
                 value: "validateUpdatePassword"
             }
+        },
+        emailExists: {
+            path: "/user/email/exists",
+            method: "get"
         }
     }
 };
