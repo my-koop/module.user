@@ -266,17 +266,21 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     });//getConnection
   }// updatePassword
 
-  checkEmailExists(params, callback) {
+  getIdForEmail(params, callback) {
     this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
         return callback(new DatabaseError(err));
       }
       connection.query(
-        "SELECT email FROM user WHERE email = ?",
+        "SELECT id FROM user WHERE email = ?",
         params.email,
         function(err, result) {
           cleanup();
-          callback(err && new DatabaseError(err), result.length !== 0);
+          var id = -1;
+          if(result.length === 1) {
+            id = result[0].id;
+          }
+          callback(err && new DatabaseError(err), id);
         }
       );
     });
