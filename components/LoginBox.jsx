@@ -25,9 +25,9 @@ var LoginBox = React.createClass({
     onLoginSuccess: PropTypes.func,
   },
 
-  getDefaultProps: function(){
+  getDefaultProps: function() {
     return {
-      saveStateCallback:function(){}
+      saveStateCallback:function() {}
     };
   },
 
@@ -42,12 +42,12 @@ var LoginBox = React.createClass({
     };
   },
 
-  componentWillUnmount: function(){
+  componentWillUnmount: function() {
     this.props.saveStateCallback(this.state);
   },
 
-  getSuccessStyle: function(state){
-    switch(state){
+  getSuccessStyle: function(state) {
+    switch(state) {
       case 1: return "success";
       case 2: return "error";
       case 3: return "warning";
@@ -55,37 +55,23 @@ var LoginBox = React.createClass({
     }
   },
 
-  basicFormValidation: function(){
-    //FIXME: Remove this method.
+  basicFormValidation: function() {
+    // FIXME:: replace with reusable validation backend and frontend system
     var isValid = true;
-    if(!this.state.email){
+    if(!this.state.email || !this.state.password) {
       this.setState({
-        emailFieldState: 2,
+        emailFieldState: !this.state.email ? 2 : null,
+        passwordFieldState: !this.state.password ? 2 : null,
         errorMessage: __("errors::error_authentication_both_fields")
       });
       isValid = false;
-    } else {
-      this.setState({
-        emailFieldState: 1
-      });
-    }
-    if(!this.state.password){
-      this.setState({
-        passwordFieldState: 2,
-        errorMessage: __("errors::error_authentication_both_fields")
-      });
-      isValid = false;
-    } else {
-      this.setState({
-        passwordFieldState: 1
-      });
     }
     return isValid;
   },
 
-  onSubmit: function(e){
+  onSubmit: function(e) {
     e.preventDefault();
-    if(!this.basicFormValidation()){
+    if(!this.basicFormValidation()) {
       return;
     }
     //form validation before submit;
@@ -137,9 +123,9 @@ var LoginBox = React.createClass({
     );
 
   },
-  redirect: function(location){
+  redirect: function(location) {
     console.log("redirecting");
-    switch(location){
+    switch(location) {
       case "register":
         Router.transitionTo(routeData.simple.children.register.name);
         break;
