@@ -1,5 +1,31 @@
 var endpoints = {
     user: {
+        current: {
+            updatePassword: {
+                path: "/users/current/password",
+                method: "put",
+                validation: {
+                    resolve: "validation",
+                    value: "validateUpdateUserPassword"
+                }
+            },
+            updateProfile: {
+                path: "/users/current",
+                method: "put"
+            }
+        },
+        updatePassword: {
+            path: "/users/:id/password",
+            method: "put",
+            validation: {
+                resolve: "validation",
+                value: "validateUpdateUserPassword"
+            }
+        },
+        updateProfile: {
+            path: "/users/:id",
+            method: "put"
+        },
         login: {
             path: "/users/login",
             method: "post"
@@ -11,26 +37,6 @@ var endpoints = {
         register: {
             path: "/users",
             method: "post"
-        },
-        updateProfile: {
-            path: "/users/current",
-            method: "put"
-        },
-        updateCurrentUserPassword: {
-            path: "/users/current/password",
-            method: "put",
-            validation: {
-                resolve: "validation",
-                value: "validateUpdateUserPassword"
-            }
-        },
-        updateUserPassword: {
-            path: "/users/:id/password",
-            method: "put",
-            validation: {
-                resolve: "validation",
-                value: "validateUpdateUserPassword"
-            }
         },
         emailExists: {
             path: "/users/email",

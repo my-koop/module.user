@@ -6,6 +6,10 @@ import assert = require("assert");
 // Assertions
 assert.equal(endPoints.user.emailExists.method, "get");
 
+// Helper controllers.
+import attachSessionUserId = require("./attachSessionUserId");
+import attachParamUserId = require("./attachParamUserId");
+
 // Controllers.
 import login = require("./login");
 import getProfile = require("./getProfile");
@@ -29,32 +33,36 @@ export function attachControllers(
     registerUser
   );
   binder.attach(
+    {endPoint: endPoints.user.current.updateProfile},
+    [
+      attachSessionUserId,
+      updateProfile
+    ]
+  );
+  binder.attach(
     {endPoint: endPoints.user.updateProfile},
-    updateProfile
+    [
+      attachParamUserId,
+      updateProfile
+    ]
   );
   binder.attach(
     {
-      endPoint: endPoints.user.updateCurrentUserPassword,
-      validation: validation.validateUpdatePassword
+      endPoint: endPoints.user.current.updatePassword,
+      validation: validation.validateUpdateUserPassword
     },
     [
-      function (req, res, next) {
-        res.locals.userId = req.session.user.id
-        next();
-      },
+      attachSessionUserId,
       updatePassword
     ]
   );
   binder.attach(
     {
-      endPoint: endPoints.user.updateUserPassword,
-      validation: validation.validateUpdatePassword
+      endPoint: endPoints.user.updatePassword,
+      validation: validation.validateUpdateUserPassword
     },
     [
-      function (req, res, next) {
-        res.locals.userId = req.param("id");
-        next();
-      },
+      attachParamUserId,
       updatePassword
     ]
   );

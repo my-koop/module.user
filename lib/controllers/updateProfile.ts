@@ -3,7 +3,7 @@ import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
 
 function updateProfile(req: express.Request, res: express.Response) {
-  var id = req.session.user.id;
+  var id = res.locals.userId;
   var newProfile: mkuser.UserProfile = {
     email          : req.param("email"),
     firstname      : req.param("firstname"),

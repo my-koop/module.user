@@ -68,8 +68,8 @@ var PasswordChangeForm = React.createClass({
     var self = this;
 
     var action = self.props.userId ?
-      actions.user.updateUserPassword
-      : actions.user.updateCurrentUserPassword;
+      actions.user.updatePassword
+      : actions.user.current.updatePassword;
 
     action({
       data: {
