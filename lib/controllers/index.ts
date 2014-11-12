@@ -1,6 +1,7 @@
 import endPoints = require("../../metadata/endpoints");
 import validation = require("../validation/index");
 import utils = require("mykoop-utils");
+import Express = require("express");
 import assert = require("assert");
 // Assertions
 assert.equal(endPoints.user.emailExists.method, "get");
@@ -36,13 +37,24 @@ export function attachControllers(
       validation: validation.validateUpdatePassword
     },
     updatePassword
-  )
+  );
+
   binder.attach(
     {
       endPoint: endPoints.user.emailExists
     },
-    binder.makeSimpleController("checkEmailExists", function(req) {
-      return req.query;
-    })
-  )
+    binder.makeSimpleController(
+      "getIdForEmail",
+      {
+        parseFunc: function(req: Express.Request) {
+          return req.query;
+        },
+        processResponse: function(response) {
+          return {
+            isValid: response !== -1
+          };
+        }
+      }
+    )
+  );
 }
