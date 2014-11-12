@@ -36,9 +36,10 @@ var ProfileUpdateForm = React.createClass({
       }
     }, function(err,result){
         if(err) {
-          //display error
+          this.props.isValid(false);
           return console.log(err);
         }
+        this.props.isValid(true);
         self.setState({
           profileData : result.userProfile,
         })

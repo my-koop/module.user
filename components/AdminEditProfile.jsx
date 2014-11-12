@@ -3,10 +3,10 @@ var PropTypes            = React.PropTypes;
 var BSGrid               = require("react-bootstrap/Grid");
 var BSCol                = require("react-bootstrap/Col");
 var BSRow                = require("react-bootstrap/Row");
-var BSInput                = require("react-bootstrap/Input");
+var BSInput              = require("react-bootstrap/Input");
 var MKProfileUpdateForm  = require("./ProfileUpdateForm");
 var __                   = require("language").__;
-
+var BSAlert              = require("react-bootstrap/Alert");
 
 var AdminEditProfile = React.createClass({
 
@@ -14,16 +14,19 @@ var AdminEditProfile = React.createClass({
 
   getInitialState: function() {
     return {
-      id : null
+      id : null,
+      isValidId : null
     }
+  },
+
+  isValidId: function(isValid){
+    this.setState({
+      isValidID: isValid
+    })
   },
 
   onSubmit: function(e){
     e.preventDefault();
-    console.log(this.state.id);
-    this.setState({
-      updateForm: true
-    });
   },
 
   render: function(){
@@ -50,7 +53,12 @@ var AdminEditProfile = React.createClass({
 
       </BSRow>
       <BSRow>
-      { this.state.updateForm ? <MKProfileUpdateForm userId={this.state.id} /> : null }
+      { this.state.isValidId ?
+          <MKProfileUpdateForm userId={this.state.id} isValid={this.isValidId} />
+        : <BSAlert bsStyle="warning">
+            {__("user::adminEditInvalidID")}
+          </BSAlert>
+         }
       </BSRow>
       </BSGrid>
 
