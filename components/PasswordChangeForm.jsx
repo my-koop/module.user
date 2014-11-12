@@ -7,7 +7,9 @@ var __      = require("language").__;
 var PasswordChangeForm = React.createClass({
 
   mixins: [React.addons.LinkedStateMixin],
-
+  propTypes: {
+    userId : React.PropTypes.number
+  },
   getInitialState: function(){
     return {
       message: null,
@@ -65,7 +67,7 @@ var PasswordChangeForm = React.createClass({
     //FIX ME: Get ID from SESSION
     actions.user.updatePassword({
       data: {
-        id:              2,
+        id:              self.props.userId,
         oldPassword:     this.state.oldPassword,
         newPassword:     this.state.password,
         confNewPassword: this.state.passwordRepeat

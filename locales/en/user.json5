@@ -58,5 +58,7 @@
   "form_profile_mailing_events" : "Events Mailing List",
   "update_profile_submit_button" : "Update Profile",
   "update_profile_failure_message" : "Unable to update your profile.",
-  "update_profile_success_message" : "Your profile has been updated."
+  "update_profile_success_message" : "Your profile has been updated.",
+  "adminEditInvalidID" : "This user Id isn't linked to a user.",
+  "adminEditIdField" : "User Id"
 }

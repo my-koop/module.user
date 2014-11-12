@@ -6,7 +6,12 @@ function addRoutes(metaDataBuilder) {
         name: "myAccount",
         path: "/myaccount"
     });
-
+    metaDataBuilder.addFrontendRoute({
+        idPath: ["public", "adminEdit"],
+        component: "AdminEditProfile",
+        name: "adminEdit",
+        path: "/adminEdit"
+    });
     /* Simple routes. */
     metaDataBuilder.addFrontendRoute({
         idPath: ["simple", "login"],
@@ -14,7 +19,6 @@ function addRoutes(metaDataBuilder) {
         name: "login",
         path: "login"
     });
-
     metaDataBuilder.addFrontendRoute({
         idPath: ["simple", "register"],
         component: "RegisterPage",

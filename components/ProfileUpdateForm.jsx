@@ -5,46 +5,61 @@ var ajax        = require("ajax");
 var actions     = require("actions");
 var BSAlert     = require("react-bootstrap/Alert");
 var __          = require("language").__;
+var formatDate  = require("language").formatDate;
 
 var ProfileUpdateForm = React.createClass({
 
   propTypes: {
-    profileData: React.PropTypes.object,
-    message: React.PropTypes.string,
-    messageStyle : React.PropTypes.string,
-    emailStyle : React.PropTypes.string,
-    emailCopy: React.PropTypes.string
+    userId: React.PropTypes.number.isRequired,
+    onIdValidated: React.PropTypes.func
   },
 
   getInitialState: function() {
     return {
       profileData: {},
-      message: this.props.message,
-      messageStyle: this.props.messageStyle,
-      emailStyle : this.props.emailStyle,
+      message: null,
+      messageStyle: null,
+      emailStyle: null,
     }
   },
 
-  componentWillMount: function() {
+  getProfile: function(userId){
     var self = this;
     //FIX ME: Get ID from SESSION
     actions.user.getProfile(
-    {
-      data: {
-        id: 2
-      }
-    }, function(err,result){
+      {
+        data: {
+          id: userId
+        }
+      },
+      function(err,result){
         if(err) {
-          //display error
+          if(self.props.onIdValidated) {
+            self.props.onIdValidated(false);
+          }
           return console.log(err);
         }
+        var profile = result.userProfile;
         self.setState({
-          profileData : result.userProfile,
-        })
-        //Additional treatment on profile data
-        //IE: Format date to YYYY/MM/DD
-
+          profileData : profile,
+        }, function() {
+          if(self.props.onIdValidated) {
+            self.props.onIdValidated(true);
+          }
+        }
+      );
     });
+  },
+
+  componentWillReceiveProps: function(nextProps){
+    if(nextProps.userId !== this.props.userId) {
+      this.getProfile(nextProps.userId);
+    }
+
+  },
+
+  componentWillMount: function() {
+    this.getProfile(this.props.userId);
   },
 
   handleFieldChange: function(field, newValue) {
@@ -78,7 +93,7 @@ var ProfileUpdateForm = React.createClass({
     actions.user.updateProfile(
       {
         data: {
-          id:              2,
+          id:              self.props.userId,
           email:           profileData.email,
           firstname:       profileData.firstname,
           lastname:        profileData.lastname,
@@ -95,7 +110,6 @@ var ProfileUpdateForm = React.createClass({
             console.log(err);
             if(err.message == "Error: Duplicate Email"){
               self.setMessage(__("errors::error_duplicate_email") + profileData.email, isError = true);
-              var profile = self.state.profileData;
               self.setState({
                 emailStyle: "warning",
               });
