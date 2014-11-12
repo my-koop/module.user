@@ -3,13 +3,17 @@ var PropTypes     = React.PropTypes;
 var BSInput       = require("react-bootstrap/Input");
 var BSButton      = require("react-bootstrap/Button");
 var BSButtonGroup = require("react-bootstrap/ButtonGroup");
-var MKAlert       = require("mykoop-core/components/Alert");
-var ajax          = require("ajax");
-var actions       = require("actions");
-var localSession  = require("session").local;
-var Router        = require("react-router");
-var routeData     = require("dynamic-metadata").routes;
-var __            = require("language").__;
+var MKAlert = require("mykoop-core/components/Alert");
+
+var ajax = require("ajax");
+var actions = require("actions");
+var localSession = require("session").local;
+var Router = require("react-router");
+var routeData = require("dynamic-metadata").routes;
+
+var website = require("website");
+
+var __ = require("language").__;
 
 var LoginBox = React.createClass({
 
@@ -128,6 +132,7 @@ var LoginBox = React.createClass({
         });
 
         localSession.user = userInfo;
+        website.render();
       }
     );
 
