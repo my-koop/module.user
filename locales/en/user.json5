@@ -59,6 +59,6 @@
   "update_profile_submit_button" : "Update Profile",
   "update_profile_failure_message" : "Unable to update your profile.",
   "update_profile_success_message" : "Your profile has been updated.",
-  "adminEditInvalidID" : "Ce numémo d'utilisateur n'est pas relié à compte",
-  "adminEditIdField" : "# Utilisateur"
+  "adminEditInvalidID" : "This user Id isn't linked to a user.",
+  "adminEditIdField" : "User Id"
 }

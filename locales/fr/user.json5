@@ -59,6 +59,6 @@
   "update_profile_submit_button" : "Mettre à jour",
   "update_profile_failure_message" : "La mise à jour a échoué",
   "update_profile_success_message" : "Votre profile a été mis à jour",
-  "adminEditInvalidID" : "This user Id isn't linked to a user.",
-  "adminEditIdField" : "User Id"
+  "adminEditInvalidID" : "Ce numéro d'utilisateur n'est pas relié à compte",
+  "adminEditIdField" : "Numéro d'utilisateur"
 }
