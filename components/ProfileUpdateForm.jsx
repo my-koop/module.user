@@ -5,61 +5,61 @@ var ajax        = require("ajax");
 var actions     = require("actions");
 var BSAlert     = require("react-bootstrap/Alert");
 var __          = require("language").__;
+var formatDate  = require("language").formatDate;
 
 var ProfileUpdateForm = React.createClass({
 
   propTypes: {
-    profileData: React.PropTypes.object,
-    message: React.PropTypes.string,
-    messageStyle : React.PropTypes.string,
-    emailStyle : React.PropTypes.string,
-    userId : React.PropTypes.number
+    userId: React.PropTypes.number.isRequired,
+    onIdValidated: React.PropTypes.func
   },
 
   getInitialState: function() {
     return {
       profileData: {},
-      message: this.props.message,
-      messageStyle: this.props.messageStyle,
-      emailStyle : this.props.emailStyle,
-      userId : this.props.userId
+      message: null,
+      messageStyle: null,
+      emailStyle: null,
     }
   },
 
-  getProfile: function(){
+  getProfile: function(userId){
     var self = this;
     //FIX ME: Get ID from SESSION
     actions.user.getProfile(
-    {
-      data: {
-        id: self.state.userId
-      }
-    }, function(err,result){
+      {
+        data: {
+          id: userId
+        }
+      },
+      function(err,result){
         if(err) {
-          this.props.isValid(false);
+          if(self.props.onIdValidated) {
+            self.props.onIdValidated(false);
+          }
           return console.log(err);
         }
-        this.props.isValid(true);
+        var profile = result.userProfile;
         self.setState({
-          profileData : result.userProfile,
-        })
-        //Additional treatment on profile data
-        //IE: Format date to YYYY/MM/DD
-
+          profileData : profile,
+        }, function() {
+          if(self.props.onIdValidated) {
+            self.props.onIdValidated(true);
+          }
+        }
+      );
     });
   },
 
-  componentWillReceiveProps: function(){
-    this.setState({
-      userId: this.props.userId
-    }, function(){
-      this.getProfile();
-    });
+  componentWillReceiveProps: function(nextProps){
+    if(nextProps.userId !== this.props.userId) {
+      this.getProfile(nextProps.userId);
+    }
 
   },
 
   componentWillMount: function() {
-    this.getProfile();
+    this.getProfile(this.props.userId);
   },
 
   handleFieldChange: function(field, newValue) {

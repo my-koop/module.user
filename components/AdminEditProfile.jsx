@@ -1,12 +1,15 @@
-var React                = require("react");
-var PropTypes            = React.PropTypes;
-var BSGrid               = require("react-bootstrap/Grid");
-var BSCol                = require("react-bootstrap/Col");
-var BSRow                = require("react-bootstrap/Row");
-var BSInput              = require("react-bootstrap/Input");
-var MKProfileUpdateForm  = require("./ProfileUpdateForm");
+var React     = require("react");
+
+var BSGrid   = require("react-bootstrap/Grid");
+var BSCol    = require("react-bootstrap/Col");
+var BSRow    = require("react-bootstrap/Row");
+var BSInput  = require("react-bootstrap/Input");
+var BSAlert  = require("react-bootstrap/Alert");
+var BSButton = require("react-bootstrap/Button");
+
+var MKProfileUpdateForm = require("./ProfileUpdateForm");
+
 var __                   = require("language").__;
-var BSAlert              = require("react-bootstrap/Alert");
 
 var AdminEditProfile = React.createClass({
 
@@ -15,53 +18,67 @@ var AdminEditProfile = React.createClass({
   getInitialState: function() {
     return {
       id : null,
-      isValidId : null
+      isValidId : false,
+      firstIdSet: false
     }
   },
 
-  isValidId: function(isValid){
+  onIdValidated: function(isValid){
+    if(!isValid) {
+      this.setState({
+        isValidId: false
+      });
+    }
+  },
+
+  setId: function(){
+    var id = parseInt(this.state.selectedId);
     this.setState({
-      isValidID: isValid
-    })
+      id: id,
+      selectedId: id,
+      isValidId: true,
+      firstIdSet: true
+    });
   },
 
-  onSubmit: function(e){
-    e.preventDefault();
-  },
+  render: function() {
+    var content = null;
+    if(this.state.firstIdSet) {
+      if(this.state.isValidId) {
+        content = <MKProfileUpdateForm userId={this.state.id} onIdValidated={this.onIdValidated} />;
+      } else {
+        content = (
+          <BSAlert bsStyle="warning">
+            {__("user::adminEditInvalidID")}
+          </BSAlert>
+        );
+      }
+    }
 
-  render: function(){
     return (
       <BSGrid>
       <BSRow>
-        <form onSubmit={this.onSubmit}>
-          <BSCol xs={2}>
-              <BSInput
-                type="text"
-                ref="id"
-                valueLink={this.linkState("id")}
-                placeholder={__("user::adminEditIdField")}
-              />
-          </BSCol>
-          <BSCol xs={2}>
-            <BSInput
-              type="submit"
-              bsStyle="primary"
-              value={__("user::register_submit_button")}
-            />
-          </BSCol>
-        </form>
-
+        <BSCol md={2} xs={6}>
+          <BSInput
+            type="text"
+            ref="id"
+            valueLink={this.linkState("selectedId")}
+            placeholder={__("user::adminEditIdField")}
+          />
+        </BSCol>
+        <BSCol md={2} xs={6}>
+          <BSButton
+            bsStyle="primary"
+            onClick={this.setId}
+          >
+            {__("user::register_submit_button")}
+          </BSButton>
+        </BSCol>
       </BSRow>
       <BSRow>
-      { this.state.isValidId ?
-          <MKProfileUpdateForm userId={this.state.id} isValid={this.isValidId} />
-        : <BSAlert bsStyle="warning">
-            {__("user::adminEditInvalidID")}
-          </BSAlert>
-         }
+      {content}
       </BSRow>
-      </BSGrid>
-
+    </BSGrid>
     );
   }
 });
