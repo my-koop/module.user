@@ -8,6 +8,8 @@ var PasswordChangeForm = React.createClass({
 
   mixins: [React.addons.LinkedStateMixin],
   propTypes: {
+    // If not provided, assume that the request will be for the current user
+    // session.
     userId : React.PropTypes.number
   },
   getInitialState: function(){
@@ -64,8 +66,12 @@ var PasswordChangeForm = React.createClass({
   onSubmit: function(e){
     e.preventDefault();
     var self = this;
-    //FIX ME: Get ID from SESSION
-    actions.user.updatePassword({
+
+    var action = self.props.userId ?
+      actions.user.updateUserPassword
+      : actions.user.updateCurrentUserPassword;
+
+    action({
       data: {
         id:              self.props.userId,
         oldPassword:     this.state.oldPassword,
@@ -73,7 +79,7 @@ var PasswordChangeForm = React.createClass({
         confNewPassword: this.state.passwordRepeat
       }
     }, function(err) {
-        self.requestFeedback(err);
+      self.requestFeedback(err);
     });
 
   },

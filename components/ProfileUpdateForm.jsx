@@ -25,7 +25,6 @@ var ProfileUpdateForm = React.createClass({
 
   getProfile: function(userId){
     var self = this;
-    //FIX ME: Get ID from SESSION
     actions.user.getProfile(
       {
         data: {

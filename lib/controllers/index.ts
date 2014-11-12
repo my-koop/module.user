@@ -32,11 +32,31 @@ export function attachControllers(
     {endPoint: endPoints.user.updateProfile},
     updateProfile
   );
-  binder.attach({
-      endPoint: endPoints.user.updatePassword,
+  binder.attach(
+    {
+      endPoint: endPoints.user.updateCurrentUserPassword,
       validation: validation.validateUpdatePassword
     },
-    updatePassword
+    [
+      function (req, res, next) {
+        res.locals.userId = req.session.user.id
+        next();
+      },
+      updatePassword
+    ]
+  );
+  binder.attach(
+    {
+      endPoint: endPoints.user.updateUserPassword,
+      validation: validation.validateUpdatePassword
+    },
+    [
+      function (req, res, next) {
+        res.locals.userId = req.param("id");
+        next();
+      },
+      updatePassword
+    ]
   );
 
   binder.attach(

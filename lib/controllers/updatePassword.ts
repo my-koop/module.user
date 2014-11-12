@@ -3,7 +3,7 @@ import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
 
 function updatePassword(req: express.Request, res: express.Response) {
-  var id = parseInt(req.param("id", -1));
+  var id = res.locals.userId;
   var passwords: UserInterfaces.updatePassword = {
       newPassword:     req.param("newPassword"),
       confNewPassword: req.param("confNewPassword"),

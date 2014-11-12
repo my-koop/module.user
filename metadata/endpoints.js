@@ -1,33 +1,42 @@
 var endpoints = {
     user: {
         login: {
-            path: "/user/login",
+            path: "/users/login",
             method: "post"
         },
         getProfile: {
-            path: "/user/getProfile/:id",
+            path: "/users/:id",
             method: "get"
         },
         register: {
-            path: "/user/register",
+            path: "/users",
             method: "post"
         },
         updateProfile: {
-            path: "/user/updateProfile/:id",
+            path: "/users/current",
             method: "put"
         },
-        updatePassword: {
-            path: "/user/updatePassword/:id",
+        updateCurrentUserPassword: {
+            path: "/users/current/password",
             method: "put",
             validation: {
                 resolve: "validation",
-                value: "validateUpdatePassword"
+                value: "validateUpdateUserPassword"
+            }
+        },
+        updateUserPassword: {
+            path: "/users/:id/password",
+            method: "put",
+            validation: {
+                resolve: "validation",
+                value: "validateUpdateUserPassword"
             }
         },
         emailExists: {
-            path: "/user/email/exists",
+            path: "/users/email",
             method: "get"
         }
     }
 };
+
 module.exports = endpoints;
