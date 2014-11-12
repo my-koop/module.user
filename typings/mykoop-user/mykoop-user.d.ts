@@ -35,7 +35,8 @@ declare module mkuser {
     registerNewUser(profile: UserInterfaces.RegisterNewUser, callback: (err: Error, result: boolean) => void ) : void;
     updateProfile(id:number, profile: mkuser.UserProfile, callback: (err: Error, result: boolean) => void ) : void;
     updatePassword(id:number, passwords:UserInterfaces.updatePassword, callback: (err: Error) => void) : void;
-    checkEmailExists(params: {email: string}, callback: (err, result: boolean) => void);
+    // id is -1 if not found
+    getIdForEmail(params: {email: string}, callback: (err, id: number) => void);
   }
 
 }
