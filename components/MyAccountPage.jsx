@@ -23,7 +23,7 @@ var MyAccountPage = React.createClass({
 
           <BSTabPane key={2} tab={__("user::myaccount_tab_password")}>
             <BSCol md={4} sm={6}>
-              <MKPasswordChangeForm />
+              <MKPasswordChangeForm userId={localSession.user.id} current />
             </BSCol>
           </BSTabPane>
         </BSTabbedArea>
