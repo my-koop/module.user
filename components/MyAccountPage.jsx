@@ -7,7 +7,7 @@ var MKPasswordChangeForm = require("./PasswordChangeForm");
 var MKProfileUpdateForm  = require("./ProfileUpdateForm");
 var __                   = require("language").__;
 
-//FIXME Get Id From session and pass down to components
+var localSession = require("session").local;
 
 var MyAccountPage = React.createClass({
 
@@ -17,13 +17,13 @@ var MyAccountPage = React.createClass({
         <BSTabbedArea defaultActiveKey={1}>
           <BSTabPane key={1} tab={__("user::myaccount_tab_profile")}>
             <BSCol md={4} sm={6}>
-              <MKProfileUpdateForm userId={2} />
+              <MKProfileUpdateForm userId={localSession.user.id} current />
             </BSCol>
           </BSTabPane>
 
           <BSTabPane key={2} tab={__("user::myaccount_tab_password")}>
             <BSCol md={4} sm={6}>
-              <MKPasswordChangeForm userId={2} />
+              <MKPasswordChangeForm userId={localSession.user.id} current />
             </BSCol>
           </BSTabPane>
         </BSTabbedArea>

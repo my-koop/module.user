@@ -11,7 +11,15 @@ var ProfileUpdateForm = React.createClass({
 
   propTypes: {
     userId: React.PropTypes.number.isRequired,
-    onIdValidated: React.PropTypes.func
+    onIdValidated: React.PropTypes.func,
+    // If provided, the save request will be for the current user session.
+    current: React.PropTypes.bool
+  },
+
+  getDefaultProps: function() {
+    return {
+      current: false
+    };
   },
 
   getInitialState: function() {
@@ -25,7 +33,6 @@ var ProfileUpdateForm = React.createClass({
 
   getProfile: function(userId){
     var self = this;
-    //FIX ME: Get ID from SESSION
     actions.user.getProfile(
       {
         data: {
@@ -88,9 +95,13 @@ var ProfileUpdateForm = React.createClass({
     var self = this;
     //Reset displayed message
     self.setMessage(null,false);
-    //FIX ME Get ID From session
     var profileData = self.state.profileData;
-    actions.user.updateProfile(
+
+    var action = self.props.current ?
+      actions.user.current.updateProfile
+      : actions.user.updateProfile;
+
+    action(
       {
         data: {
           id:              self.props.userId,
