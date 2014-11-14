@@ -39,7 +39,7 @@ var endpoints = {
             method: "post"
         },
         emailExists: {
-            path: "/users/email",
+            path: "/users/email/isValid",
             method: "get"
         }
     }
