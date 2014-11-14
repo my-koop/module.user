@@ -12,7 +12,6 @@ var validate = require("mykoop-utils/common/index").validation;
 
 var updatePasswordConstraint = {
   id: {
-    presence: true,
     numericality: {
       onlyInteger: true,
       greaterThan: 0
@@ -30,7 +29,7 @@ var updatePasswordConstraint = {
 
 }
 
-export function validateUpdatePassword(obj) {
+export function validateUpdateUserPassword(obj) {
   //FIX ME: Validating new passwords match until custom validator can be used
   if(typeof obj.newPassword != "undefined" && obj.newPassword !== obj.confNewPassword){
     return {

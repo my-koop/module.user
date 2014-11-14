@@ -5,7 +5,7 @@
   "field_password" : "Password",
   "field_remember_me" : "Remember me",
   "field_login_submit": "Login",
-  "button_redirect_regiter" : "Create your account",
+  "button_redirect_register" : "Create your account",
   "button_redirect_lostpwd" : "Forgot your password?",
   "myaccount_tab_profile" : "Profile",
   "myaccount_tab_password" : "Password",
@@ -58,5 +58,7 @@
   "form_profile_mailing_events" : "Events Mailing List",
   "update_profile_submit_button" : "Update Profile",
   "update_profile_failure_message" : "Unable to update your profile.",
-  "update_profile_success_message" : "Your profile has been updated."
+  "update_profile_success_message" : "Your profile has been updated.",
+  "adminEditInvalidID" : "This user Id isn't linked to a user.",
+  "adminEditIdField" : "User Id"
 }

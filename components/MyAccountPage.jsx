@@ -1,4 +1,4 @@
-var React                = require("react");
+﻿var React                = require("react");
 var PropTypes            = React.PropTypes;
 var BSCol                = require("react-bootstrap/Col");
 var BSTabbedArea         = require("react-bootstrap/TabbedArea");
@@ -7,9 +7,9 @@ var MKPasswordChangeForm = require("./PasswordChangeForm");
 var MKProfileUpdateForm  = require("./ProfileUpdateForm");
 
 
+var localSession = require("session").local;
 var __ = require("language").__;
 var _  = require("lodash");
-
 var myAccountPlugins = require("dynamic-metadata").myAccountPlugins;
 
 var MyAccountPage = React.createClass({
@@ -39,6 +39,7 @@ var MyAccountPage = React.createClass({
 
     return (
       <BSCol>
+   
         <BSTabbedArea defaultActiveKey={0}>
           {additionalTabs}
         </BSTabbedArea>

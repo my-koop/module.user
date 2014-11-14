@@ -5,7 +5,7 @@
   "field_password" : "Mot de passe",
   "field_remember_me" : "Se souvenir de mes informations",
   "field_login_submit": "Se connecter",
-  "button_redirect_regiter" : "Créer votre compte",
+  "button_redirect_register" : "Créer votre compte",
   "button_redirect_lostpwd" : "Oublié votre mot de passe?",
   "myaccount_tab_profile" : "Profil",
   "myaccount_tab_password" : "Mot de passe",
@@ -58,5 +58,7 @@
   "form_profile_mailing_events" : "List d'envoi des événements",
   "update_profile_submit_button" : "Mettre à jour",
   "update_profile_failure_message" : "La mise à jour a échoué",
-  "update_profile_success_message" : "Votre profile a été mis à jour"
+  "update_profile_success_message" : "Votre profile a été mis à jour",
+  "adminEditInvalidID" : "Ce numéro d'utilisateur n'est pas relié à compte",
+  "adminEditIdField" : "Numéro d'utilisateur"
 }
