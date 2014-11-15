@@ -36,6 +36,7 @@ declare module mkuser {
     updateProfile(id:number, profile: mkuser.UserProfile, callback: (err: Error, result: boolean) => void ) : void;
     updatePassword(id:number, passwords:UserInterfaces.updatePassword, callback: (err: Error) => void) : void;
     // id is -1 if not found
+    __getIdForEmail(connection: mysql.IConnection, params: {email: string}, callback: (err, id: number) => void);
     getIdForEmail(params: {email: string}, callback: (err, id: number) => void);
   }
 
