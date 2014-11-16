@@ -13,6 +13,6 @@ function getSession(req: express.Request, res: express.Response) {
     id: session.id,
     email: session.email
   });
-};
+}
 
 export = getSession;
