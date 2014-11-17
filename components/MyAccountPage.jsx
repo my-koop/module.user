@@ -31,7 +31,7 @@ var MyAccountPage = React.createClass({
       return (
         <BSTabPane key={index} tab={__(plugin.titleKey)}>
           <BSCol md={4} sm={6}>
-            <PluginComponent id={2} />
+            <PluginComponent userId={localSession.user.id} current />
           </BSCol>
         </BSTabPane>
       );
@@ -39,7 +39,7 @@ var MyAccountPage = React.createClass({
 
     return (
       <BSCol>
-   
+
         <BSTabbedArea defaultActiveKey={0}>
           {additionalTabs}
         </BSTabbedArea>
