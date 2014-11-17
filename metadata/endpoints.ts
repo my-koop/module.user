@@ -2,6 +2,14 @@
 var endpoints = {
   user: {
     current: {
+      getSession: {
+        path: "/users/current/session",
+        method: "get"
+      },
+      logout: {
+        path: "/users/current/logout",
+        method: "get"
+      },
       updatePassword: {
         path: "/users/current/password",
         method: "put",
@@ -40,7 +48,7 @@ var endpoints = {
       method: "post"
     },
     emailExists: {
-      path: "/users/email",
+      path: "/users/email/isValid",
       method: "get"
     }
   }

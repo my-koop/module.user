@@ -267,24 +267,23 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
   }// updatePassword
 
   getIdForEmail(params, callback) {
-    this.db.getConnection(function(err, connection, cleanup) {
-      if(err) {
-        return callback(new DatabaseError(err));
-      }
-      connection.query(
-        "SELECT id FROM user WHERE email = ?",
-        params.email,
-        function(err, result) {
-          cleanup();
-          var id = -1;
-          if(result.length === 1) {
-            id = result[0].id;
-          }
-          callback(err && new DatabaseError(err), id);
-        }
-      );
-    });
+    this.callWithConnection(this.__getIdForEmail, params, callback);
   }
+
+  __getIdForEmail(connection, params, callback) {
+    connection.query(
+      "SELECT id FROM user WHERE email = ?",
+      params.email,
+      function(err, result) {
+        var id = -1;
+        if(result.length === 1) {
+          id = result[0].id;
+        }
+        callback(err && new DatabaseError(err), id);
+      }
+    );
+  }
+
 
 }//class
 

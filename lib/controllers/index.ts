@@ -12,7 +12,9 @@ import attachParamUserId = require("./attachParamUserId");
 
 // Controllers.
 import login = require("./login");
+import logout = require("./logout");
 import getProfile = require("./getProfile");
+import getSession = require("./getSession");
 import registerUser = require("./registerUser");
 import updateProfile = require("./updateProfile");
 import updatePassword = require("./updatePassword");
@@ -23,6 +25,14 @@ export function attachControllers(
   binder.attach(
     {endPoint: endPoints.user.login},
     login
+  );
+  binder.attach(
+    {endPoint: endPoints.user.current.getSession},
+    getSession
+  );
+  binder.attach(
+    {endPoint: endPoints.user.current.logout},
+    logout
   );
   binder.attach(
     {endPoint: endPoints.user.getProfile},
