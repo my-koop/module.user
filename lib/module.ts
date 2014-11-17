@@ -62,12 +62,13 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
       }
 
       var userInfo;
+      var computedPermissions = <any>{};
       async.waterfall([
         function makeQuery(next) {
           connection.query(
             "SELECT ?? FROM user WHERE email = ? ",
             [
-              ["id", "salt", "pwdhash"],
+              ["id", "salt", "pwdhash", "perms"],
               loginInfo.email
             ],
             function (err, rows) {
@@ -103,6 +104,24 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           }
 
           next();
+        },
+        function computePermissions(next) {
+          //TODO: Eventually to support permission masks, additionnal queries
+          // would be required here.
+          // See https://github.com/my-koop/service.website/issues/277
+
+          // Users can be permission-less.
+          if (userInfo.perms) {
+            // We trust the database data, so we don't wrap this in a try-catch,
+            // which means bogus serialized JSON would make us crash.
+            computedPermissions = JSON.parse(userInfo.perms);
+          }
+
+          // All logged in users have this permission, it makes it easy to
+          // "demand" that a user be logged in through any permission tool.
+          computedPermissions.loggedin = 1;
+
+          next();
         }
       ],
       function result(err) {
@@ -114,7 +133,8 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
 
         callback(null, {
           id: userInfo.id,
-          email: loginInfo.email
+          email: loginInfo.email,
+          perms: computedPermissions
         });
       });
     });//getConnection

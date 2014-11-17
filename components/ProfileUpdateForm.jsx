@@ -7,6 +7,8 @@ var BSAlert     = require("react-bootstrap/Alert");
 var __          = require("language").__;
 var formatDate  = require("language").formatDate;
 
+var MKPermissionSet = require("./PermissionSet");
+
 var ProfileUpdateForm = React.createClass({
 
   propTypes: {
@@ -69,6 +71,10 @@ var ProfileUpdateForm = React.createClass({
       message: Message,
       messageStyle: style
     })
+  },
+
+  onPermissionsChanged: function() {
+    //TODO.
   },
 
   onSubmit: function(e){
@@ -216,6 +222,11 @@ var ProfileUpdateForm = React.createClass({
             placeholder={__("user::form_profile_placeholder_usageNote")}
             ref="usageNote"
             valueLink = {this.makeValueLink("usageNote")}
+          />
+          {/* FIXME: Put in a separate tab? */}
+          <MKPermissionSet
+            permissions={{}}
+            onPermissionsChanged={this.onPermissionsChanged}
           />
 
           <BSInput
