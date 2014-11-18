@@ -4,6 +4,7 @@ import controllerList = require("./controllers/index");
 import UserProfile = require("./classes/UserProfile");
 import utils = require("mykoop-utils");
 var nodepwd = require("pwd");
+var traverse = require("traverse");
 import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
 
@@ -14,17 +15,42 @@ import AuthenticationError = require("./classes/AuthenticationError");
 class UserModule extends utils.BaseModule implements mkuser.Module {
   db: mkdatabase.Module;
 
-  static deserializePermissions(permissions) {
-    function deepTraverse(obj) {
-      //TODO.
-    }
+  static serializePermissions(permissions) {
+    // Assume the passed-in permissions are meant to be mutated.
 
+    // Traverse the permissions and do some replacements/simplifications.
+    traverse(permissions).forEach(function(perm) {
+      // Called after traversing all the children, delete ourselves if we don't
+      // have children anymore (deleted themselves).
+      this.post(function (parentPerm) {
+        if (parentPerm.node === {}) {
+          this.delete();
+        }
+      });
+
+      if (perm === true) {
+        // Replace all instances of true (boolean) by "" (empty string).
+        this.update("");
+      } else if (perm === false) {
+        // Delete all instances of false.
+        this.delete();
+      }
+    });
+
+    return permissions;
+  }
+
+  static deserializePermissions(permissions) {
     // Trust the permissions are valid serialized JSON.
     var perms = JSON.parse(permissions);
 
     // Traverse the permissions and replace all instances of "" (empty string)
     // by true (boolean).
-    //TODO.
+    traverse(perms).forEach(function(perm) {
+      if (perm === "") {
+        this.update(true);
+      }
+    });
 
     return perms;
   }
@@ -136,7 +162,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
 
           // All logged in users have this permission, it makes it easy to
           // "demand" that a user be logged in through any permission tool.
-          computedPermissions.loggedin = 1;
+          computedPermissions.loggedin = true;
 
           next();
         }

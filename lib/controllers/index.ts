@@ -46,8 +46,8 @@ export function attachControllers(
     })
   );
   binder.attach(
-    {endPoint: endPoints.user.getProfile},
-    getProfile
+    {endPoint: endPoints.user.getPublicProfile},
+    getProfile.getPublicProfile
   );
   binder.attach(
     {endPoint: endPoints.user.register},
@@ -60,6 +60,12 @@ export function attachControllers(
       updateProfile
     ]
   );
+  //FIXME: Protect this with permissions.
+  binder.attach(
+    {endPoint: endPoints.user.getFullProfile},
+    getProfile.getFullProfile
+  );
+  //FIXME: Protect this with permissions.
   binder.attach(
     {endPoint: endPoints.user.updateProfile},
     [
@@ -77,6 +83,7 @@ export function attachControllers(
       updatePassword
     ]
   );
+  //FIXME: Protect this with permissions.
   binder.attach(
     {
       endPoint: endPoints.user.updatePassword,

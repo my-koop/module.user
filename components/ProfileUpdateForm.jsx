@@ -101,7 +101,8 @@ var ProfileUpdateForm = React.createClass({
           usageNote:       profileData.usageNote,
           usageFrequency:  profileData.usageFrequency,
           referral:        profileData.referral,
-          referralSpecify: profileData.referralSpecify
+          referralSpecify: profileData.referralSpecify,
+          permissions:     profileData.permissions
         }
       },function(err, result){
           if(err || !result.updateSuccess){
@@ -225,7 +226,7 @@ var ProfileUpdateForm = React.createClass({
           />
           {/* FIXME: Put in a separate tab? */}
           <MKPermissionSet
-            permissions={{}}
+            permissions={this.state.profileData.permissions}
             onPermissionsChanged={this.onPermissionsChanged}
           />
 

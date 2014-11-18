@@ -10,7 +10,8 @@ class UserProfile implements mkuser.UserProfile {
     "referral",
     "referralSpecify",
     "usageFrequency",
-    "usageNote"
+    "usageNote",
+    "perms"
   ];
 
   public email          : string;
@@ -23,18 +24,20 @@ class UserProfile implements mkuser.UserProfile {
   public referralSpecify: string;
   public usageFrequency : string;
   public usageNote      : string;
+  public permissions    : any;
 
   constructor (userRow: any) {
-    this.email          = userRow.email,
-    this.firstname      = userRow.firstname,
-    this.lastname       = userRow.lastname,
-    this.birthdate      = userRow.birthdate,
-    this.phone          = userRow.phone,
-    this.origin         = userRow.origin,
-    this.referral       = userRow.referral,
+    this.email           = userRow.email,
+    this.firstname       = userRow.firstname,
+    this.lastname        = userRow.lastname,
+    this.birthdate       = userRow.birthdate,
+    this.phone           = userRow.phone,
+    this.origin          = userRow.origin,
+    this.referral        = userRow.referral,
     this.referralSpecify = userRow.referralSpecify,
-    this.usageFrequency = userRow.usageFrequency,
-    this.usageNote      = userRow.usageNote
+    this.usageFrequency  = userRow.usageFrequency,
+    this.usageNote       = userRow.usageNote,
+    this.permissions       = userRow.perms
   }
 
 }
