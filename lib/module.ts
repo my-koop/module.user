@@ -14,6 +14,21 @@ import AuthenticationError = require("./classes/AuthenticationError");
 class UserModule extends utils.BaseModule implements mkuser.Module {
   db: mkdatabase.Module;
 
+  static deserializePermissions(permissions) {
+    function deepTraverse(obj) {
+      //TODO.
+    }
+
+    // Trust the permissions are valid serialized JSON.
+    var perms = JSON.parse(permissions);
+
+    // Traverse the permissions and replace all instances of "" (empty string)
+    // by true (boolean).
+    //TODO.
+
+    return perms;
+  }
+
   init() {
     var db = <mkdatabase.Module>this.getModuleManager().get("database");
     var routerModule = <mykoop.Router>this.getModuleManager().get("router");
@@ -114,7 +129,9 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           if (userInfo.perms) {
             // We trust the database data, so we don't wrap this in a try-catch,
             // which means bogus serialized JSON would make us crash.
-            computedPermissions = JSON.parse(userInfo.perms);
+            computedPermissions = UserModule.deserializePermissions(
+              userInfo.perms
+            );
           }
 
           // All logged in users have this permission, it makes it easy to
