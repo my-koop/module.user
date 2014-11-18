@@ -5,27 +5,43 @@ var BSTabbedArea         = require("react-bootstrap/TabbedArea");
 var BSTabPane            = require("react-bootstrap/TabPane");
 var MKPasswordChangeForm = require("./PasswordChangeForm");
 var MKProfileUpdateForm  = require("./ProfileUpdateForm");
-var __                   = require("language").__;
+
 
 var localSession = require("session").local;
+var __ = require("language").__;
+var _  = require("lodash");
+var myAccountPlugins = require("dynamic-metadata").myAccountPlugins;
 
 var MyAccountPage = React.createClass({
 
   render: function() {
+    var tabsInfo = !localSession.user ? null : [
+      {
+        component: function() { return MKProfileUpdateForm; },
+        titleKey: "user::myaccount_tab_profile"
+      },
+      {
+        component: function() { return MKPasswordChangeForm; },
+        titleKey: "user::myaccount_tab_password"
+      }
+    ].concat(_.toArray(myAccountPlugins));
+
+    var additionalTabs = _.map(tabsInfo, function(plugin, index) {
+      var PluginComponent = plugin.component();
+      return (
+        <BSTabPane key={index} tab={__(plugin.titleKey)}>
+          <BSCol md={4} sm={6}>
+            <PluginComponent userId={localSession.user.id} current />
+          </BSCol>
+        </BSTabPane>
+      );
+    });
+
     return (
       <BSCol>
-        <BSTabbedArea defaultActiveKey={1}>
-          <BSTabPane key={1} tab={__("user::myaccount_tab_profile")}>
-            <BSCol md={4} sm={6}>
-              <MKProfileUpdateForm userId={localSession.user.id} current />
-            </BSCol>
-          </BSTabPane>
 
-          <BSTabPane key={2} tab={__("user::myaccount_tab_password")}>
-            <BSCol md={4} sm={6}>
-              <MKPasswordChangeForm userId={localSession.user.id} current />
-            </BSCol>
-          </BSTabPane>
+        <BSTabbedArea defaultActiveKey={0}>
+          {additionalTabs}
         </BSTabbedArea>
       </BSCol>
     );
