@@ -15,7 +15,7 @@ var myAccountPlugins = require("dynamic-metadata").myAccountPlugins;
 var MyAccountPage = React.createClass({
 
   render: function() {
-    var tabsInfo = [
+    var tabsInfo = !localSession.user ? null : [
       {
         component: function() { return MKProfileUpdateForm; },
         titleKey: "user::myaccount_tab_profile"
