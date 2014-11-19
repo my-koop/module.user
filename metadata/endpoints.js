@@ -38,8 +38,12 @@ var endpoints = {
             path: "/users/login",
             method: "post"
         },
-        getProfile: {
+        getPublicProfile: {
             path: "/users/:id",
+            method: "get"
+        },
+        getFullProfile: {
+            path: "/users/:id/full",
             method: "get"
         },
         exists: {

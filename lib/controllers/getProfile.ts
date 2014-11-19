@@ -18,9 +18,16 @@ function getUserProfileCommon(params) {
       return res.status(500).send("Unable to get profile");
     }
 
+    // We at least want to return an empty object ("no permissions") to
+    // faciliate many operations.
+    if (profile.permissions === null) {
+      profile.permissions = {};
+    }
+
     //FIXME: We might want to have a constructive "whitelist" approach to the
     // public profile rather than a "blacklist" destructive approach to the
-    // full profile.
+    // full profile. Separated from the default object logic above for that
+    // reason.
     if (!isFullProfile) {
       delete profile.permissions;
     }
@@ -32,9 +39,9 @@ function getUserProfileCommon(params) {
 };
 
 export function getFullProfile(req: express.Request, res: express.Response) {
-  getUserProfileCommon({req: req, res: res, fullProfile: true});
+  getUserProfileCommon.call(this, {req: req, res: res, fullProfile: true});
 };
 
 export function getPublicProfile(req: express.Request, res: express.Response) {
-  getUserProfileCommon({req: req, res: res);
+  getUserProfileCommon.call(this, {req: req, res: res});
 };
