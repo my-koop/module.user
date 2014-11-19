@@ -224,12 +224,6 @@ var ProfileUpdateForm = React.createClass({
             ref="usageNote"
             valueLink = {this.makeValueLink("usageNote")}
           />
-          {/* FIXME: Put in a separate tab? */}
-          <MKPermissionSet
-            permissions={this.state.profileData.permissions}
-            onPermissionsChanged={this.onPermissionsChanged}
-          />
-
           <BSInput
             type="submit"
             bsStyle="primary"

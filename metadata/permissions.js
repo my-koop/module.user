@@ -1,7 +1,7 @@
 var permissions = {
     user: {
-        fullProfile: {
-            view: true,
+        profile: {
+            full: true,
             edit: true
         }
     }
