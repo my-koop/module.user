@@ -6,6 +6,7 @@ import utils = require("mykoop-utils");
 var nodepwd = require("pwd");
 import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
+var generatePassword = require('password-generator');
 
 var DatabaseError = utils.errors.DatabaseError;
 var ApplicationError = utils.errors.ApplicationError;
@@ -310,6 +311,18 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         callback(err && new DatabaseError(err), id);
       }
     );
+  }
+
+  passwordRecovery(email, callback (err: Error) => void){
+    //Open DB connection
+    //Try to get salt with email
+    //generatePassword(**options**)
+    //Encrypt new password with salt
+    //Update user password
+
+    //Send email
+    //Return
+
   }
 
 

@@ -18,6 +18,7 @@ import getSession = require("./getSession");
 import registerUser = require("./registerUser");
 import updateProfile = require("./updateProfile");
 import updatePassword = require("./updatePassword");
+import passwordRecovery = require("./passwordRecovery");
 
 export function attachControllers(
   binder: utils.ModuleControllersBinder<mkuser.Module>
@@ -105,5 +106,9 @@ export function attachControllers(
         }
       }
     )
+  );
+  binder.attach(
+    {endPoint: endPoints.user.passwordRecovery},
+    passwordRecovery
   );
 }
