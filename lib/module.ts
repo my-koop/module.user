@@ -23,6 +23,34 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     this.db = db;
   }
 
+  idExists(
+    params: User.IdExists.Params,
+    callback: User.IdExists.Callback
+  ) {
+    this.callWithConnection(
+      this.__idExists,
+      params,
+      callback
+    );
+  }
+
+  __idExists(
+    connection: mysql.IConnection,
+    params: User.IdExists.Params,
+    callback: User.IdExists.Callback
+  ) {
+    connection.query(
+      "SELECT id FROM user WHERE id=?",
+      [params.id],
+      function(err, res) {
+        callback(
+          (err && new DatabaseError(err)) ||
+          (res.length !== 1 && new ApplicationError(null, {id: "invalid"}))
+        );
+      }
+    );
+  }
+
   login(
     loginInfo : UserInterfaces.LoginRequestData,
     callback: (err: Error, result?: mkuser.LoginResponse) => void
