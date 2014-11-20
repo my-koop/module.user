@@ -1,4 +1,7 @@
 {
+  "adminEditWelcome": "Editing user #__userId__",
+  "myAccountWelcome": "My Account",
+  "invalidUserId": "User id requested is invalid",
   "signin": "Please sign in",
   "loggedin": "You logged in! Redirecting to homepage.",
   "field_email" : "E-Mail",

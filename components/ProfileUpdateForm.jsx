@@ -11,7 +11,18 @@ var ProfileUpdateForm = React.createClass({
 
   propTypes: {
     userId: React.PropTypes.number.isRequired,
-    onIdValidated: React.PropTypes.func,
+    profile: React.PropTypes.shape({
+      email: React.PropTypes.string.isRequired,
+      firstname: React.PropTypes.string,
+      lastname: React.PropTypes.string,
+      birthdate: React.PropTypes.string,
+      phone: React.PropTypes.string,
+      origin: React.PropTypes.string,
+      referral: React.PropTypes.string,
+      referralSpecify: React.PropTypes.string,
+      usageFrequency: React.PropTypes.string,
+      usageNote: React.PropTypes.string
+    }).isRequired,
     // If provided, the save request will be for the current user session.
     current: React.PropTypes.bool
   },
@@ -24,49 +35,19 @@ var ProfileUpdateForm = React.createClass({
 
   getInitialState: function() {
     return {
-      profileData: {},
+      profileData: this.props.profile,
       message: null,
       messageStyle: null,
       emailStyle: null,
     }
   },
 
-  getProfile: function(userId){
-    var self = this;
-    actions.user.getProfile(
-      {
-        data: {
-          id: userId
-        }
-      },
-      function(err,result){
-        if(err) {
-          if(self.props.onIdValidated) {
-            self.props.onIdValidated(false);
-          }
-          return console.log(err);
-        }
-        var profile = result.userProfile;
-        self.setState({
-          profileData : profile,
-        }, function() {
-          if(self.props.onIdValidated) {
-            self.props.onIdValidated(true);
-          }
-        }
-      );
-    });
-  },
-
   componentWillReceiveProps: function(nextProps){
     if(nextProps.userId !== this.props.userId) {
-      this.getProfile(nextProps.userId);
+      this.setState({
+        profileData: nextProps.profile
+      });
     }
-
-  },
-
-  componentWillMount: function() {
-    this.getProfile(this.props.userId);
   },
 
   handleFieldChange: function(field, newValue) {
