@@ -1,4 +1,7 @@
 {
+  "adminEditWelcome": "Modification de l'utilisateur #__userId__",
+  "myAccountWelcome": "Mon compte",
+  "invalidUserId": "Identifiant d'utilisateur invalide",
   "signin": "Veuillez vous connecter",
   "loggedin": "Vous êtes connectés! Vous serez redigirés vers l'accueil.",
   "field_email" : "Courriel",
