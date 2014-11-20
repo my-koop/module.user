@@ -25,7 +25,6 @@ module.exports = {
 
   // params: {userId: number; silent?: boolean}
   // callback?: (err, profile, userId) => void
-  requestId: 0,
   getRemoteProfile: function(params, callback) {
     var userId = params.userId;
     var self = this;

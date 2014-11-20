@@ -1,11 +1,11 @@
-﻿var React                = require("react");
-var BSCol                = require("react-bootstrap/Col");
+﻿var React = require("react");
+var BSCol = require("react-bootstrap/Col");
 
-var MKUserProfileWithTabs= require("./UserProfileWithTabs");
+var MKUserProfileWithTabs = require("./UserProfileWithTabs");
 
 var localSession = require("session").local;
-var __ = require("language").__;
-var _  = require("lodash");
+var __           = require("language").__;
+var _            = require("lodash");
 
 var MyAccountPage = React.createClass({
 
@@ -18,7 +18,7 @@ var MyAccountPage = React.createClass({
         </h1>
         <MKUserProfileWithTabs
           current
-          userId={localSession.user && localSession.user.id}
+          userId={localSession.user.id}
           metaPlugins="myAccountPlugins"
         />
       </BSCol>
