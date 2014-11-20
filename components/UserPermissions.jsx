@@ -12,10 +12,12 @@ var UserPermissions = React.createClass({
   },
 
   render: function() {
-    <MKPermissionSet
-      userPerms={self.props.userPerms}
-      refPerms={modulePermissions}
-    />
+    return (
+      <MKPermissionSet
+        userPerms={this.props.userPerms}
+        refPerms={modulePermissions}
+      />
+    );
   }
 });
 

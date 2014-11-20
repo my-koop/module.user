@@ -13,12 +13,31 @@ function nameForPermission(permPath) {
 var Permission = React.createClass({
   render: function() {
     var inputLabel = nameForPermission(this.props.permPath);
+    var isCheckbox = typeof this.props.refPerm === "boolean";
+
+    if (isCheckbox) {
+      return (
+        <form className="form-horizontal">
+          <BSInput
+            type="checkbox"
+            label={inputLabel}
+            wrapperClassName="col-md-4"
+            checked={this.props.userPerm}
+          />
+        </form>
+      );
+    }
 
     return (
-      <BSInput
-        type="number"
-        label="Test"
-      />
+      <form className="form-horizontal">
+        <BSInput
+          type="number"
+          label={inputLabel}
+          labelClassName="col-md-4"
+          wrapperClassName="col-md-4"
+          value={this.props.userPerm}
+        />
+      </form>
     );
   }
 });

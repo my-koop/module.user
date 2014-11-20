@@ -28,7 +28,11 @@ module.exports = {
   getRemoteProfile: function(params, callback) {
     var userId = params.userId;
     var self = this;
-    actions.user.getProfile(
+    var action = this.props.current ?
+      actions.user.getPublicProfile
+    : actions.user.getFullProfile;
+
+    action(
       {
         silent: params.silent,
         data: {

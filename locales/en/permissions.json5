@@ -2,7 +2,7 @@
   user: {
     __description: "User",
     profile: {
-      __description: "User Profile"
+      __description: "User Profile",
       full: "Access all data of any user profile",
       edit: "Edit the profile of any user"
     }

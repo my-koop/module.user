@@ -2,6 +2,8 @@ var React     = require("react");
 
 var MKPermission = require("./Permission");
 
+var __ = require("language").__;
+
 function nameForPermissionSet(permPath) {
   var i18nkey = "permissions::" + permPath.join(".") + ".__description";
 
@@ -20,13 +22,16 @@ var PermissionSet = React.createClass({
     var self = this;
 
     var permList = _.map(this.props.refPerms, function(permission, permissionName) {
-      var newPermPath = _.clone(this.props.permPath);
-      newPermPath.push(permissionName);
+      var newPermPath = self.props.permPath.concat(permissionName);
+
 
       // Is it further nested?
       if (_.isPlainObject(permission)) {
+        var permissionSetName = nameForPermissionSet(newPermPath);
+
         return (
           <li>
+            {permissionSetName}
             <PermissionSet
               userPerms={self.props.userPerms[permissionName]}
               refPerms={permission}
@@ -38,7 +43,7 @@ var PermissionSet = React.createClass({
 
       // A leaf!
       return (
-        <li>
+        <li style={{whiteSpace: "nowrap", display: "inline"}}>
           <MKPermission
             userPerm={self.props.userPerms[permissionName]}
             refPerm={permission}

@@ -12,6 +12,7 @@
   "button_redirect_lostpwd" : "Forgot your password?",
   "myaccount_tab_profile" : "Profile",
   "myaccount_tab_password" : "Password",
+  "useredit_tab_permissions" : "Permissions",
   "update_password_success" : "Password updated successfully!",
   "field_old_password" : "Current Password",
   "field_new_password" : "New Password",
@@ -63,5 +64,6 @@
   "update_profile_failure_message" : "Unable to update your profile.",
   "update_profile_success_message" : "Your profile has been updated.",
   "adminEditInvalidID" : "This user Id isn't linked to a user.",
-  "adminEditIdField" : "User Id"
+  "adminEditIdField" : "User Id",
+  "permissions_edit_instructions": "To remove a permission, leave the checkbox unchecked or the number field empty."
 }

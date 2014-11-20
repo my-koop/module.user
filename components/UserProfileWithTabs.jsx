@@ -86,7 +86,7 @@ var UserProfileWithTabs = React.createClass({
         var PluginComponent = plugin.component();
         return (
           <BSTabPane key={index} tab={__(plugin.titleKey)}>
-            <BSCol md={4} sm={6}>
+            <BSCol md={12} sm={12}>
               <PluginComponent
                 userId={userId}
                 profile={self.getUserProfile()}
