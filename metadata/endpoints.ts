@@ -43,6 +43,10 @@ var endpoints = {
       path: "/users/:id",
       method: "get"
     },
+    exists: {
+      path: "/users/:id/exists",
+      method: "get"
+    },
     register: {
       path: "/users",
       method: "post"

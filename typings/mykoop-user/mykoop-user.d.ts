@@ -27,6 +27,15 @@ declare module mkuser {
   }
 
   export interface Module extends mykoop.IModule {
+    userExists(
+      params: User.IdExists.Params,
+      callback: User.IdExists.Callback
+    );
+    __userExists(
+      connection: mysql.IConnection,
+      params: User.IdExists.Params,
+      callback: User.IdExists.Callback
+    );
     login(
       loginInfo: UserInterfaces.LoginRequestData,
       callback: (err: Error, result?: LoginResponse

@@ -35,6 +35,17 @@ export function attachControllers(
     logout
   );
   binder.attach(
+    {
+      endPoint: endPoints.user.exists
+    },
+    binder.makeSimpleController("userExists", function(req: Express.Request) {
+      var params: User.IdExists.Params = {
+        id: parseInt(req.param("id")) || 0
+      };
+      return params;
+    })
+  );
+  binder.attach(
     {endPoint: endPoints.user.getProfile},
     getProfile
   );

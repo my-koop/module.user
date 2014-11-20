@@ -23,3 +23,14 @@ declare module UserInterfaces {
     confNewPassword: string;
   }
 }
+
+declare module User {
+  module IdExists {
+    export interface Params {
+      id: number;
+    }
+    export interface Callback {
+      (err?) : void;
+    }
+  }
+}
