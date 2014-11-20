@@ -36,11 +36,11 @@ export function attachControllers(
   );
   binder.attach(
     {
-      endPoint: endPoints.user.idExists
+      endPoint: endPoints.user.exists
     },
-    binder.makeSimpleController("idExists", function(req: Express.Request) {
+    binder.makeSimpleController("userExists", function(req: Express.Request) {
       var params: User.IdExists.Params = {
-        id: parseInt(req.param("id"))
+        id: parseInt(req.param("id")) || 0
       };
       return params;
     })

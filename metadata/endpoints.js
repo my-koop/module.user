@@ -42,7 +42,7 @@ var endpoints = {
             path: "/users/:id",
             method: "get"
         },
-        idExists: {
+        exists: {
             path: "/users/:id/exists",
             method: "get"
         },

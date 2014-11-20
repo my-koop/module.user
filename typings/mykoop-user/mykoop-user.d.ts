@@ -27,11 +27,11 @@ declare module mkuser {
   }
 
   export interface Module extends mykoop.IModule {
-    idExists(
+    userExists(
       params: User.IdExists.Params,
       callback: User.IdExists.Callback
     );
-    __idExists(
+    __userExists(
       connection: mysql.IConnection,
       params: User.IdExists.Params,
       callback: User.IdExists.Callback

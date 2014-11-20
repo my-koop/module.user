@@ -23,18 +23,18 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     this.db = db;
   }
 
-  idExists(
+  userExists(
     params: User.IdExists.Params,
     callback: User.IdExists.Callback
   ) {
     this.callWithConnection(
-      this.__idExists,
+      this.__userExists,
       params,
       callback
     );
   }
 
-  __idExists(
+  __userExists(
     connection: mysql.IConnection,
     params: User.IdExists.Params,
     callback: User.IdExists.Callback
