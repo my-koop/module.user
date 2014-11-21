@@ -4,8 +4,7 @@ var BSInput = require("react-bootstrap/Input");
 var actions = require("actions");
 var MKAlert = require("mykoop-core/components/Alert");
 
-var __           = require("language").__;
-var _            = require("lodash");
+var __ = require("language").__;
 
 var PasswordRecoveryPage = React.createClass({
 
@@ -19,27 +18,23 @@ var PasswordRecoveryPage = React.createClass({
       feedbackMessage: null
     }
   },
-  getSuccessStyle: function(state) {
-    switch(state) {
-      case 1: return "success";
-      case 2: return "error";
-      case 3: return "warning";
-      default: return null;
-    }
-  },
+
   onSubmit: function(e){
     e.preventDefault();
     var self = this;
-    actions.user.passwordRecovery({
-      data: {
-        email: self.state.email
-      }
-    }, function(err){
+    actions.user.passwordRecovery(
+      {
+        data: {
+          email: self.state.email
+        }
+      },
+      function(err){
         self.setState({
           hasError: !!err,
           feedbackMessage: __("user::passwordRecoveryRequest", { context: !!err ? "fail": "success" } )
-        })
-    });
+        });
+      }
+    );
   },
 
   render: function() {
@@ -61,7 +56,6 @@ var PasswordRecoveryPage = React.createClass({
         <form onSubmit={this.onSubmit}>
           <BSInput
             type="text"
-            bsStyle={this.getSuccessStyle(this.state.emailStyle)}
             placeholder={__("user::passwordRecoveryEmailPlaceholder")}
             valueLink={this.linkState("email")}
           />

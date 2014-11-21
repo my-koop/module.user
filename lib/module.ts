@@ -316,15 +316,13 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
   }
 
   passwordRecovery(email, callback: (err: Error) => void){
-    //Open DB connection
     this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
         return callback(err);
       }
       async.waterfall([
-        //Try to get salt with email
         function getSaltWithEmail(next) {
-          logger.verbose("Getting salt with email: " + email)
+          logger.verbose("Getting salt with email: " + email);
           connection.query(
             "SELECT salt FROM user WHERE email = ?",
             [email],
@@ -345,13 +343,13 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           var password = generatePassword(8);
           nodepwd.hash(password, salt, function(err, hash){
             next(err, password, hash);
-            });
+          });
         },
         function updateUserPassword(password, passwordHash, next){
           logger.verbose("Updating password to " + password);
           connection.query("UPDATE user SET pwdhash = ? WHERE email = ?",
             [passwordHash, email],
-            function(err,rows){
+            function(err, rows){
               var myError = null;
               if(err) {
                 myError = new utils.errors.DatabaseError(err, "Databse error while updating user password");
