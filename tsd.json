@@ -10,6 +10,9 @@
     },
     "mysql/mysql.d.ts": {
       "commit": "70c72771ee81502e36ce3138c287944e1be32173"
+    },
+    "lodash/lodash.d.ts": {
+      "commit": "9c42eac834072f1bb3ed3c7e8551f8ec0770a937"
     }
   },
   "dependencies": {

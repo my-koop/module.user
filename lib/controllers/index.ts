@@ -18,6 +18,7 @@ import getSession = require("./getSession");
 import registerUser = require("./registerUser");
 import updateProfile = require("./updateProfile");
 import updatePassword = require("./updatePassword");
+import updatePermissions = require("./updatePermissions");
 
 export function attachControllers(
   binder: utils.ModuleControllersBinder<mkuser.Module>
@@ -72,6 +73,11 @@ export function attachControllers(
       attachParamUserId,
       updateProfile
     ]
+  );
+  //FIXME: Protect this with permissions.
+  binder.attach(
+    {endPoint: endPoints.user.updatePermissions},
+    updatePermissions
   );
   binder.attach(
     {

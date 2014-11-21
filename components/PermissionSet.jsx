@@ -1,6 +1,10 @@
 var React     = require("react");
 
+var BSInput  = require("react-bootstrap/Input");
+
 var MKPermission = require("./Permission");
+
+var _ = require("lodash");
 
 var __ = require("language").__;
 
@@ -13,8 +17,45 @@ function nameForPermissionSet(permPath) {
 var PermissionSet = React.createClass({
   getDefaultProps: function() {
     return {
-      userPerms: {},
       permPath: []
+    };
+  },
+
+  updateSection: function(sectionName, e) {
+    var checked = e.target.checked;
+    var requestChange = this.props.permissionLink.requestChange;
+    var permission = this.props.permissionLink.value;
+
+    if (checked) {
+      permission[sectionName] = true;
+    } else {
+      delete permission[sectionName];
+    }
+
+    requestChange && requestChange(permission);
+  },
+
+  createPermissionLink: function(permissionName, isLeaf) {
+    var self = this;
+    var permissions = self.props.permissionLink.value;
+    var requestChange = self.props.permissionLink.requestChange || function(){};
+
+    return {
+      value: permissions[permissionName] === 0 ?
+        0 :
+        permissions[permissionName] || (!isLeaf && {}) || undefined,
+      requestChange: function(newPermissions) {
+        if (
+          newPermissions === 0 ||
+          (newPermissions && !_.isEqual(newPermissions, {}))
+        ) {
+          permissions[permissionName] = newPermissions;
+        } else {
+          delete permissions[permissionName];
+        }
+
+        requestChange(permissions);
+      }
     };
   },
 
@@ -24,30 +65,50 @@ var PermissionSet = React.createClass({
     var permList = _.map(this.props.refPerms, function(permission, permissionName) {
       var newPermPath = self.props.permPath.concat(permissionName);
 
-
       // Is it further nested?
       if (_.isPlainObject(permission)) {
         var permissionSetName = nameForPermissionSet(newPermPath);
+        var permissionValue = self.props.permissionLink.value[permissionName];
+        var overridesTree = !_.isUndefined(permissionValue) &&
+                            !_.isPlainObject(permissionValue);
 
         return (
-          <li>
-            {permissionSetName}
-            <PermissionSet
-              userPerms={self.props.userPerms[permissionName]}
-              refPerms={permission}
-              permPath={newPermPath}
-            />
+          <li key={permissionName}>
+            {!self.props.readOnly ?
+              <form className="form-horizontal">
+                <BSInput
+                  type="checkbox"
+                  label={permissionSetName}
+                  checked={overridesTree}
+                  disabled={self.props.disabled}
+                  onChange={self.updateSection.bind(null, permissionName)}
+                />
+              </form> :
+              permissionSetName
+            }
+            {!self.props.readOnly && self.props.permissionLink.value ?
+              <PermissionSet
+                refPerms={permission}
+                permPath={newPermPath}
+                permissionLink={self.createPermissionLink(permissionName)}
+                readOnly={self.props.readOnly}
+                disabled={self.props.disabled || overridesTree}
+              /> :
+              null
+            }
           </li>
         );
       }
 
       // A leaf!
       return (
-        <li style={{whiteSpace: "nowrap", display: "inline"}}>
+        <li key={permissionName} className="permissions-leaf-wrapper">
           <MKPermission
-            userPerm={self.props.userPerms[permissionName]}
             refPerm={permission}
             permPath={newPermPath}
+            disabled={self.props.disabled}
+            readOnly={self.props.readOnly}
+            permissionLink={self.createPermissionLink(permissionName, true)}
           />
         </li>
       );

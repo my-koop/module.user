@@ -8,6 +8,8 @@ var traverse = require("traverse");
 import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
 
+var _ = require("lodash");
+
 var DatabaseError = utils.errors.DatabaseError;
 var ApplicationError = utils.errors.ApplicationError;
 import AuthenticationError = require("./classes/AuthenticationError");
@@ -23,7 +25,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
       // Called after traversing all the children, delete ourselves if we don't
       // have children anymore (deleted themselves).
       this.post(function (parentPerm) {
-        if (parentPerm.node === {}) {
+        if (_.isEqual(parentPerm.node, {})) {
           this.delete();
         }
       });
@@ -37,7 +39,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
       }
     });
 
-    return permissions;
+    return JSON.stringify(permissions);
   }
 
   static deserializePermissions(permissions) {
@@ -199,6 +201,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           }
 
           if(rows.length === 1) {
+            rows[0].perms = UserModule.deserializePermissions(rows[0].perms);
             return callback(null, new UserProfile(rows[0]));
           }
           callback(new Error("No result"), null);
@@ -288,6 +291,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
       );//test email unique query
     });//getConnection
   }
+
   updatePassword(id:number, passwords: UserInterfaces.updatePassword, callback: (err: Error) => void) {
     var self: mkuser.Module = this;
     //get salt and password hash with ID
@@ -375,7 +379,27 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     );
   }
 
+  private updatePermissions(
+    id:number,
+    newPermissions,
+    callback: (err: Error, result: boolean) => void
+  ){
+    var self: mkuser.Module =  this;
+    this.db.getConnection(function(err, connection, cleanup) {
+        if(err) {
+          return callback(err, null);
+        }
 
+        var query = connection.query(
+          "UPDATE user SET perms = ? WHERE id = ?",
+          [UserModule.serializePermissions(newPermissions), id],
+          function(err, rows) {
+            cleanup();
+            return callback(err, !err && rows.affectedRows === 1);
+          }//function
+        );//update query
+    });//getConnection
+  }
 }//class
 
 export = UserModule;

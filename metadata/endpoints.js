@@ -34,6 +34,10 @@ var endpoints = {
             path: "/users/:id",
             method: "put"
         },
+        updatePermissions: {
+            path: "/users/:id/permissions",
+            method: "put"
+        },
         login: {
             path: "/users/login",
             method: "post"
