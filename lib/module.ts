@@ -14,14 +14,16 @@ import AuthenticationError = require("./classes/AuthenticationError");
 
 class UserModule extends utils.BaseModule implements mkuser.Module {
   db: mkdatabase.Module;
-
+  communications : mkcommunications.Module;
   init() {
     var db = <mkdatabase.Module>this.getModuleManager().get("database");
     var routerModule = <mykoop.Router>this.getModuleManager().get("router");
+    var communications = <mkcommunications.Module>this.getModuleManager().get("communication");
 
     controllerList.attachControllers(new utils.ModuleControllersBinder(this));
 
     this.db = db;
+    this.communications = communications;
   }
 
   userExists(
@@ -341,13 +343,12 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         function generateNewPassword(salt, next){
           logger.verbose("Generating new password with salt:" + salt.substr(0,10) + " ...");
           var password = generatePassword(8);
-
           nodepwd.hash(password, salt, function(err, hash){
             next(err, password, hash);
             });
         },
         function updateUserPassword(password, passwordHash, next){
-           logger.verbose("Updating password to " + password);
+          logger.verbose("Updating password to " + password);
           connection.query("UPDATE user SET pwdhash = ? WHERE email = ?",
             [passwordHash, email],
             function(err,rows){
@@ -364,11 +365,15 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         },
         function sendEmail(password, next){
           logger.verbose("Update successful, sending email to user");
-          //get communication module
+          var emailMessage = "Your new password / votre nouveau mot de passe: " + password ;
           //prepare SendEmail object
+          var emailParams = {
+            subject: "CoopBécik - New Password / Nouveau mot de passe",
+            message: emailMessage,
+            to: email
+          };
           // call sendEmail function
-          logger.verbose("Email sent.");
-          next();
+          this.communications.sendEmail(emailParams, next);
         }
       ],
       function(err){
