@@ -18,7 +18,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
   init() {
     var db = <mkdatabase.Module>this.getModuleManager().get("database");
     var routerModule = <mykoop.Router>this.getModuleManager().get("router");
-    var communications = <mkcommunications.Module>this.getModuleManager().get("communication");
+    var communications = <mkcommunications.Module>this.getModuleManager().get("communications");
 
     controllerList.attachControllers(new utils.ModuleControllersBinder(this));
 
