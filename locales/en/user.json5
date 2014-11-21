@@ -63,5 +63,11 @@
   "update_profile_failure_message" : "Unable to update your profile.",
   "update_profile_success_message" : "Your profile has been updated.",
   "adminEditInvalidID" : "This user Id isn't linked to a user.",
-  "adminEditIdField" : "User Id"
+  "adminEditIdField" : "User Id",
+  "passwordRecoveryRequest_fail" : "Unable to recover your password. Double check the entered email",
+  "passwordRecoveryRequest_success" : "An email containing your new password has been sent.",
+  "passwordRecoveryWelcome" : "Password Recovery",
+  "passwordRecoveryExplanation" : "Enter the email you used to register an account. You will receive a new password by email.",
+  "passwordRecoverySubmit" : "Recover",
+  "passwordRecoveryEmailPlaceholder" : "exemple@email.com"
 }
