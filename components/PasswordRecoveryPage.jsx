@@ -1,10 +1,13 @@
 ﻿var React = require("react");
 var BSCol = require("react-bootstrap/Col");
+var BSInput = require("react-bootstrap/Input");
+var actions     = require("actions");
+
 
 var __           = require("language").__;
 var _            = require("lodash");
 
-var MyAccountPage = React.createClass({
+var PasswordRecoveryPage = React.createClass({
 
   mixins: [React.addons.LinkedStateMixin],
 
@@ -27,12 +30,12 @@ var MyAccountPage = React.createClass({
     var self = this;
     actions.user.passwordRecovery({
       data: {
-        email: this.state.email
+        email: self.state.email
       }
-    }. function(err){
-
-    })
-  }
+    }, function(err){
+        console.log(err);
+    });
+  },
 
   render: function() {
     var self = this;
@@ -63,4 +66,4 @@ var MyAccountPage = React.createClass({
   }
 });
 
-module.exports = MyAccountPage;
+module.exports = PasswordRecoveryPage;
