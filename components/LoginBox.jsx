@@ -70,7 +70,7 @@ var LoginBox = React.createClass({
   },
 
   onSubmit: function(e) {
-    e.preventDefault();
+    //e.preventDefault();
     if(!this.basicFormValidation()) {
       return;
     }
@@ -121,8 +121,8 @@ var LoginBox = React.createClass({
         website.render();
       }
     );
-
   },
+
   redirect: function(location) {
     console.log("redirecting");
     switch(location) {
@@ -134,8 +134,8 @@ var LoginBox = React.createClass({
         break;
       default: break;
     };
-
   },
+
   render: function() {
     return (
       <div>
@@ -145,12 +145,20 @@ var LoginBox = React.createClass({
         <MKAlert bsStyle="success">
           {this.state.successMessage}
         </MKAlert>
-        <form onSubmit={this.onSubmit}>
+        <iframe id="rememberme" name="rememberme" src="about:blank" className="hidden"/>
+        <form
+          target="rememberme"
+          onSubmit={this.onSubmit}
+          autoComplete="on"
+          method="post"
+          action="about:blank"
+        >
           <BSInput
             type="email"
             placeholder={__("user::field_email")}
             label={__("user::field_email")}
             labelClassName="sr-only"
+            name="username"
             bsStyle={this.getSuccessStyle(this.state.emailFieldState)}
             hasFeedback
             valueLink={this.linkState("email")}
@@ -160,6 +168,7 @@ var LoginBox = React.createClass({
             placeholder={__("user::field_password")}
             label={__("user::field_password")}
             labelClassName="sr-only"
+            name="password"
             bsStyle={this.getSuccessStyle(this.state.passwordFieldState)}
             hasFeedback
             valueLink={this.linkState("password")}
