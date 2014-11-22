@@ -145,7 +145,7 @@ var LoginBox = React.createClass({
         <MKAlert bsStyle="success">
           {this.state.successMessage}
         </MKAlert>
-        <iframe id="rememberme" name="rememberme" src="about:blank" className="hidden"/>
+        <iframe name="rememberme" src="about:blank" className="hidden"/>
         <form
           target="rememberme"
           onSubmit={this.onSubmit}
