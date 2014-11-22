@@ -66,6 +66,8 @@
   "adminEditInvalidID" : "Ce numéro d'utilisateur n'est pas relié à compte",
   "adminEditIdField" : "Numéro d'utilisateur",
   "permissions_edit_instructions": "Pour retirer un privilège, laisser la case décochée ou le champ vide. Si la case d'une section est cochée, tous les privilèges actuels et futurs de cette section seront accordés à l'utilisteur.",
+  "permissions_edit_hasall": "Possède tous les privilèges actuels et futurs sous cette catégorie",
   "permissions_edit_maximum": "Valeur maximale de __maximum__. Les plus grandes valeurs seront ignorées.",
+  "permissions_edit_nolimit": "Aucune limite",
   "permissions_edit_update": "Mettre à jour"
 }

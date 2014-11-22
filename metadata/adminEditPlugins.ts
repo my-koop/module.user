@@ -1,9 +1,11 @@
-var adminEditPlugins = [{
-  component: {
-    resolve: "component",
-    value: "ProfilePermissionsUpdateForm"
-  },
-  titleKey: "user::useredit_tab_permissions"
-}];
+var adminEditPlugins = {
+  permissions: {
+    component: {
+      resolve: "component",
+      value: "ProfilePermissionsUpdateForm"
+    },
+    titleKey: "user::useredit_tab_permissions"
+  }
+};
 
 export = adminEditPlugins;

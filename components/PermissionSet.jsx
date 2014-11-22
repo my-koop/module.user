@@ -4,8 +4,7 @@ var BSInput  = require("react-bootstrap/Input");
 
 var MKPermission = require("./Permission");
 
-var _ = require("lodash");
-
+var _  = require("lodash");
 var __ = require("language").__;
 
 function nameForPermissionSet(permPath) {
@@ -84,18 +83,21 @@ var PermissionSet = React.createClass({
                   onChange={self.updateSection.bind(null, permissionName)}
                 />
               </form> :
-              permissionSetName
+              <p>
+                {permissionSetName}
+                {overridesTree ?
+                  <em> ({__("user::permissions_edit_hasall")})</em> :
+                  null
+                }
+              </p>
             }
-            {!self.props.readOnly && self.props.permissionLink.value ?
-              <PermissionSet
-                refPerms={permission}
-                permPath={newPermPath}
-                permissionLink={self.createPermissionLink(permissionName)}
-                readOnly={self.props.readOnly}
-                disabled={self.props.disabled || overridesTree}
-              /> :
-              null
-            }
+            <PermissionSet
+              refPerms={permission}
+              permPath={newPermPath}
+              permissionLink={self.createPermissionLink(permissionName)}
+              readOnly={self.props.readOnly}
+              disabled={self.props.disabled || overridesTree}
+            />
           </li>
         );
       }

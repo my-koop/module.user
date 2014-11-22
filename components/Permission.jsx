@@ -58,19 +58,19 @@ var Permission = React.createClass({
             <BSInput
               type="checkbox"
               label={inputLabel}
-              checked={this.props.permissionLink.value}
+              checked={this.props.permissionLink.value || false}
               disabled={self.props.disabled}
               onChange={this.updateCheckboxPermission}
             />
           </form> :
-          <span>{this.props.permissionLink.value ? inputLabel : null}</span>
+          <p>{(this.props.permissionLink.value || self.props.disabled) ? inputLabel : null}</p>
       );
     }
 
     var maximum = this.props.refPerm || undefined;
 
     var valueLink = {
-      value: this.state.inputValue,
+      value: !_.isUndefined(this.state.inputValue) ? this.state.inputValue : "",
       requestChange: function(newValue) {
         self.setState({
           inputValue: newValue
@@ -95,7 +95,17 @@ var Permission = React.createClass({
               disabled={self.props.disabled}
               onBlur={this.updateNumberInputPermission}
             /> :
-            valueLink.value ? inputLabel : null
+            (valueLink.value || self.props.disabled) ?
+              <p>
+                {inputLabel}:{" "}
+                <strong>
+                  {(valueLink.value === 0 || self.props.disabled) ?
+                    __("user::permissions_edit_nolimit") :
+                    valueLink.value
+                  }
+                </strong>
+              </p> :
+              null
           }
         </BSCol>
       </BSRow>
