@@ -12,6 +12,10 @@ var __ = require("language").__;
 var _  = require("lodash");
 var metadata = require("dynamic-metadata");
 
+function getHash(tab) {
+  return tab.hash || /(.*::)?(.*)/.exec(tab.titleKey || "")[2];
+}
+
 var UserProfileWithTabs = React.createClass({
   mixins: [MKGetProfileMixin],
 
@@ -21,13 +25,53 @@ var UserProfileWithTabs = React.createClass({
     metaPlugins: React.PropTypes.string
   },
 
+  getInitialState: function() {
+    var tabsInfo = this.getTabsInfo(this.props.metaPlugins);
+    var key = _.indexOf(
+      _.map(tabsInfo, function(tab) {return getHash(tab);}),
+      window.location.hash.substr(1)
+    );
+    return {
+      tabsInfo: tabsInfo,
+      selectedTabKey: ~key && key || 0
+    };
+  },
+
   componentWillMount: function () {
     var self = this;
     this.getRemoteProfile({userId: this.props.userId});
   },
 
   componentWillReceiveProps: function (nextProps) {
-    this.getRemoteProfile({userId: nextProps.userId});
+    if(this.props.userId !== nextProps.userId) {
+      this.getRemoteProfile({userId: nextProps.userId});
+    }
+    if(this.props.metaPlugins !== nextProps.metaPlugins) {
+      var tabsInfo = this.getTabsInfo(nextProps.metaPlugins);
+      this.setState({
+        tabsInfo: tabsInfo
+      });
+    }
+  },
+
+  getTabsInfo: function(metaPlugins) {
+    var plugins = metaPlugins ?
+      _.toArray(metadata[metaPlugins])
+      : [];
+    var tabsInfo = [
+      {
+        component: function() { return MKProfileUpdateForm; },
+        titleKey: "user::myaccount_tab_profile"
+      },
+      {
+        component: function() { return MKPasswordChangeForm; },
+        titleKey: "user::myaccount_tab_password"
+      }
+    ].concat(plugins).filter(function(tab) {
+      // avoid bad plugins
+      return tab && _.isString(tab.titleKey);
+    });
+    return tabsInfo;
   },
 
   render: function() {
@@ -35,21 +79,9 @@ var UserProfileWithTabs = React.createClass({
 
     var content = null;
     var userId = this.getUserId();
-    var plugins = this.props.metaPlugins ?
-      _.toArray(metadata[this.props.metaPlugins])
-      : [];
-    if(userId !== null) {
-      var tabsInfo = [
-        {
-          component: function() { return MKProfileUpdateForm; },
-          titleKey: "user::myaccount_tab_profile"
-        },
-        {
-          component: function() { return MKPasswordChangeForm; },
-          titleKey: "user::myaccount_tab_password"
-        }
-      ].concat(plugins);
 
+    if(userId !== null) {
+      var tabsInfo = this.state.tabsInfo;
       content = _.map(tabsInfo, function(plugin, index) {
         var PluginComponent = plugin.component();
         return (
@@ -64,8 +96,17 @@ var UserProfileWithTabs = React.createClass({
           </BSTabPane>
         );
       });
+      function tabSelected(key) {
+        window.location.href = "#" + getHash(tabsInfo[key]);
+        self.setState({
+          selectedTabKey: key
+        });
+      }
       content = (
-        <BSTabbedArea defaultActiveKey={0}>
+        <BSTabbedArea
+          activeKey={self.state.selectedTabKey}
+          onSelect={tabSelected}
+        >
           {content}
         </BSTabbedArea>
       );
