@@ -37,7 +37,7 @@ var PermissionSet = React.createClass({
   createPermissionLink: function(permissionName, isLeaf) {
     var self = this;
     var permissions = self.props.permissionLink.value;
-    var requestChange = self.props.permissionLink.requestChange || function(){};
+    var requestChange = self.props.permissionLink.requestChange || _.noop;
 
     return {
       value: permissions[permissionName] === 0 ?

@@ -95,8 +95,7 @@ var ProfilePermissionsUpdateForm = React.createClass({
             <p>
               {__("user::permissions_edit_instructions")}
             </p> :
-            null
-          ,
+            null,
           <MKUserPermissions
             permissionLink={permissionLink}
             readOnly={!userCanEditPermissions}

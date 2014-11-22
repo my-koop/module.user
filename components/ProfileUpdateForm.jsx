@@ -73,10 +73,6 @@ var ProfileUpdateForm = React.createClass({
     })
   },
 
-  onPermissionsChanged: function() {
-    //TODO.
-  },
-
   onSubmit: function(e){
     e.preventDefault();
     var self = this;
