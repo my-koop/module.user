@@ -70,7 +70,6 @@ var LoginBox = React.createClass({
   },
 
   onSubmit: function(e) {
-    //e.preventDefault();
     if(!this.basicFormValidation()) {
       return;
     }
