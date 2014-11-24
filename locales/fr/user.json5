@@ -12,6 +12,7 @@
   "button_redirect_lostpwd" : "Oublié votre mot de passe?",
   "myaccount_tab_profile" : "Profil",
   "myaccount_tab_password" : "Mot de passe",
+  "useredit_tab_permissions" : "Privilèges",
   "update_password_success" : "Votre mot de passe a été changé!",
   "field_old_password" : "Mot de passe Actuel",
   "field_new_password" : "Nouveau mot de passe",
@@ -63,5 +64,10 @@
   "update_profile_failure_message" : "La mise à jour a échoué",
   "update_profile_success_message" : "Votre profile a été mis à jour",
   "adminEditInvalidID" : "Ce numéro d'utilisateur n'est pas relié à compte",
-  "adminEditIdField" : "Numéro d'utilisateur"
+  "adminEditIdField" : "Numéro d'utilisateur",
+  "permissions_edit_instructions": "Pour retirer un privilège, laisser la case décochée ou le champ vide. Si la case d'une section est cochée, tous les privilèges actuels et futurs de cette section seront accordés à l'utilisteur.",
+  "permissions_edit_hasall": "Possède tous les privilèges actuels et futurs sous cette catégorie",
+  "permissions_edit_maximum": "Valeur maximale de __maximum__. Les plus grandes valeurs seront ignorées.",
+  "permissions_edit_nolimit": "Aucune limite",
+  "permissions_edit_update": "Mettre à jour"
 }

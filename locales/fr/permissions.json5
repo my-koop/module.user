@@ -1,0 +1,15 @@
+{
+  user: {
+    __description: "Utilisateur",
+    profile: {
+      __description: "Profil utilisteur",
+      full: "Accéder à toutes les données de tout utilisateur",
+      edit: "Modifier le profil de tout utilisateur",
+      permissions: {
+        __description: "Privilèges",
+        view: "Afficher les privilèges de tout utilisateur",
+        edit: "Modifier les privilèges de tout utilisateur"
+      }
+    },
+  }
+}

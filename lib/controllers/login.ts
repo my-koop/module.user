@@ -30,7 +30,8 @@ function login(req: express.Request, res: express.Response) {
 
     var userSessionData = {
       id: userProfile.id,
-      email: userProfile.email
+      email: userProfile.email,
+      perms: userProfile.perms
     };
 
     session.user = userSessionData;

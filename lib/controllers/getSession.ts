@@ -11,7 +11,8 @@ function getSession(req: express.Request, res: express.Response) {
 
   res.send({
     id: session.id,
-    email: session.email
+    email: session.email,
+    perms: session.perms
   });
 }
 
