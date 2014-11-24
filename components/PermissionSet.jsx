@@ -1,4 +1,5 @@
 var React     = require("react");
+var PropTypes = React.PropTypes;
 
 var BSInput  = require("react-bootstrap/Input");
 
@@ -14,6 +15,21 @@ function nameForPermissionSet(permPath) {
 }
 
 var PermissionSet = React.createClass({
+  propTypes: {
+    permissionLink: PropTypes.shape({
+      value: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.bool,
+        PropTypes.number
+      ]).isRequired,
+      requestChange: PropTypes.func
+    }),
+    permPath: PropTypes.arrayOf(React.PropTypes.string).isRequired,
+    refPerms: PropTypes.object.isRequired,
+    disabled: PropTypes.bool,
+    readOnly: PropTypes.bool
+  },
+
   getDefaultProps: function() {
     return {
       permPath: []

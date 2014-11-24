@@ -1,4 +1,5 @@
 var React = require("react");
+var PropTypes = React.PropTypes;
 
 var BSButton = require("react-bootstrap/Button");
 
@@ -13,6 +14,13 @@ var validatePermissions = require("mykoop-user/lib/common/validatePermissions");
 var __ = require("language").__;
 
 var ProfilePermissionsUpdateForm = React.createClass({
+  propTypes: {
+    userId: PropTypes.number.isRequired,
+    profile: PropTypes.shape({
+      permissions: PropTypes.object.isRequired,
+    }).isRequired
+  },
+
   getInitialState: function() {
     return {
       permissions: this.props.profile.permissions
@@ -82,32 +90,39 @@ var ProfilePermissionsUpdateForm = React.createClass({
     return (
       <div>
         {userCanViewPermissions ? [
-          <MKAlert bsStyle="danger">
+          <MKAlert bsStyle="danger" key="danger">
             {this.state.error ?
               __("errors::error", {context: this.state.error.context}) :
               null
             }
           </MKAlert>,
-          <MKAlert bsStyle="success">
+          <MKAlert bsStyle="success" key="success">
             {this.state.success ? __("success") : null}
           </MKAlert>,
-          userCanEditPermissions ?
-            <p>
-              {__("user::permissions_edit_instructions")}
-            </p> :
-            null,
+          <div key="instructions">
+            {userCanEditPermissions ?
+              <p>
+                {__("user::permissions_edit_instructions")}
+              </p> :
+              null
+            }
+          </div>,
           <MKUserPermissions
+            key="perms"
             permissionLink={permissionLink}
             readOnly={!userCanEditPermissions}
           />,
-          userCanEditPermissions ?
-            <BSButton
-              bsStyle="primary"
-              onClick={this.savePermissions}
-            >
-              {__("user::permissions_edit_update")}
-            </BSButton> :
-            null
+          <div key="button">
+            {userCanEditPermissions ?
+              <BSButton
+                bsStyle="primary"
+                onClick={this.savePermissions}
+              >
+                {__("user::permissions_edit_update")}
+              </BSButton> :
+              null
+            }
+          </div>
           ] :
           <MKAlert bsStyle="danger">
             {__("errors::error", {context: "nopermissions"})}

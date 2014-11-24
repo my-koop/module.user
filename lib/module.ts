@@ -164,7 +164,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
 
           // All logged in users have this permission, it makes it easy to
           // "demand" that a user be logged in through any permission tool.
-          computedPermissions.loggedin = true;
+          computedPermissions.loggedIn = true;
 
           next();
         }

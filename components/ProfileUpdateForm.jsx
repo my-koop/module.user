@@ -97,8 +97,7 @@ var ProfileUpdateForm = React.createClass({
           usageNote:       profileData.usageNote,
           usageFrequency:  profileData.usageFrequency,
           referral:        profileData.referral,
-          referralSpecify: profileData.referralSpecify,
-          permissions:     profileData.permissions
+          referralSpecify: profileData.referralSpecify
         }
       },function(err, result){
           if(err || !result.updateSuccess){

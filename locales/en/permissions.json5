@@ -10,29 +10,6 @@
         view: "View the permissions of any user",
         edit: "Edit the permissions of any user"
       }
-    },
-    test1: {
-      __description: "Test1",
-      testmax: "Maximum of 10",
-      testNested: {
-        __description: "More nesting",
-        testNested1: "Very nested checkbox",
-        testNested2: "Very nested input box"
-      }
-    }
-  },
-  otherTest: {
-    __description: "Other permission category",
-    firstLevel: "First level option",
-    firstLevelNumber: "First level number",
-    test2: {
-      __description: "Test2",
-      testmax: "Maximum of 10",
-      testNested: {
-        __description: "More nesting",
-        testNested1: "Very nested checkbox",
-        testNested2: "Very nested input box"
-      }
     }
   }
 }

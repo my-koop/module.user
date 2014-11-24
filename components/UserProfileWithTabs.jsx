@@ -25,21 +25,45 @@ var UserProfileWithTabs = React.createClass({
     metaPlugins: React.PropTypes.string
   },
 
+  expectHashEvent: false,
+
+  hashEventHandler: function(e) {
+    if (!this.expectHashEvent || (this.expectHashEvent = false)) {
+      // We are guaranteed to have a string with no more and no less than one
+      // hash symbol in it.
+      var key = this.getTabIndexFromHash(e.newURL.split("#")[1]);
+      this.setState({
+        selectedTabKey: key
+      });
+    }
+  },
+
   getInitialState: function() {
     var tabsInfo = this.getTabsInfo(this.props.metaPlugins);
-    var key = _.indexOf(
-      _.map(tabsInfo, function(tab) {return getHash(tab);}),
-      window.location.hash.substr(1)
+    var key = this.getTabIndexFromHash(
+      window.location.hash.substr(1),
+      tabsInfo
     );
+
     return {
       tabsInfo: tabsInfo,
-      selectedTabKey: ~key && key || 0
+      selectedTabKey: key
     };
   },
 
   componentWillMount: function () {
     var self = this;
     this.getRemoteProfile({userId: this.props.userId});
+  },
+
+  componentDidMount: function() {
+    window.addEventListener(
+      "hashchange",
+      this.hashEventHandler,
+      // MDN recommends explicting useCapture even if optional for better
+      // compatibility with older browsers.
+      false
+    );
   },
 
   componentWillReceiveProps: function (nextProps) {
@@ -54,6 +78,14 @@ var UserProfileWithTabs = React.createClass({
     }
   },
 
+  componentWillUnmount: function() {
+    window.removeEventListener(
+      "hashchange",
+      this.hashEventHandler,
+      false
+    );
+  },
+
   getTabsInfo: function(metaPlugins) {
     var plugins = metaPlugins ?
       _.toArray(metadata[metaPlugins])
@@ -65,13 +97,25 @@ var UserProfileWithTabs = React.createClass({
       },
       {
         component: function() { return MKPasswordChangeForm; },
-        titleKey: "user::myaccount_tab_password"
+        titleKey: "user::myaccount_tab_password",
+        hash: "password"
       }
     ].concat(plugins).filter(function(tab) {
       // avoid bad plugins
       return tab && _.isString(tab.titleKey);
     });
     return tabsInfo;
+  },
+
+  getTabIndexFromHash: function(hash, tabsInfo) {
+    tabsInfo = tabsInfo || this.state.tabsInfo;
+
+    var key = _.indexOf(
+      _.map(tabsInfo, function(tab) {return getHash(tab);}),
+      hash
+    );
+
+    return ~key && key || 0;
   },
 
   render: function() {
@@ -97,7 +141,15 @@ var UserProfileWithTabs = React.createClass({
         );
       });
       function tabSelected(key) {
-        window.location.href = "#" + getHash(tabsInfo[key]);
+        if (key) {
+          self.expectHashEvent = true;
+          window.location.href = "#" + getHash(tabsInfo[key]);
+        } else {
+          window.history ?
+            window.history.pushState("", "", window.location.pathname) :
+            // This will however leave the # mark and make the page scroll.
+            window.location.hash = "";
+        }
         self.setState({
           selectedTabKey: key
         });

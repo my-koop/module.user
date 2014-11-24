@@ -9,7 +9,7 @@ function updatePermissions(req: express.Request, res: express.Response) {
   this.updatePermissions(userId, newPermissions, function(err, success) {
     if (err) {
       logger.verbose(err.toString());
-      return res.status(500).send(err.toString());
+      return res.error(err);
     }
 
     res.end();

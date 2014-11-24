@@ -1,4 +1,5 @@
 var React     = require("react");
+var PropTypes = React.PropTypes;
 
 var BSCol  = require("react-bootstrap/Col");
 var BSRow  = require("react-bootstrap/Row");
@@ -13,6 +14,23 @@ function nameForPermission(permPath) {
 }
 
 var Permission = React.createClass({
+  propTypes: {
+    permissionLink: PropTypes.shape({
+      value: PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.number
+      ]),
+      requestChange: PropTypes.func
+    }),
+    permPath: PropTypes.arrayOf(React.PropTypes.string).isRequired,
+    refPerms: PropTypes.objectOf(PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.number
+    ])),
+    disabled: PropTypes.bool,
+    readOnly: PropTypes.bool
+  },
+
   getInitialState: function() {
     return {
       inputValue: this.props.permissionLink.value
@@ -26,7 +44,9 @@ var Permission = React.createClass({
   },
 
   updatePermission: function(permission) {
-    this.props.permissionLink && this.props.permissionLink.requestChange(permission);
+    this.props.permissionLink &&
+    this.props.permissionLink.requestChange &&
+    this.props.permissionLink.requestChange(permission);
   },
 
   updateNumberInputPermission: function() {
@@ -80,7 +100,7 @@ var Permission = React.createClass({
 
     return (
       <BSRow>
-        <BSCol lg={2}>
+        <BSCol sm={2}>
           {!self.props.readOnly ?
             <BSInput
               type="number"

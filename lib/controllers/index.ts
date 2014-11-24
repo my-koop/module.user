@@ -79,7 +79,7 @@ export function attachControllers(
     {
       endPoint: endPoints.user.current.updateProfile,
       permissions: {
-        loggedin: true
+        loggedIn: true
       }
     },
     [

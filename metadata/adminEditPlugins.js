@@ -4,7 +4,8 @@ var adminEditPlugins = {
             resolve: "component",
             value: "ProfilePermissionsUpdateForm"
         },
-        titleKey: "user::useredit_tab_permissions"
+        titleKey: "user::useredit_tab_permissions",
+        hash: "permissions"
     }
 };
 module.exports = adminEditPlugins;

@@ -15,7 +15,7 @@ function getUserProfileCommon(params) {
   var self: mkuser.Module = this;
   self.getProfile(id, function(err, profile) {
     if (err) {
-      return res.status(500).send("Unable to get profile");
+      return res.error(err);
     }
 
     // We at least want to return an empty object ("no permissions") to
