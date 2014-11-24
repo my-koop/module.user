@@ -22,7 +22,7 @@ var PasswordRecoveryPage = React.createClass({
   onSubmit: function(e){
     e.preventDefault();
     var self = this;
-    actions.user.passwordRecovery(
+    actions.user.resetPassword(
       {
         data: {
           email: self.state.email
@@ -30,8 +30,7 @@ var PasswordRecoveryPage = React.createClass({
       },
       function(err){
         self.setState({
-          hasError: !!err,
-          feedbackMessage: __("user::passwordRecoveryRequest", { context: !!err ? "fail": "success" } )
+          hasError: !!err
         });
       }
     );
@@ -44,15 +43,15 @@ var PasswordRecoveryPage = React.createClass({
         <h1>
           {__("user::passwordRecoveryWelcome")}
         </h1>
-        <span>
-          {__("user::passwordRecoveryExplanation")}
-        </span>
        <MKAlert bsStyle="danger">
-          {this.state.hasError ? this.state.feedbackMessage : null}
+          {this.state.hasError? __("user::passwordRecoveryRequest", { context: "fail" } ) : null}
         </MKAlert>
         <MKAlert bsStyle="success">
-          {!this.state.hasError? this.state.feedbackMessage : null}
+          {!this.state.hasError? __("user::passwordRecoveryRequest", { context: "success" } ) : null}
         </MKAlert>
+         <p>
+          {__("user::passwordRecoveryExplanation")}
+        </p>
         <form onSubmit={this.onSubmit}>
           <BSInput
             type="text"

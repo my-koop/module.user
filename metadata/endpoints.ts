@@ -55,8 +55,8 @@ var endpoints = {
       path: "/users/email/isValid",
       method: "get"
     },
-    passwordRecovery: {
-      path: "/users/passwordRecovery/:email",
+    resetPassword: {
+      path: "/users/resetPassword/:email",
       method: "put"
     }
   }

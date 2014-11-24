@@ -63,11 +63,11 @@
   "update_profile_failure_message" : "La mise à jour a échoué",
   "update_profile_success_message" : "Votre profile a été mis à jour",
   "adminEditInvalidID" : "Ce numéro d'utilisateur n'est pas relié à compte",
-  "adminEditIdField" : "Numéro d'utilisateur",
-  "passwordRecoveryRequest_fail" : "Impossible d'effectuer la récupération, vérifiez le courriel que vous avez inscrit.",
+  "adminEditIdField" : "Identifiant d'utilisateur",
+  "passwordRecoveryRequest_fail" : "Impossible d'effectuer la génération du nouveau mot de passe, vérifiez si vous avez inscrit le bon courriel.",
   "passwordRecoveryRequest_success" : "Un courriel contenant un mot de passe temporaire a été envoyé.",
-  "passwordRecoveryWelcome" : "Récuperation de mot de passe",
-  "passwordRecoveryExplanation" : "Entrez le courriel que vous avez utilisé pour créer votre compte. Vous recevrez un message contenant un nouveau mot de passe.",
-  "passwordRecoverySubmit" : "Générer",
+  "passwordRecoveryWelcome" : "Mise à zéro de mot de passe",
+  "passwordRecoveryExplanation" : "Saisissez le courriel que vous avez utilisé pour créer votre compte. Vous recevrez un message contenant un nouveau mot de passe.",
+  "passwordRecoverySubmit" : "Générer un nouveau mot de passe",
   "passwordRecoveryEmailPlaceholder" : "exemple@email.com"
 }
