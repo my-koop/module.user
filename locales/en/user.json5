@@ -76,5 +76,6 @@
   "userListHeaderFirstname" : "Firstname",
   "userListHeaderLastname" : "Lastname",
   "userListHeaderisActive" : "Member",
-  "userListHeaderActiveUntil" : "Active Until"
+  "userListHeaderActiveUntil" : "Active Until",
+  "userListEditButton" : "Edit this user's account"
 }

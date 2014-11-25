@@ -7,6 +7,7 @@ var MKTableSorter     = require("mykoop-core/components/TableSorter");
 var MKListModButtons  = require("mykoop-core/components/ListModButtons");
 var MKAlertTrigger    = require("mykoop-core/components/AlertTrigger");
 var __                = require("language").__;
+var formatDate        = require("language").formatDate;
 var actions           = require("actions");
 var Router            = require("react-router");
 var getRouteName      = require("mykoop-utils/frontend/getRouteName");
@@ -36,7 +37,7 @@ var Items = React.createClass({
       {
         icon: "edit",
         tooltip: {
-          text: __("general::edit"),
+          text: __("user::userListEditButton"),
           overlayProps: {
             placement: "top"
           }
@@ -69,6 +70,12 @@ var Items = React.createClass({
         },
         activeUntil: {
           name: __("user::userListHeaderActiveUntil"),
+          cellGenerator: function(user) {
+            console.log(user.activeUntil);
+            return (
+              (user.activeUntil !== null) ? formatDate(new Date(user.activeUntil)) : null
+            );
+          }
         },
 
         actions: {
