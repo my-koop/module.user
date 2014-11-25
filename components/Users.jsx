@@ -5,8 +5,10 @@ var BSModalTrigger    = require("react-bootstrap/ModalTrigger");
 var MKIcon            = require("mykoop-core/components/Icon");
 var MKTableSorter     = require("mykoop-core/components/TableSorter");
 var MKListModButtons  = require("mykoop-core/components/ListModButtons");
+var MKAlertTrigger    = require("mykoop-core/components/MKAlertTrigger");
 var __                = require("language").__;
 var actions           = require("actions");
+var Router            = require("react-router");
 
 var Items = React.createClass({
   getInitialState: function() {
@@ -28,8 +30,21 @@ var Items = React.createClass({
     });
   },
 
-  actionsGenerator: function() {
-    return [];
+  actionsGenerator: function(user) {
+    return [
+      {
+        icon: "edit",
+        tooltip: {
+          text: __("general::edit"),
+          overlayProps: {
+            placement: "top"
+          }
+        },
+        callback: function() {
+          Router.transitionTo(getRouteName(["dashboard", "adminEdit"]), {id: user.id}) );
+        }
+      }
+    ];
   },
 
   render: function() {
@@ -58,11 +73,11 @@ var Items = React.createClass({
         actions: {
           name: __("actions"),
           isStatic: true,
-          cellGenerator: function(item) {
+          cellGenerator: function(user) {
             return (
               <MKListModButtons
                 defaultTooltipDelay={500}
-                buttons={self.actionsGenerator(item)}
+                buttons={self.actionsGenerator(user)}
               />
             );
           }

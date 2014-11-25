@@ -175,13 +175,7 @@ export function attachControllers(
     },
     binder.makeSimpleController(
       "getUsersList",
-      {
-        processResponse: function(response) {
-          return {
-            users: response
-          };
-        }
-      }
+      {}
     )
   );
 }

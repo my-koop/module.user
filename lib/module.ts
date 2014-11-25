@@ -2,7 +2,6 @@ import async = require("async");
 import express = require("express");
 import controllerList = require("./controllers/index");
 import UserProfile = require("./classes/UserProfile");
-import Users = require("./classes/Users");
 import utils = require("mykoop-utils");
 var nodepwd = require("pwd");
 var traverse = require("traverse");
@@ -402,7 +401,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     });//getConnection
   }
 
-  getUsersList(params:{}, callback: (err: Error, users?: mkuser.Users[]) => void ){
+  getUsersList(params:{}, callback: (err: Error, users) => void ){
     var self: mkuser.Module =  this;
     this.db.getConnection(function(err, connection, cleanup) {
         if(err) {
@@ -422,14 +421,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
            ",
           function(err, rows) {
             cleanup();
-            if(err){
-              return callback(err, null);
-            }
-            var users = [];
-            for(var i in rows){
-              users.push( new Users(rows[i]));
-            }
-            callback(null, users);
+            callback(err && new DatabaseError(err), {users: _.map(rows, function(row) { return row; }) } );
 
           }//function
         );

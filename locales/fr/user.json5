@@ -70,11 +70,11 @@
   "permissions_edit_maximum": "Valeur maximale de __maximum__. Les plus grandes valeurs seront ignorées.",
   "permissions_edit_nolimit": "Aucune limite",
   "permissions_edit_update": "Mettre à jour",
-  "userListWelcome" : "List of all users",
-  "userListHeaderId" : "Identifiant",
+  "userListWelcome" : "Liste des usagers",
+  "userListHeaderId" : "ID",
   "userListHeaderEmail" : "Courriel",
   "userListHeaderFirstname" : "Prénom",
   "userListHeaderLastname" : "Nom",
   "userListHeaderisActive" : "Membre",
-  "userListHeaderActiveUntil" : "Expiration Abonnement"
+  "userListHeaderActiveUntil" : "Expiration"
 }
