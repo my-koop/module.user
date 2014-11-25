@@ -76,6 +76,5 @@
   "userListHeaderFirstname" : "Prénom",
   "userListHeaderLastname" : "Nom",
   "userListHeaderisActive" : "Membre",
-  "userListHeaderActiveUntil" : "Expiration Abonnement",
-  "userListHeaderActions" : "Actions"
+  "userListHeaderActiveUntil" : "Expiration Abonnement"
 }

@@ -19,7 +19,7 @@ var Items = React.createClass({
     var self = this;
     actions.user.list(function(err, ret){
       if(err){
-        console.error(err);
+        MKAlertTrigger.showAlert(__("errors::error"));
       } else {
         self.setState({
           users: ret.users
@@ -56,7 +56,7 @@ var Items = React.createClass({
         },
 
         actions: {
-          name: __("user::userListHeaderActions"),
+          name: __("actions"),
           isStatic: true,
           cellGenerator: function(item) {
             return (
