@@ -71,7 +71,6 @@ var Items = React.createClass({
         activeUntil: {
           name: __("user::userListHeaderActiveUntil"),
           cellGenerator: function(user) {
-            console.log(user.activeUntil);
             return (
               (user.activeUntil !== null) ? formatDate(new Date(user.activeUntil)) : null
             );
