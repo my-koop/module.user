@@ -402,13 +402,12 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     });//getConnection
   }
 
-  getUsersList(callback: (err: Error, users: mkuser.Users[]) => void ){
+  getUsersList(params:{}, callback: (err: Error, users?: mkuser.Users[]) => void ){
     var self: mkuser.Module =  this;
     this.db.getConnection(function(err, connection, cleanup) {
         if(err) {
           return callback(err, null);
         }
-
         var query = connection.query(
           "SELECT \
              user.id, \
@@ -416,15 +415,15 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
              user.firstname,\
              user.lastname,\
              (isnull(bill.closedDate) != 1 )as isMember, \
-             member.subscriptionExpirationDate as ActiveUntil  \
+             member.subscriptionExpirationDate as activeUntil  \
            FROM user \
            LEFT JOIN member ON user.id = member.id \
            LEFT JOIN bill ON member.feeTransactionId = bill.idbill \
-           WHERE user.id = ?",
+           ",
           function(err, rows) {
             cleanup();
             if(err){
-              callback(err, null);
+              return callback(err, null);
             }
             var users = [];
             for(var i in rows){

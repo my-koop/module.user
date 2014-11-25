@@ -64,7 +64,7 @@ var endpoints = {
       method: "get"
     },
     list: {
-      path : "/users/list",
+      path : "/users",
       method: "get"
     }
 

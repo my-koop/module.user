@@ -48,7 +48,7 @@ var Items = React.createClass({
         lastname: {
           name: __("user::userListHeaderLastname"),
         },
-        isActive: {
+        isMember: {
           name: __("user::userListHeaderisActive"),
         },
         activeUntil: {
