@@ -70,7 +70,7 @@
   "permissions_edit_maximum": "Maximum value of __maximum__. Larger values will be capped.",
   "permissions_edit_nolimit": "No limit",
   "permissions_edit_update": "Update Permissions",
-  "userListWelcome" : "List of all users"
+  "userListWelcome" : "List of all users",
   "userListHeaderId" : "ID",
   "userListHeaderEmail" : "Email",
   "userListHeaderFirstname" : "Firstname",
