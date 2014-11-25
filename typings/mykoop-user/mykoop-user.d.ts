@@ -11,6 +11,7 @@ declare module mkuser {
   export interface LoginResponse {
     id: number;
     email: string;
+    perms: any;
   }
 
   export interface UserProfile {
@@ -24,6 +25,7 @@ declare module mkuser {
     usageNote      ?: string;
     referral       ?: string;
     referralSpecify?: string;
+    permissions    ?: any;
   }
 
   export interface Module extends mykoop.IModule {

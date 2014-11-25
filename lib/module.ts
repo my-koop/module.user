@@ -4,9 +4,12 @@ import controllerList = require("./controllers/index");
 import UserProfile = require("./classes/UserProfile");
 import utils = require("mykoop-utils");
 var nodepwd = require("pwd");
+var traverse = require("traverse");
 import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
 var generatePassword = require("password-generator");
+
+var _ = require("lodash");
 
 var DatabaseError = utils.errors.DatabaseError;
 var ApplicationError = utils.errors.ApplicationError;
@@ -15,6 +18,46 @@ import AuthenticationError = require("./classes/AuthenticationError");
 class UserModule extends utils.BaseModule implements mkuser.Module {
   db: mkdatabase.Module;
   communications : mkcommunications.Module;
+  static serializePermissions(permissions) {
+    // Assume the passed-in permissions are meant to be mutated.
+
+    // Traverse the permissions and do some replacements/simplifications.
+    traverse(permissions).forEach(function(perm) {
+      // Called after traversing all the children, delete ourselves if we don't
+      // have children anymore (deleted themselves).
+      this.post(function (parentPerm) {
+        if (_.isEqual(parentPerm.node, {})) {
+          this.delete();
+        }
+      });
+
+      if (perm === true) {
+        // Replace all instances of true (boolean) by "" (empty string).
+        this.update("");
+      } else if (perm === false) {
+        // Delete all instances of false.
+        this.delete();
+      }
+    });
+
+    return JSON.stringify(permissions);
+  }
+
+  static deserializePermissions(permissions) {
+    // Trust the permissions are valid serialized JSON.
+    var perms = JSON.parse(permissions);
+
+    // Traverse the permissions and replace all instances of "" (empty string)
+    // by true (boolean).
+    traverse(perms).forEach(function(perm) {
+      if (perm === "") {
+        this.update(true);
+      }
+    });
+
+    return perms;
+  }
+
   init() {
     var db = <mkdatabase.Module>this.getModuleManager().get("database");
     var routerModule = <mykoop.Router>this.getModuleManager().get("router");
@@ -65,12 +108,13 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
       }
 
       var userInfo;
+      var computedPermissions = <any>{};
       async.waterfall([
         function makeQuery(next) {
           connection.query(
             "SELECT ?? FROM user WHERE email = ? ",
             [
-              ["id", "salt", "pwdhash"],
+              ["id", "salt", "pwdhash", "perms"],
               loginInfo.email
             ],
             function (err, rows) {
@@ -106,6 +150,26 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           }
 
           next();
+        },
+        function computePermissions(next) {
+          //TODO: Eventually to support permission masks, additionnal queries
+          // would be required here.
+          // See https://github.com/my-koop/service.website/issues/277
+
+          // Users can be permission-less.
+          if (userInfo.perms) {
+            // We trust the database data, so we don't wrap this in a try-catch,
+            // which means bogus serialized JSON would make us crash.
+            computedPermissions = UserModule.deserializePermissions(
+              userInfo.perms
+            );
+          }
+
+          // All logged in users have this permission, it makes it easy to
+          // "demand" that a user be logged in through any permission tool.
+          computedPermissions.loggedIn = true;
+
+          next();
         }
       ],
       function result(err) {
@@ -117,7 +181,8 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
 
         callback(null, {
           id: userInfo.id,
-          email: loginInfo.email
+          email: loginInfo.email,
+          perms: computedPermissions
         });
       });
     });//getConnection
@@ -139,6 +204,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           }
 
           if(rows.length === 1) {
+            rows[0].perms = UserModule.deserializePermissions(rows[0].perms);
             return callback(null, new UserProfile(rows[0]));
           }
           callback(new Error("No result"), null);
@@ -228,6 +294,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
       );//test email unique query
     });//getConnection
   }
+
   updatePassword(id:number, passwords: UserInterfaces.updatePassword, callback: (err: Error) => void) {
     var self: mkuser.Module = this;
     //get salt and password hash with ID
@@ -373,7 +440,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
 
           //prepare SendEmail object
           var emailParams = {
-            subject: "CoopBÃ©cik - New Password / Nouveau mot de passe",
+            subject: "CoopBécik - New Password / Nouveau mot de passe",
             message: "Your new password / votre nouveau mot de passe: " + password ,
             to: email
           };
@@ -385,8 +452,29 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         callback(err);
       });
 
-  });
-}
+    });
+  }
+
+  private updatePermissions(
+    id:number,
+    newPermissions,
+    callback: (err: Error, result: boolean) => void
+  ){
+    var self: mkuser.Module =  this;
+    this.db.getConnection(function(err, connection, cleanup) {
+        if(err) {
+          return callback(err, null);
+        }
+        var query = connection.query(
+          "UPDATE user SET perms = ? WHERE id = ?",
+          [UserModule.serializePermissions(newPermissions), id],
+          function(err, rows) {
+            cleanup();
+            return callback(err, !err && rows.affectedRows === 1);
+          }//function
+        );//update query
+    });//getConnection
+  }
 
 
 }//class

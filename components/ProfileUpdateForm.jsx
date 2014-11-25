@@ -7,6 +7,8 @@ var BSAlert     = require("react-bootstrap/Alert");
 var __          = require("language").__;
 var formatDate  = require("language").formatDate;
 
+var MKPermissionSet = require("./PermissionSet");
+
 var ProfileUpdateForm = React.createClass({
 
   propTypes: {
@@ -217,7 +219,6 @@ var ProfileUpdateForm = React.createClass({
             ref="usageNote"
             valueLink = {this.makeValueLink("usageNote")}
           />
-
           <BSInput
             type="submit"
             bsStyle="primary"

@@ -9,6 +9,7 @@ assert.equal(endPoints.user.emailExists.method, "get");
 // Helper controllers.
 import attachSessionUserId = require("./attachSessionUserId");
 import attachParamUserId = require("./attachParamUserId");
+import validateCurrentUser = require("./validateCurrentUser");
 
 // Controllers.
 import login = require("./login");
@@ -19,12 +20,18 @@ import registerUser = require("./registerUser");
 import updateProfile = require("./updateProfile");
 import updatePassword = require("./updatePassword");
 import resetPassword = require("./resetPassword");
+import updatePermissions = require("./updatePermissions");
 
 export function attachControllers(
   binder: utils.ModuleControllersBinder<mkuser.Module>
 ) {
   binder.attach(
-    {endPoint: endPoints.user.login},
+    {
+      endPoint: endPoints.user.login,
+      customPermissionGranted: function (req, callback) {
+        callback(req.session.user && new Error("Already logged in."));
+      }
+    },
     login
   );
   binder.attach(
@@ -47,26 +54,75 @@ export function attachControllers(
     })
   );
   binder.attach(
-    {endPoint: endPoints.user.getProfile},
-    getProfile
+    {
+      endPoint: endPoints.user.getPublicProfile,
+      permissions: {
+        user: {
+          profile: {
+            full: true
+          }
+        }
+      },
+      customPermissionDenied: validateCurrentUser
+    },
+    getProfile.getPublicProfile
   );
   binder.attach(
-    {endPoint: endPoints.user.register},
+    {
+      endPoint: endPoints.user.register,
+      customPermissionGranted: function (req, callback) {
+        callback(req.session.user && new Error("Already logged in."));
+      }
+    },
     registerUser
   );
   binder.attach(
-    {endPoint: endPoints.user.current.updateProfile},
+    {
+      endPoint: endPoints.user.current.updateProfile,
+      permissions: {
+        loggedIn: true
+      }
+    },
     [
       attachSessionUserId,
       updateProfile
     ]
   );
   binder.attach(
-    {endPoint: endPoints.user.updateProfile},
+    {
+      endPoint: endPoints.user.getFullProfile,
+      permissions: {
+        user: {
+          profile: {
+            full: true
+          }
+        }
+      }
+    },
+    getProfile.getFullProfile
+  );
+  binder.attach(
+    {
+      endPoint: endPoints.user.updateProfile,
+      customPermissionDenied: validateCurrentUser
+    },
     [
       attachParamUserId,
       updateProfile
     ]
+  );
+  binder.attach(
+    {
+      endPoint: endPoints.user.updatePermissions,
+      permissions: {
+        user: {
+          permissions: {
+            edit: true
+          }
+        }
+      }
+    },
+    updatePermissions
   );
   binder.attach(
     {
@@ -81,6 +137,13 @@ export function attachControllers(
   binder.attach(
     {
       endPoint: endPoints.user.updatePassword,
+      permissions: {
+        user: {
+          profile: {
+            edit: true
+          }
+        }
+      },
       validation: validation.validateUpdateUserPassword
     },
     [

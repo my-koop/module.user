@@ -35,12 +35,20 @@ var endpoints = {
       path: "/users/:id",
       method: "put"
     },
+    updatePermissions: {
+      path: "/users/:id/permissions",
+      method: "put"
+    },
     login: {
       path: "/users/login",
       method: "post"
     },
-    getProfile: {
+    getPublicProfile: {
       path: "/users/:id",
+      method: "get"
+    },
+    getFullProfile: {
+      path: "/users/:id/full",
       method: "get"
     },
     exists: {
