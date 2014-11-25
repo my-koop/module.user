@@ -61,6 +61,10 @@ var endpoints = {
         emailExists: {
             path: "/users/email/isValid",
             method: "get"
+        },
+        list: {
+            path: "/users",
+            method: "get"
         }
     }
 };

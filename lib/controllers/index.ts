@@ -169,4 +169,13 @@ export function attachControllers(
       }
     )
   );
+  binder.attach(
+    {
+      endPoint: endPoints.user.list
+    },
+    binder.makeSimpleController(
+      "getUsersList",
+      {}
+    )
+  );
 }

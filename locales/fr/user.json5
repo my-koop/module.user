@@ -69,5 +69,13 @@
   "permissions_edit_hasall": "Possède tous les privilèges actuels et futurs sous cette catégorie",
   "permissions_edit_maximum": "Valeur maximale de __maximum__. Les plus grandes valeurs seront ignorées.",
   "permissions_edit_nolimit": "Aucune limite",
-  "permissions_edit_update": "Mettre à jour"
+  "permissions_edit_update": "Mettre à jour",
+  "userListWelcome" : "Liste des usagers",
+  "userListHeaderId" : "ID",
+  "userListHeaderEmail" : "Courriel",
+  "userListHeaderFirstname" : "Prénom",
+  "userListHeaderLastname" : "Nom",
+  "userListHeaderisActive" : "Membre",
+  "userListHeaderActiveUntil" : "Expiration",
+  "userListEditButton" : "Modifier le compte de cet usager"
 }
