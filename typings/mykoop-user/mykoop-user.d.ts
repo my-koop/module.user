@@ -28,6 +28,15 @@ declare module mkuser {
     permissions    ?: any;
   }
 
+  export interface Users {
+    id : number;
+    email: string;
+    firstname: string;
+    lastname: string;
+    isMember: string;
+    activeUntil: Date;
+  }
+
   export interface Module extends mykoop.IModule {
     userExists(
       params: User.IdExists.Params,
@@ -49,6 +58,7 @@ declare module mkuser {
     // id is -1 if not found
     __getIdForEmail(connection: mysql.IConnection, params: {email: string}, callback: (err, id: number) => void);
     getIdForEmail(params: {email: string}, callback: (err, id: number) => void);
+    getUsersList(callback: (err, users: Users[]) => void);
   }
 
 }

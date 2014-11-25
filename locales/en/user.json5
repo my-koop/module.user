@@ -69,5 +69,11 @@
   "permissions_edit_hasall": "Has all current and future sub-permissions for this section",
   "permissions_edit_maximum": "Maximum value of __maximum__. Larger values will be capped.",
   "permissions_edit_nolimit": "No limit",
-  "permissions_edit_update": "Update Permissions"
+  "permissions_edit_update": "Update Permissions",
+  "userListHeaderId" : "ID",
+  "userListHeaderEmail" : "Email",
+  "userListHeaderFirstname" : "Firstname",
+  "userListHeaderLastname" : "Lastname",
+  "userListHeaderisActive" : "Member",
+  "userListHeaderActiveUntil" : "Active Until"
 }

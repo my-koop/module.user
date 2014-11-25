@@ -2,6 +2,7 @@ import async = require("async");
 import express = require("express");
 import controllerList = require("./controllers/index");
 import UserProfile = require("./classes/UserProfile");
+import Users = require("./classes/Users");
 import utils = require("mykoop-utils");
 var nodepwd = require("pwd");
 var traverse = require("traverse");
@@ -398,6 +399,41 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
             return callback(err, !err && rows.affectedRows === 1);
           }//function
         );//update query
+    });//getConnection
+  }
+
+  getUsersList(callback: (err: Error, users: mkuser.Users[]) => void ){
+    var self: mkuser.Module =  this;
+    this.db.getConnection(function(err, connection, cleanup) {
+        if(err) {
+          return callback(err, null);
+        }
+
+        var query = connection.query(
+          "SELECT \
+             user.id, \
+             user.email,\
+             user.firstname,\
+             user.lastname,\
+             (isnull(bill.closedDate) != 1 )as isMember, \
+             member.subscriptionExpirationDate as ActiveUntil  \
+           FROM user \
+           LEFT JOIN member ON user.id = member.id \
+           LEFT JOIN bill ON member.feeTransactionId = bill.idbill \
+           WHERE user.id = ?",
+          function(err, rows) {
+            cleanup();
+            if(err){
+              callback(err, null);
+            }
+            var users = [];
+            for(var i in rows){
+              users.push( new Users(rows[i]));
+            }
+            callback(null, users);
+
+          }//function
+        );
     });//getConnection
   }
 }//class
