@@ -7,6 +7,7 @@ var MKAlert = require("mykoop-core/components/Alert");
 
 var ajax = require("ajax");
 var actions = require("actions");
+var getRouteName = require("mykoop-utils/frontend/getRouteName");
 var localSession = require("session").local;
 var Router = require("react-router");
 var routeData = require("dynamic-metadata").routes;
@@ -112,7 +113,13 @@ var LoginBox = React.createClass({
               self.props.onLoginSuccess();
             }
 
-            Router.transitionTo(routeData.public.name);
+            // Redirect post-login. If there is a pre-login transition,
+            // re-execute it, otherwise redirect to the homepage.
+            if (localSession.attemptedTransition) {
+              localSession.attemptedTransition.retry();
+            } else {
+              Router.transitionTo(getRouteName(["public"]));
+            }
           }, 2000);
         });
 
