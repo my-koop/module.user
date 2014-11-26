@@ -77,5 +77,10 @@
   "userListHeaderLastname" : "Nom",
   "userListHeaderisActive" : "Membre",
   "userListHeaderActiveUntil" : "Expiration",
-  "userListEditButton" : "Modifier le compte de cet usager"
+  "userListEditButton" : "Modifier le compte de cet usager",
+  "userNotesAuthor" : "Écrit par",
+  "userNotesTimePrefix" : "Le",
+  "userNotesWelcome" : "Notes sur l'usager: ",
+  "userNotesInputLabel" : "Message de la note",
+  "userNotesSubmit" : "Ajouter une note"
 }

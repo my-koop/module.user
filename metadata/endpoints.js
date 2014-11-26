@@ -65,6 +65,14 @@ var endpoints = {
         list: {
             path: "/users",
             method: "get"
+        },
+        notes: {
+            path: "/users/:id/notes",
+            method: "get"
+        },
+        newNote: {
+            path: "/users/:id/newNote",
+            method: "put"
         }
     }
 };
