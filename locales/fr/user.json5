@@ -13,6 +13,7 @@
   "myaccount_tab_profile" : "Profil",
   "myaccount_tab_password" : "Mot de passe",
   "useredit_tab_permissions" : "Privilèges",
+  "useredit_tab_notes" : "Notes",
   "update_password_success" : "Votre mot de passe a été changé!",
   "field_old_password" : "Mot de passe Actuel",
   "field_new_password" : "Nouveau mot de passe",
@@ -80,7 +81,7 @@
   "userListEditButton" : "Modifier le compte de cet usager",
   "userNotesAuthor" : "Écrit par",
   "userNotesTimePrefix" : "Le",
-  "userNotesWelcome" : "Notes sur l'usager: ",
+  "userNotesWelcome" : "Notes sur cet usager",
   "userNotesInputLabel" : "Message de la note",
   "userNotesSubmit" : "Ajouter une note"
 }

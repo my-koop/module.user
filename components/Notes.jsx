@@ -25,7 +25,7 @@ var Notes = React.createClass({
     var self = this;
     actions.user.notes({
       data: {
-        id: 2
+        id: self.props.userId
       }
     }, function(err, res){
         if(err){
@@ -50,7 +50,7 @@ var Notes = React.createClass({
     }
     actions.user.newNote({
       data: {
-        id: 2,
+        id: self.props.userId,
         message: self.state.message
       }
     }, function(err, res) {
@@ -75,9 +75,9 @@ var Notes = React.createClass({
     })
     return (
         <div>
-          <h1>
-            {__("user::userNotesWelcome") + " 2"}
-          </h1>
+          <h2>
+            {__("user::userNotesWelcome")}
+          </h2>
           <form onSubmit={this.onSubmit}>
             <BSInput
               type="textarea"

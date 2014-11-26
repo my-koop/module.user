@@ -23,13 +23,6 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
   });
 
   metaDataBuilder.addFrontendRoute({
-    idPath: ["dashboard", "notes"],
-    component: "Notes",
-    name: "notes",
-    path: "notes",
-  });
-
-  metaDataBuilder.addFrontendRoute({
     idPath: ["dashboard", "users"],
     component: "Users",
     name: "users",

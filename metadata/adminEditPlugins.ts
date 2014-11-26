@@ -6,6 +6,14 @@ var adminEditPlugins = {
     },
     titleKey: "user::useredit_tab_permissions",
     hash: "permissions"
+  },
+  notes: {
+    component: {
+      resolve: "component",
+      value: "Notes"
+    },
+    titleKey: "user::useredit_tab_notes",
+    hash: "notes"
   }
 };
 
