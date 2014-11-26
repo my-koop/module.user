@@ -476,7 +476,31 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     });//getConnection
   }
 
+  getUsersList(params, callback){
+    this.callWithConnection(this.__getUsersList, params, callback);
+  }
 
+  __getUsersList(connection, params:{}, callback: (err: Error, users) => void ){
+    var self: mkuser.Module =  this;
+    var query = connection.query(
+      "SELECT \
+         user.id, \
+         user.email,\
+         user.firstname,\
+         user.lastname,\
+         (isnull(bill.closedDate) != 1 )as isMember, \
+         member.subscriptionExpirationDate as activeUntil  \
+       FROM user \
+       LEFT JOIN member ON user.id = member.id \
+       LEFT JOIN bill ON member.feeTransactionId = bill.idbill \
+       ",
+      function(err, rows) {
+        callback(err && new DatabaseError(err), {users: _.map(rows, function(row) { return row; }) } );
+
+      }//function
+    );
+
+  }
 }//class
 
 export = UserModule;

@@ -25,6 +25,12 @@ function addRoutes(metaDataBuilder) {
             ]
         }
     });
+    metaDataBuilder.addFrontendRoute({
+        idPath: ["dashboard", "users"],
+        component: "Users",
+        name: "users",
+        path: "users",
+    });
     /* Simple routes. */
     metaDataBuilder.addFrontendRoute({
         idPath: ["simple", "login"],

@@ -174,4 +174,13 @@ export function attachControllers(
     {endPoint: endPoints.user.resetPassword},
     resetPassword
   );
+  binder.attach(
+    {
+      endPoint: endPoints.user.list
+    },
+    binder.makeSimpleController(
+      "getUsersList",
+      {}
+    )
+  );
 }
