@@ -1,5 +1,4 @@
 var Router = require("react-router");
-var routeData = require("dynamic-metadata").routes;
 var localSession = require("session").local;
 
 var PermissionRedirectMixin = {

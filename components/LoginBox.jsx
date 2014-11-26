@@ -7,7 +7,6 @@ var MKAlert = require("mykoop-core/components/Alert");
 
 var ajax = require("ajax");
 var actions = require("actions");
-var getRouteName = require("mykoop-utils/frontend/getRouteName");
 var localSession = require("session").local;
 var Router = require("react-router");
 var routeData = require("dynamic-metadata").routes;
@@ -118,7 +117,7 @@ var LoginBox = React.createClass({
             if (localSession.attemptedTransition) {
               localSession.attemptedTransition.retry();
             } else {
-              Router.transitionTo(getRouteName(["public"]));
+              Router.transitionTo("home");
             }
           }, 2000);
         });
