@@ -5,6 +5,11 @@ var MKPermissionMixin = require("./PermissionMixin");
 var PermissionWrapper = React.createClass({
   mixins: [MKPermissionMixin],
 
+  propTypes: {
+    allowed: React.PropTypes.bool,
+    permissions: React.PropTypes.object
+  },
+
   getIsAllowed: function() {
     if (typeof this.props.allowed === "boolean") {
       return this.props.allowed;
