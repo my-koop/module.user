@@ -88,6 +88,7 @@ the problem, do you want to attempt to",
   "userNotesWelcome" : "Notes for this user",
   "userNotesInputLabel" : "Note message",
   "userNotesSubmit" : "Add a note",
+  "userNotesShowMore" : "Show more notes",
   navbar: {
     register: "Register",
     login: "Login",

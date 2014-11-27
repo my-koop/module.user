@@ -18,7 +18,9 @@ var Notes = React.createClass({
   getInitialState: function(){
     return {
       notes: null,
-      message: null
+      message: null,
+      sliceCount: 5,
+      sliceIncrement: 5
     }
   },
 
@@ -66,19 +68,27 @@ var Notes = React.createClass({
     )
   },
 
+  showMoreNotes: function(){
+    this.setState({
+      sliceCount: this.state.sliceCount + this.state.sliceIncrement
+    })
+  },
+
   render: function(){
 
-    var notePanels = _.map(this.state.notes, function(note, i){
-      var header = __("user::userNotesAuthor") + " "
-        + note.author + " "
-        + __("user::userNotesTimePrefix") + " "
-        + formatDate(new Date(note.date), "LLL");
-      return (
-        <BSPanel key={i} header={header}>
-          {note.message}
-        </BSPanel>
-      );
-    })
+    var notePanels = _.chain(this.state.notes)
+      .map(function(note, i){
+        var header = __("user::userNotesAuthor") + " "
+          + note.author + " "
+          + __("user::userNotesTimePrefix") + " "
+          + formatDate(new Date(note.date), "LLL");
+        return (
+          <BSPanel key={i} header={header}>
+            {note.message}
+          </BSPanel>
+        );
+      })
+      .slice(0, this.state.sliceCount)
     return (
         <div>
           <h2>
@@ -97,6 +107,15 @@ var Notes = React.createClass({
             />
           </form>
           {notePanels}
+          { (this.state.sliceCount < _.size(this.state.notes) )?
+          <BSButton
+            bsSize="small"
+            bsStyle="primary"
+            onClick={this.showMoreNotes}
+          >
+          {__("user::userNotesShowMore")}
+          </BSButton>
+          : null }
         </div>
 
     );
