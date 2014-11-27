@@ -180,7 +180,7 @@ export function attachControllers(
   );
   binder.attach(
     {
-      endPoint: endPoints.user.notes
+      endPoint: endPoints.user.notes.list
     },
     binder.makeSimpleController(
       "getNotesForId",
@@ -196,7 +196,7 @@ export function attachControllers(
   );
     binder.attach(
     {
-      endPoint: endPoints.user.newNote
+      endPoint: endPoints.user.notes.new
     },
     binder.makeSimpleController(
       "newNote",
@@ -206,7 +206,6 @@ export function attachControllers(
             targetId: parseInt(req.param("id")),
             message: req.param("message"),
             authorId: req.session.user.id,
-            date : new Date()
           };
           return params;
         }

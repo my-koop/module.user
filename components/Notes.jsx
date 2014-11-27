@@ -3,6 +3,7 @@ var BSCol      = require("react-bootstrap/Col");
 var BSButton   = require("react-bootstrap/Button");
 var BSPanel    = require("react-bootstrap/Panel");
 var BSInput    = require("react-bootstrap/Input");
+var MKAlertTrigger = require("mykoop-core/components/AlertTrigger");
 var __         = require("language").__;
 var formatDate = require("language").formatDate;
 var actions    = require("actions");
@@ -23,13 +24,14 @@ var Notes = React.createClass({
 
   getNotes: function(){
     var self = this;
-    actions.user.notes({
+    actions.user.notes.list({
       data: {
         id: self.props.userId
       }
     }, function(err, res){
         if(err){
-          console.log(err);
+          console.error(err);
+          MKAlertTrigger.showAlert(err);
         } else {
           self.setState({
             notes: res.notes
@@ -48,17 +50,18 @@ var Notes = React.createClass({
     if(self.state.message === null){
       return;
     }
-    actions.user.newNote({
+    actions.user.notes.new({
       data: {
         id: self.props.userId,
         message: self.state.message
       }
     }, function(err, res) {
-          if(err){
-            console.log(err);
-          } else {
-            self.getNotes();
-          }
+        if(err){
+          console.error(err);
+          MKAlertTrigger.showAlert(err);
+        } else {
+          self.getNotes();
+        }
       }
     )
   },
@@ -66,7 +69,10 @@ var Notes = React.createClass({
   render: function(){
 
     var notePanels = _.map(this.state.notes, function(note, i){
-      var header = __("user::userNotesAuthor") + " " + note.author + " " + __("user::userNotesTimePrefix") + " " + formatDate(new Date(note.date));
+      var header = __("user::userNotesAuthor") + " "
+        + note.author + " "
+        + __("user::userNotesTimePrefix") + " "
+        + formatDate(new Date(note.date), "LLL");
       return (
         <BSPanel key={i} header={header}>
           {note.message}
@@ -90,7 +96,6 @@ var Notes = React.createClass({
               bsStyle="success"
             />
           </form>
-
           {notePanels}
         </div>
 

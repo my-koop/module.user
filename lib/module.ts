@@ -443,7 +443,9 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
        ORDER by user_notes.date desc",
        [params.id],
        function(err, rows){
-         callback(err && new DatabaseError(err), { notes: _.map(rows, function(row){ return row} ) } );
+         callback(err && new DatabaseError(err),
+           { notes: _.map(rows, function(row){ return row} ) }
+         );
        }
     );
   }
