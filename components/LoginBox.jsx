@@ -112,7 +112,13 @@ var LoginBox = React.createClass({
               self.props.onLoginSuccess();
             }
 
-            Router.transitionTo(routeData.public.name);
+            // Redirect post-login. If there is a pre-login transition,
+            // re-execute it, otherwise redirect to the homepage.
+            if (localSession.attemptedTransition) {
+              localSession.attemptedTransition.retry();
+            } else {
+              Router.transitionTo("home");
+            }
           }, 2000);
         });
 

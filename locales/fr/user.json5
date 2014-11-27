@@ -3,7 +3,11 @@
   "myAccountWelcome": "Mon compte",
   "invalidUserId": "Identifiant d'utilisateur invalide",
   "signin": "Veuillez vous connecter",
-  "loggedin": "Vous êtes connectés! Vous serez redigirés vers l'accueil.",
+  "access_denied": "Vous n'êtes pas autorisé à accéder à cette page.",
+  "access_denied_login": "Il semble que vous ne soyez pas connecté, il \
+pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
+  "login_link": "vous connecter",
+  "loggedin": "Vous êtes connecté! Vous serez redigirés sous peu...",
   "field_email" : "Courriel",
   "field_password" : "Mot de passe",
   "field_remember_me" : "Se souvenir de mes informations",

@@ -2,6 +2,13 @@ import utils = require("mykoop-utils");
 export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
   /* Public routes. */
   metaDataBuilder.addFrontendRoute({
+    idPath: ["public", "accessDenied"],
+    component: "AccessDeniedPage",
+    name: "denied",
+    path: "denied"
+  });
+
+  metaDataBuilder.addFrontendRoute({
     idPath: ["public", "myaccount"],
     component: "MyAccountPage",
     name: "myAccount",
@@ -13,6 +20,11 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
     component: "AdminEditProfile",
     name: "adminEdit",
     path: "user/:id",
+    permissions: {
+      user: {
+        edit: true
+      }
+    },
     // For tests
     params: {
       id: [

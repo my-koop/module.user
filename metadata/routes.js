@@ -1,6 +1,12 @@
 function addRoutes(metaDataBuilder) {
     /* Public routes. */
     metaDataBuilder.addFrontendRoute({
+        idPath: ["public", "accessDenied"],
+        component: "AccessDeniedPage",
+        name: "denied",
+        path: "denied"
+    });
+    metaDataBuilder.addFrontendRoute({
         idPath: ["public", "myaccount"],
         component: "MyAccountPage",
         name: "myAccount",
@@ -11,6 +17,11 @@ function addRoutes(metaDataBuilder) {
         component: "AdminEditProfile",
         name: "adminEdit",
         path: "user/:id",
+        permissions: {
+            user: {
+                edit: true
+            }
+        },
         // For tests
         params: {
             id: [
