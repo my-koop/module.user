@@ -1,4 +1,5 @@
 var _ = require("lodash");
+var React = require("react");
 
 var validatePermissions = require("../lib/common/validatePermissions");
 
@@ -33,11 +34,11 @@ var PermissionMixin = {
       return hasEnoughPermissions;
     }
   },
-/*
+
   propTypes: {
     permissions: React.PropTypes.object.isRequired
   },
-*/
+
   getInitialState: function() {
    return {
     userMeetsPermissions: PermissionMixin.statics.validateUserPermissions(
