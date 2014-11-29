@@ -43,12 +43,26 @@ declare module mkuser {
       callback: (err: Error, result?: LoginResponse
     ) => void): void;
     getProfile(id: number, callback: (err: Error, result: UserProfile) => void): void;
-    registerNewUser(profile: UserInterfaces.RegisterNewUser, callback: (err: Error, result: boolean) => void ) : void;
-    updateProfile(id:number, profile: mkuser.UserProfile, callback: (err: Error, result: boolean) => void ) : void;
+    registerNewUser(
+      profile: RegisterNewUser.Params,
+      callback: RegisterNewUser.Callback
+    );
+    __registerNewUser(
+      connection: mysql.IConnection,
+      profile: RegisterNewUser.Params,
+      callback: RegisterNewUser.Callback
+    );
+    updateProfile(id:number, profile: UserProfile, callback: (err: Error, result: boolean) => void ) : void;
     updatePassword(id:number, passwords:UserInterfaces.updatePassword, callback: (err: Error) => void) : void;
-    // id is -1 if not found
-    __getIdForEmail(connection: mysql.IConnection, params: {email: string}, callback: (err, id: number) => void);
-    getIdForEmail(params: {email: string}, callback: (err, id: number) => void);
+    getIdForEmail(
+      params: GetIdForEmail.Params,
+      callback: GetIdForEmail.Callback
+    );
+    __getIdForEmail(
+      connection: mysql.IConnection,
+      params: GetIdForEmail.Params,
+      callback: GetIdForEmail.Callback
+    );
     getUsersList(params:{}, callback: (err, users) => void);
     __getUsersList(connection: mysql.IConnection, params: {}, callback: (err, users) => void);
     getNotesForId(params: {id: number}, callback: (err, notes) => void);

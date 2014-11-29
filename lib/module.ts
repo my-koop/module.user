@@ -124,7 +124,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           );
         },
         function hasEmail(rows, next) {
-          if(rows.length !== 1){
+          if(rows.length !== 1) {
             //Email is not associated to a user.
             return next(new AuthenticationError(null, "Couldn't find user email."));
           }
@@ -210,56 +210,72 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     });
   }
 
-  registerNewUser(profile: UserInterfaces.RegisterNewUser, callback: (err: Error, result: boolean) => void){
+  registerNewUser(
+    params: mkuser.RegisterNewUser.Params,
+    callback: mkuser.RegisterNewUser.Callback
+  ) {
+    this.callWithConnection(this.__registerNewUser, params, callback);
+  }
+
+  __registerNewUser(
+    connection: mysql.IConnection,
+    params: mkuser.RegisterNewUser.Params,
+    callback: mkuser.RegisterNewUser.Callback
+  ) {
     //FIX ME : Add validation
-    //FIX ME : Add unique email verification
-    //TEMP UNTIL ABOVE ARE FIXED
     var self = this;
-    nodepwd.hash(profile.passwordToHash, function(err, salt, hash) {
-      if(err){
-        logger.debug(err);
-        return callback(err, null);
-      }
-
-      var pwdhash = hash;
-      var mysalt = salt;
-      var currentDate = new Date();
-
-      var updateData: dbQueryStruct.RegisterUser = {
-        email: profile.email,
-        firstname: profile.firstname,
-        lastname : profile.lastname,
-        birthdate: profile.birthdate,
-        phone: profile.phone,
-        origin: profile.origin,
-        usageFrequency: profile.usageFrequency,
-        usageNote : profile.usageNote,
-        referral : profile.referral,
-        pwdhash : pwdhash,
-        salt : mysalt,
-        signupDate: currentDate
-      };
-
-      self.db.getConnection(function(err, connection, cleanup) {
-        if(err) {
-          return callback(err, null);
+    async.waterfall([
+      function checkEmail(next) {
+        self.__getIdForEmail(connection, {email: params.email}, next);
+      },
+      function(id, next) {
+        if(id !== -1) {
+          return next(new ApplicationError(null, {email: "duplicate"}));
         }
-        var query = connection.query(
-          "INSERT INTO user SET ? ",
+        next();
+      },
+      function hashPwd(next) {
+        nodepwd.hash(params.passwordToHash, function(err, salt, hash) {
+          if(err) {
+            logger.verbose(err);
+            return next(new utils.errors(err));
+          }
+          next(null, salt, hash);
+        });
+      },
+      function createUser(salt, hash) {
+
+        var updateData: dbQueryStruct.RegisterUser = {
+          email: params.email,
+          firstname: params.firstname,
+          lastname : params.lastname,
+          birthdate: params.birthdate,
+          phone: params.phone,
+          origin: params.origin,
+          usageFrequency: params.usageFrequency,
+          usageNote : params.usageNote,
+          referral : params.referral,
+          pwdhash : hash,
+          salt : salt,
+        };
+        connection.query(
+          "INSERT INTO user SET ?",
           [updateData],
           function(err, rows) {
-            cleanup();
             if (err) {
-              return callback(err, false);
+              return callback(new DatabaseError(err));
             }
-              return callback(null, rows.affectedRows === 1);
-          }//function
-        );//query
-      });//getConnection
-     });//hash
-  }//registerNewUser
+            if(rows.affectedRows !== 1) {
+              return callback(new ApplicationError(null, {}));
+            }
+            return callback(null, {id: rows.insertId});
+          }
+        );
+      }
+    ], <any>callback);
+  }
 
-  updateProfile(id:number, newProfile: mkuser.UserProfile, callback: (err: Error, result: boolean) => void){
+  updateProfile(id:number, newProfile: mkuser.UserProfile, callback: (err: Error, result: boolean) => void) {
     var self: mkuser.Module =  this;
     this.db.getConnection(function(err, connection, cleanup) {
         if(err) {
@@ -273,7 +289,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
               cleanup();
               return callback(err, false);
             }
-            if(rows[0].isUnique !== 1){
+            if(rows[0].isUnique !== 1) {
               //Duplicate email
               cleanup();
               return callback(new Error("Duplicate Email"), null);
@@ -316,13 +332,13 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
             }
           );
         },
-        function(userHash, userSalt, callback){
-          nodepwd.hash(passwords.oldPassword, userSalt, function(err, hash){
+        function(userHash, userSalt, callback) {
+          nodepwd.hash(passwords.oldPassword, userSalt, function(err, hash) {
             var myError = null;
-            if(err){
+            if(err) {
               myError = new utils.errors.ApplicationError(err,  {}, "Error while hasing current password.");
             }
-            if(hash !== userHash){
+            if(hash !== userHash) {
               myError = new utils.errors.ApplicationError(null, {}, "Provided password doesn't match current one");
             }
             callback(myError, userSalt);
@@ -331,7 +347,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         function(userSalt, callback) {
           nodepwd.hash(passwords.newPassword, userSalt, function(err, newHash) {
             var myError = null;
-            if(err){
+            if(err) {
               myError = new utils.errors.ApplicationError(err, {}, "Error hashing new password");
             }
             callback(myError, newHash);
@@ -361,17 +377,24 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     });//getConnection
   }// updatePassword
 
-  getIdForEmail(params, callback) {
+  getIdForEmail(
+    params: mkuser.GetIdForEmail.Params,
+    callback: mkuser.GetIdForEmail.Callback
+  ) {
     this.callWithConnection(this.__getIdForEmail, params, callback);
   }
 
-  __getIdForEmail(connection, params, callback) {
+  __getIdForEmail(
+    connection: mysql.IConnection,
+    params: mkuser.GetIdForEmail.Params,
+    callback: mkuser.GetIdForEmail.Callback
+  ) {
     connection.query(
       "SELECT id FROM user WHERE email = ?",
-      params.email,
+      params.email || "",
       function(err, result) {
         var id = -1;
-        if(result.length === 1) {
+        if(result && result.length === 1) {
           id = result[0].id;
         }
         callback(err && new DatabaseError(err), id);
@@ -383,7 +406,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     id:number,
     newPermissions,
     callback: (err: Error, result: boolean) => void
-  ){
+  ) {
     var self: mkuser.Module =  this;
     this.db.getConnection(function(err, connection, cleanup) {
         if(err) {
@@ -401,11 +424,11 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     });//getConnection
   }
 
-  getUsersList(params, callback){
+  getUsersList(params, callback) {
     this.callWithConnection(this.__getUsersList, params, callback);
   }
 
-  __getUsersList(connection, params:{}, callback: (err: Error, users) => void ){
+  __getUsersList(connection, params:{}, callback: (err: Error, users) => void ) {
     var self: mkuser.Module =  this;
     var query = connection.query(
       "SELECT \
@@ -426,11 +449,11 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     );
   }
 
-  getNotesForId(params, callback){
+  getNotesForId(params, callback) {
     this.callWithConnection(this.__getNotesForId, params, callback);
   }
 
-  __getNotesForId(connection, params, callback: (err: Error, notes) => void){
+  __getNotesForId(connection, params, callback: (err: Error, notes) => void) {
 
     var query = connection.query(
       "SELECT \
@@ -442,23 +465,23 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
        WHERE user_notes.targetId = ? \
        ORDER by user_notes.date desc",
        [params.id],
-       function(err, rows){
+       function(err, rows) {
          callback(err && new DatabaseError(err),
-           { notes: _.map(rows, function(row){ return row} ) }
+           { notes: _.map(rows, function(row) { return row} ) }
          );
        }
     );
   }
 
-  newNote(params: dbQueryStruct.NewNote, callback){
+  newNote(params: dbQueryStruct.NewNote, callback) {
     this.callWithConnection(this.__newNote, params, callback);
   }
 
-  __newNote(connection, params, callback){
+  __newNote(connection, params, callback) {
     var query = connection.query(
       "INSERT INTO user_notes SET ?",
       [params],
-      function(err, res){
+      function(err, res) {
         callback(err && new DatabaseError(err));
       }
     );

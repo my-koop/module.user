@@ -12,7 +12,7 @@
     referral?: string;
     pwdhash: string;
     salt: string;
-    signupDate: Date;
+    signupDate?: Date;
   }
 
   export interface NewNote {
