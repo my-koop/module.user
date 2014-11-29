@@ -8,16 +8,17 @@ function registerUser(req: express.Request, res: express.Response) {
   //FIX ME consider case referral == other and referralSpecify isnt empty
   var profile: mkuser.RegisterNewUser.Params = {
     email:          req.param("email"),
-    firstname:      req.param("firstname"),
-    lastname:       req.param("lastname"),
+    firstname:      req.param("firstName"),
+    lastname:       req.param("lastName"),
     phone:          req.param("phone",null),
     origin:         req.param("origin", null),
     birthday:       req.param("birthdate",null),
     usageNote:      req.param("usageNote"),
     usageFrequency: req.param("usage",null),
     referral:       req.param("referral",null),
-    passwordToHash: req.param("passwordToHash"),
-    confPassword:   req.param("confPassword")
+    // FIXME: Handle referral specify
+    passwordToHash: req.param("password"),
+    confPassword:   req.param("confpassword")
   };
 
 

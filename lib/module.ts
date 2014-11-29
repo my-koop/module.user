@@ -237,8 +237,8 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
       function hashPwd(next) {
         nodepwd.hash(params.passwordToHash, function(err, salt, hash) {
           if(err) {
-            logger.verbose(err);
-            return next(new utils.errors(err));
+            logger.verbose(typeof err);
+            return next(new ApplicationError(err, {passwordToHash: "invalid"}));
           }
           next(null, salt, hash);
         });

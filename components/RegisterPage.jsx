@@ -12,6 +12,7 @@ var MKConfirmationTrigger = require("mykoop-core/components/ConfirmationTrigger"
 var actions = require("actions");
 var _ = require("lodash");
 var __ = require("language").__;
+var async = require("async");
 
 var userContributions = require("dynamic-metadata").userContributions;
 var registerContributions = _.toArray(
@@ -142,32 +143,39 @@ var RegisterPage = React.createClass({
       this.refs.contribution1.getOptionalInfo()
     );
     if( self.canSendRequest() && (self.pendingRequest = true) ) {
-      actions.user.register({
-        i18nErrors: {},
-        data: data
-      },
-      function (err, res) {
-        var registerSuccess;
-        if (err) {
-          console.error(err);
-          registerSuccess = 0;
-        } else {
-          console.log(res);
-          registerSuccess = 1;
-        }
-
-        self.setState({
-          success: registerSuccess
-        },
-        function() {
-          self.pendingRequest = false;
-          if(self.hasSentSuccessfully()) {
-            // Redirect to homepage after 2 seconds
-            setTimeout(function() {
-              Router.transitionTo("home");
-            }, 2000);
+      async.waterfall([
+        function registerUser(next) {
+          actions.user.register({
+            i18nErrors: {},
+            data: data
+          }, next);
+        }, function notifyContributions(userInfo, next) {
+          async.each(self.contributionRefs, function(ref, callback) {
+            var onUserCreated = self.refs[ref].onUserCreated;
+            onUserCreated && onUserCreated(userInfo.id, callback);
+          }, function(err) {
+            next(null, err);
+          });
+        }, function checkResult(contributionError, next) {
+          if(contributionError) {
+            // FIXME:: show error to user
+            console.error(contributionError);
           }
-        });
+          self.setState({success: registerSuccess}, next);
+        }, function redirect(next) {
+          // Redirect to homepage after 2 seconds
+          setTimeout(function() {
+            Router.transitionTo("home");
+          }, 2000);
+        }
+      ], function (err, contributionError) {
+        self.pendingRequest = false;
+        if(err) {
+          //FIXME:: handle validation data to notify user
+          return self.setState({
+            success: 0
+          });
+        }
       });
     }
   },
@@ -183,10 +191,6 @@ var RegisterPage = React.createClass({
       var checkGoingDownKey = self.checkGoingDownKey;
       // Last panel have no where to go after so we block it there
       var isLast = i === registerContributions.length - 1
-      /*if(isLast) {
-        checkGoingDownKey = _.noop;
-        checkGoingUpDownKey = checkGoingUpKey;
-      }*/
       var ref = "contribution" + i;
       self.contributionRefs.push(ref);
       return (
