@@ -149,10 +149,10 @@ var RegisterPage = React.createClass({
             i18nErrors: {},
             data: data
           }, next);
-        }, function notifyContributions(userInfo, next) {
+        }, function notifyContributions(userInfo, res, next) {
           async.each(self.contributionRefs, function(ref, callback) {
             var onUserCreated = self.refs[ref].onUserCreated;
-            onUserCreated && onUserCreated(userInfo.id, callback);
+            (onUserCreated && onUserCreated(userInfo.id, callback)) || callback();
           }, function(err) {
             next(null, err);
           });
@@ -161,12 +161,13 @@ var RegisterPage = React.createClass({
             // FIXME:: show error to user
             console.error(contributionError);
           }
-          self.setState({success: registerSuccess}, next);
+          self.setState({success: 1}, next);
         }, function redirect(next) {
           // Redirect to homepage after 2 seconds
           setTimeout(function() {
             Router.transitionTo("home");
           }, 2000);
+          next();
         }
       ], function (err, contributionError) {
         self.pendingRequest = false;
