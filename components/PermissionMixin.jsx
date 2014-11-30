@@ -20,9 +20,11 @@ var PermissionMixin = {
       }
 
       if (!hasEnoughPermissions) {
-        if (!localSession.user) {
-          hasEnoughPermissions = false;
-        } else {
+        if (permissions.hasOwnProperty("loggedIn") && !permissions.loggedIn) {
+          if (!localSession.user) {
+            hasEnoughPermissions = true;
+          }
+        } else if(localSession.user) {
           // Valid permissions, let's try to validate them.
           hasEnoughPermissions = validatePermissions(
             localSession.user.perms,

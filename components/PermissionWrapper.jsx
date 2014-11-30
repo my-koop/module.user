@@ -1,4 +1,5 @@
-var React = require("react");
+var _ = require("lodash");
+var React = require("react/addons");
 
 var MKPermissionMixin = require("./PermissionMixin");
 
@@ -16,7 +17,7 @@ var PermissionWrapper = React.createClass({
     }
 
     if (this.props.permissions) {
-      return this.statics.validateUserPermissions(
+      return this.constructor.validateUserPermissions(
         this.props.permissions
       );
     }
@@ -30,8 +31,14 @@ var PermissionWrapper = React.createClass({
   },
 
   render: function() {
-    return this.getIsAllowed() ?
-      this.props.children :
+    return this.getIsAllowed() ? (
+      React.Children.count(this.props.children) === 1 ?
+        React.addons.cloneWithProps(
+          React.Children.only(this.props.children),
+          _.omit(this.props, ["children", "permissions"])
+        ) :
+        this.props.children
+      ) :
       this.props.error || null;
   }
 });

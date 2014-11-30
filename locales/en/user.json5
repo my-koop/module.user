@@ -87,5 +87,14 @@ the problem, do you want to attempt to",
   "userNotesTimePrefix" : "On",
   "userNotesWelcome" : "Notes for this user",
   "userNotesInputLabel" : "Note message",
-  "userNotesSubmit" : "Add a note"
+  "userNotesSubmit" : "Add a note",
+  navbar: {
+    register: "Register",
+    login: "Login",
+    myAccount: "My Account",
+    logout: "Logout"
+  },
+  sidebar: {
+    users: "Users"
+  },
 }
