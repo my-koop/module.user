@@ -11,8 +11,8 @@ var generatePassword = require("password-generator");
 
 var _ = require("lodash");
 
-var DatabaseError = DatabaseError;
-var ApplicationError = ApplicationError;
+var DatabaseError = utils.errors.DatabaseError;
+var ApplicationError = utils.errors.ApplicationError;
 import AuthenticationError = require("./classes/AuthenticationError");
 
 class UserModule extends utils.BaseModule implements mkuser.Module {
@@ -433,7 +433,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
 
           //prepare SendEmail object
           var emailParams = {
-            subject: "CoopBécik - New Password / Nouveau mot de passe",
+            subject: "CoopBÃ©cik - New Password / Nouveau mot de passe",
             message: "Your new password / votre nouveau mot de passe: " + password ,
             to: email
           };

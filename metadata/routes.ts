@@ -16,13 +16,6 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
   });
 
   metaDataBuilder.addFrontendRoute({
-    idPath: ["public", "passwordrecovery"],
-    component: "PasswordRecoveryPage",
-    name: "passwordrecovery",
-    path: "passwordrecovery"
-  });
-
-  metaDataBuilder.addFrontendRoute({
     idPath: ["dashboard", "adminEdit"],
     component: "AdminEditProfile",
     name: "adminEdit",
@@ -61,5 +54,12 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
     component: "RegisterPage",
     name: "register",
     path: "register"
+  });
+
+  metaDataBuilder.addFrontendRoute({
+    idPath: ["simple", "passwordrecovery"],
+    component: "PasswordRecoveryPage",
+    name: "passwordrecovery",
+    path: "passwordrecovery"
   });
 }

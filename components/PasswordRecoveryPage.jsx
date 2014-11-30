@@ -1,16 +1,19 @@
 ﻿var React = require("react");
+
 var BSCol = require("react-bootstrap/Col");
 var BSInput = require("react-bootstrap/Input");
-var actions = require("actions");
+
 var MKAlert = require("mykoop-core/components/Alert");
+var MKFeedbacki18nMixin = require("mykoop-core/components/Feedbacki18nMixin");
 
 var __ = require("language").__;
+var actions = require("actions");
 
 var PasswordRecoveryPage = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin],
+  mixins: [React.addons.LinkedStateMixin, MKFeedbacki18nMixin],
 
-  getInitialState: function(){
+  getInitialState: function() {
     return {
       email : null,
       emailStyle: null,
@@ -19,19 +22,28 @@ var PasswordRecoveryPage = React.createClass({
     }
   },
 
-  onSubmit: function(e){
+  onSubmit: function(e) {
     e.preventDefault();
+    this.clearFeedback();
     var self = this;
     actions.user.resetPassword(
       {
+        i18nErrors: {
+          keys: ["app"],
+          prefix: "user::pwdRecovery"
+        },
         data: {
           email: self.state.email
         }
       },
-      function(err){
-        self.setState({
-          hasError: !!err
-        });
+      function(err) {
+        if(err) {
+          return self.setFeedback(err.i18n, "danger");
+        }
+        self.setFeedback(
+          {key: "user::passwordRecoveryRequest_success"},
+          "success"
+        );
       }
     );
   },
@@ -43,13 +55,8 @@ var PasswordRecoveryPage = React.createClass({
         <h1>
           {__("user::passwordRecoveryWelcome")}
         </h1>
-       <MKAlert bsStyle="danger">
-          {this.state.hasError? __("user::passwordRecoveryRequest", { context: "fail" } ) : null}
-        </MKAlert>
-        <MKAlert bsStyle="success">
-          {!this.state.hasError? __("user::passwordRecoveryRequest", { context: "success" } ) : null}
-        </MKAlert>
-         <p>
+        {this.renderFeedback()}
+        <p>
           {__("user::passwordRecoveryExplanation")}
         </p>
         <form onSubmit={this.onSubmit}>

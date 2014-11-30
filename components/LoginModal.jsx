@@ -17,11 +17,14 @@ var LoginTitle  = __("user::signin");
 
 var LoginModal = React.createClass({
   render: function () {
-    var LoginBody = <MKLoginBox
-                    state={loginState}
-                    saveStateCallback={saveLoginState}
-                    onLoginSuccess={this.props.onRequestHide}
-                  />
+    var LoginBody = (
+      <MKLoginBox
+        state={loginState}
+        saveStateCallback={saveLoginState}
+        onLoginSuccess={this.props.onRequestHide}
+        onRedirect={this.props.onRequestHide}
+      />
+    );
 
     return this.transferPropsTo(
       <MKAbstractModal

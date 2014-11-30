@@ -70,7 +70,6 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
   "update_profile_success_message" : "Votre profile a été mis à jour",
   "adminEditInvalidID" : "Ce numéro d'utilisateur n'est pas relié à compte",
   "adminEditIdField" : "Identifiant d'utilisateur",
-  "passwordRecoveryRequest_fail" : "Impossible d'effectuer la génération du nouveau mot de passe, vérifiez si vous avez inscrit le bon courriel.",
   "passwordRecoveryRequest_success" : "Un courriel contenant un mot de passe temporaire a été envoyé.",
   "passwordRecoveryWelcome" : "Mise à zéro de mot de passe",
   "passwordRecoveryExplanation" : "Saisissez le courriel que vous avez utilisé pour créer votre compte. Vous recevrez un message contenant un nouveau mot de passe.",
@@ -103,5 +102,13 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
   },
   sidebar: {
     users: "Utilisateurs"
+  },
+
+  pwdRecovery: {
+    app: {
+      email: {
+        invalid: "Impossible de réinitialiser le mot de passe, vérifiez si vous avez inscrit le bon courriel."
+      }
+    }
   },
 }

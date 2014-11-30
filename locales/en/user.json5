@@ -70,7 +70,6 @@ the problem, do you want to attempt to",
   "update_profile_success_message" : "Your profile has been updated.",
   "adminEditInvalidID" : "This user Id isn't linked to a user.",
   "adminEditIdField" : "User ID",
-  "passwordRecoveryRequest_fail" : "Unable to recover your password. Double check the entered email",
   "passwordRecoveryRequest_success" : "An email containing your new password has been sent to your address.",
   "passwordRecoveryWelcome" : "Password Recovery",
   "passwordRecoveryExplanation" : "Enter the email address you used to register an account. You will receive a new password at the same address.",
@@ -103,5 +102,13 @@ the problem, do you want to attempt to",
   },
   sidebar: {
     users: "Users"
+  },
+
+  pwdRecovery: {
+    app: {
+      email: {
+        invalid: "Unable to reset your password. Make sure you entered a valid email."
+      }
+    }
   },
 }
