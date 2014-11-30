@@ -63,7 +63,7 @@ var endpoints = {
             method: "get"
         },
         resetPassword: {
-            path: "/users/resetPassword/:email",
+            path: "/users/:email/resetPassword",
             method: "put"
         },
         list: {

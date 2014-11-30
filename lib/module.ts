@@ -194,7 +194,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
       if(err) {
         return callback(err, null);
       }
-      var query = connection.query(
+      connection.query(
         "SELECT ?? FROM user WHERE id = ?",
         [UserProfile.COLUMNS,id],
         function(err, rows) {
@@ -247,7 +247,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         if(err) {
           return callback(err, null);
         }
-        var query = connection.query(
+        connection.query(
           "INSERT INTO user SET ? ",
           [updateData],
           function(err, rows) {
@@ -268,7 +268,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         if(err) {
           return callback(err, null);
         }
-        var query = connection.query(
+        connection.query(
           "SELECT (count(*) = 0) as isUnique FROM user WHERE email = ? AND id != ? ",
           [newProfile.email, id],
           function(err, rows) {
@@ -281,7 +281,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
               cleanup();
               return callback(new Error("Duplicate Email"), null);
             } else {
-              var query = connection.query(
+              connection.query(
                 "UPDATE user SET ? WHERE id = ? ",
                 [newProfile,id],
                 function(err, rows) {
@@ -304,65 +304,75 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
       }
       async.waterfall([
         function(callback) {
-          var query = connection.query(
-            "SELECT ?? FROM user  WHERE id = ? ",
+          connection.query(
+            "SELECT ?? FROM user WHERE id = ? ",
             [["salt", "pwdhash"], id],
             function(err, rows) {
-              var myError = null;
               if(err) {
-                myError = new DatabaseError(err, "SELECT salt and pwdhash caused an error.");
+                return callback(new DatabaseError(err, "SELECT salt and pwdhash caused an error."));
               }
               if (rows.length !== 1) {
-                myError = new ApplicationError(null, {} , "Select returned more than a single row");
+                return callback(new ApplicationError(null, {id: "invalid"}));
               }
-              callback(myError, rows[0].pwdhash, rows[0].salt);
+              callback(null, rows[0].pwdhash, rows[0].salt);
             }
           );
         },
         function(userHash, userSalt, callback) {
           nodepwd.hash(passwords.oldPassword, userSalt, function(err, hash) {
-            var myError = null;
             if(err) {
-              myError = new ApplicationError(err,  {}, "Error while hasing current password.");
+              return callback(new ApplicationError(
+                err,
+                {oldPassword: "invalid"},
+                "Error while hashing current password."
+              ));
             }
             if(hash !== userHash) {
-              myError = new ApplicationError(null, {}, "Provided password doesn't match current one");
+              return callback(new ApplicationError(
+                null,
+                {oldPassword: "invalid"},
+                "Provided password doesn't match current one"
+              ));
             }
-            callback(myError, userSalt);
+            callback(null, userSalt);
           });
         },
         function(userSalt, callback) {
           nodepwd.hash(passwords.newPassword, userSalt, function(err, newHash) {
-            var myError = null;
             if(err) {
-              myError = new ApplicationError(err, {}, "Error hashing new password");
+              return callback(new ApplicationError(
+                err,
+                {newPassword: "invalid"},
+                "Error hashing new password"
+              ));
             }
-            callback(myError, newHash);
+            callback(null, newHash);
           });
         },
         function(newHash, callback) {
-          var query = connection.query(
-            "UPDATE user SET pwdhash = ? WHERE id = ? ",
+          connection.query(
+            "UPDATE user SET pwdhash = ? WHERE id = ?",
             [newHash, id],
             function(err, rows) {
-              var myError = null;
               if(err) {
-                myError = new DatabaseError(err, "Databse error while updating user password");
+                return callback(new DatabaseError(
+                  err,
+                  "Database error while updating user password"
+                ));
               }
               logger.debug(rows);
-              if( rows.affectedRows !== 1) {
-                myError =  new ApplicationError(null, {}, "Update request did not affect change to user row");
-              }
-              callback(myError);
+              // No need to check for errors because we already validate the
+              // user existed
+              callback();
             }
           );
         }
       ], function(err) {
-          cleanup();
-          callback(err);
+        cleanup();
+        callback(err);
       });
-    });//getConnection
-  }// updatePassword
+    });
+  }
 
   getIdForEmail(params, callback) {
     this.callWithConnection(this.__getIdForEmail, params, callback);
@@ -388,6 +398,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
       if(err) {
         return callback(err);
       }
+      var password = generatePassword(8);
       async.waterfall([
         function getSaltWithEmail(next) {
           logger.debug("Getting salt with email:", email);
@@ -406,29 +417,28 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         },
         function generateNewPassword(salt, next) {
           logger.debug("Generating new password");
-          var password = generatePassword(8);
           nodepwd.hash(password, salt, function(err, hash) {
-            next(err, password, hash);
+            next(err, hash);
           });
         },
-        function updateUserPassword(password, passwordHash, next) {
+        function updateUserPassword(passwordHash, next) {
           logger.debug("Updating password to", password);
           connection.query("UPDATE user SET pwdhash = ? WHERE email = ?",
             [passwordHash, email],
             function(err, rows) {
-              var myError = null;
               if(err) {
-                return next(new DatabaseError(err,
-                  "Database error while updating user password")
-                );
+                return next(new DatabaseError(
+                  err,
+                  "Database error while updating user password"
+                ));
               }
               logger.debug("Result of password update", rows);
               // we can safely assume the update will succeed because we
               // validated the email existed already
-              next(null, password);
+              next(null);
           })
         },
-        function sendEmail(password, next) {
+        function sendEmail(next) {
           logger.debug("Update successful, sending email to user");
 
           //prepare SendEmail object
@@ -457,7 +467,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         if(err) {
           return callback(err, null);
         }
-        var query = connection.query(
+        connection.query(
           "UPDATE user SET perms = ? WHERE id = ?",
           [UserModule.serializePermissions(newPermissions), id],
           function(err, rows) {
@@ -474,7 +484,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
 
   __getUsersList(connection, params:{}, callback: (err: Error, users) => void ) {
     var self: mkuser.Module =  this;
-    var query = connection.query(
+    connection.query(
       "SELECT \
          user.id, \
          user.email,\
@@ -499,7 +509,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
 
   __getNotesForId(connection, params, callback: (err: Error, notes) => void){
 
-    var query = connection.query(
+    connection.query(
       "SELECT \
          user_notes.date, \
          user_notes.message, \
@@ -522,7 +532,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
   }
 
   __newNote(connection, params, callback){
-    var query = connection.query(
+    connection.query(
       "INSERT INTO user_notes SET ?",
       [params],
       function(err, res){

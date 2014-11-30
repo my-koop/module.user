@@ -129,6 +129,11 @@ var LoginBox = React.createClass({
     );
   },
 
+  redirect: function(routeName) {
+    Router.transitionTo(routeName);
+    self.props.onRedirect && self.props.onRedirect();
+  },
+
   render: function() {
     var self = this;
     return (
@@ -187,20 +192,14 @@ var LoginBox = React.createClass({
           <BSButton
             block
             bsStyle="primary"
-            onClick={function() {
-              self.props.onRedirect && self.props.onRedirect();
-              Router.transitionTo("register");
-            }}
+            onClick={_.bind(this.redirect, this, "register")}
           >
             {__("user::button_redirect_register")}
           </BSButton>
           <BSButton
             block
             bsStyle="info"
-            onClick={function() {
-              self.props.onRedirect && self.props.onRedirect();
-              Router.transitionTo("passwordrecovery");
-            }}
+            onClick={_.bind(this.redirect, this, "passwordrecovery")}
           >
             {__("user::button_redirect_lostpwd")}
           </BSButton>
