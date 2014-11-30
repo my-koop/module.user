@@ -94,4 +94,7 @@ the problem, do you want to attempt to",
     myAccount: "My Account",
     logout: "Logout"
   },
+  sidebar: {
+    users: "Users"
+  },
 }

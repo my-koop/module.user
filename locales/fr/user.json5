@@ -94,4 +94,7 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
     myAccount: "Mon compte",
     logout: "Déconnexion"
   },
+  sidebar: {
+    users: "Utilisateurs"
+  },
 }

@@ -29,7 +29,7 @@ var uiHooks = {
         icon: "user",
         text: {
           resolve: "lib",
-          value: "common/getUserEmail"
+          value: "frontend/getUserEmail"
         },
         children: {
           myaccount: {
@@ -46,10 +46,16 @@ var uiHooks = {
             priority: 950
           },
           logout: {
-            type: "custom",
+            type: "item",
             content: {
-              resolve: "component",
-              value: "UserLogoutMenuItem"
+              icon: "sign-out",
+              text: "user::navbar.logout",
+              link: {
+                onClick: {
+                  resolve: "lib",
+                  value: "frontend/logoutUser"
+                }
+              }
             },
             priority: 1000
           }
@@ -59,6 +65,22 @@ var uiHooks = {
         loggedIn: true
       },
       priority: 300
+    }
+  },
+  sidebar: {
+    users: {
+      type: "item",
+      content: {
+        icon: "users",
+        text: "user::sidebar.users",
+        link: "home"
+      },
+      priority: 100,
+      permissions: {
+        user: {
+          view: true
+        }
+      }
     }
   }
 };
