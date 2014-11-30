@@ -101,6 +101,9 @@ var LoginBox = React.createClass({
           return;
         }
 
+        var onLoginSuccess = self.props.onLoginSuccess;
+        localSession.user = userInfo;
+
         self.setState({
           successMessage: __("user::loggedin"),
           errorMessage: null,
@@ -108,9 +111,11 @@ var LoginBox = React.createClass({
           passwordFieldState: 1
         },function(err, res) {
           setTimeout(function() {
-            if (self.props.onLoginSuccess) {
-              self.props.onLoginSuccess();
+            if (onLoginSuccess) {
+              onLoginSuccess();
             }
+
+            website.render();
 
             // Redirect post-login. If there is a pre-login transition,
             // re-execute it, otherwise redirect to the homepage.
@@ -121,9 +126,6 @@ var LoginBox = React.createClass({
             }
           }, 2000);
         });
-
-        localSession.user = userInfo;
-        website.render();
       }
     );
   },

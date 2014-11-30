@@ -87,5 +87,11 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
   "userNotesTimePrefix" : "Le",
   "userNotesWelcome" : "Notes sur cet usager",
   "userNotesInputLabel" : "Message de la note",
-  "userNotesSubmit" : "Ajouter une note"
+  "userNotesSubmit" : "Ajouter une note",
+  navbar: {
+    register: "Inscription",
+    login: "Connexion",
+    myAccount: "Mon compte",
+    logout: "Déconnexion"
+  },
 }
