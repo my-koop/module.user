@@ -88,6 +88,7 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
   "userNotesWelcome" : "Notes sur cet usager",
   "userNotesInputLabel" : "Message de la note",
   "userNotesSubmit" : "Ajouter une note",
+  "userNotesShowMore" : "Montrer plus de notes",
   navbar: {
     register: "Inscription",
     login: "Connexion",
