@@ -70,7 +70,7 @@
   "passwordRecoveryWelcome" : "Password Recovery",
   "passwordRecoveryExplanation" : "Enter the email address you used to register an account. You will receive a new password at the same address.",
   "passwordRecoverySubmit" : "Reset Password",
-  "passwordRecoveryEmailPlaceholder" : "user@domain.com"
+  "passwordRecoveryEmailPlaceholder" : "user@domain.com",
   "adminEditIdField" : "User Id",
   "permissions_edit_instructions": "To remove a permission, leave the checkbox unchecked or the number field empty. If a section is checked, all current and future permissions under it will be granted.",
   "permissions_edit_hasall": "Has all current and future sub-permissions for this section",

@@ -3,7 +3,8 @@
   "role": "user",
   "mykoop": {
     "dependencies": {
-      "database": true
+      "database": true,
+      "communications": "^1.0.0-rc"
     }
   },
   "version": "1.0.0-rc",
@@ -27,7 +28,6 @@
     "lodash": "^2.4.1",
     "mykoop-logger": "git://github.com/my-koop/module.logger",
     "mykoop-utils": "git://github.com/my-koop/module.utils#rc",
-    "mykoop-communications": "git://github.com/my-koop/module.communications#rc",
     "password-generator": "^0.2.3",
     "pwd": "0.0.4",
     "traverse": "^0.6.6"

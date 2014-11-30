@@ -11,8 +11,8 @@ var generatePassword = require("password-generator");
 
 var _ = require("lodash");
 
-var DatabaseError = utils.errors.DatabaseError;
-var ApplicationError = utils.errors.ApplicationError;
+var DatabaseError = DatabaseError;
+var ApplicationError = ApplicationError;
 import AuthenticationError = require("./classes/AuthenticationError");
 
 class UserModule extends utils.BaseModule implements mkuser.Module {
@@ -127,7 +127,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           );
         },
         function hasEmail(rows, next) {
-          if(rows.length !== 1){
+          if(rows.length !== 1) {
             //Email is not associated to a user.
             return next(new AuthenticationError(null, "Couldn't find user email."));
           }
@@ -213,13 +213,13 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     });
   }
 
-  registerNewUser(profile: UserInterfaces.RegisterNewUser, callback: (err: Error, result: boolean) => void){
+  registerNewUser(profile: UserInterfaces.RegisterNewUser, callback: (err: Error, result: boolean) => void) {
     //FIX ME : Add validation
     //FIX ME : Add unique email verification
     //TEMP UNTIL ABOVE ARE FIXED
     var self = this;
     nodepwd.hash(profile.passwordToHash, function(err, salt, hash) {
-      if(err){
+      if(err) {
         logger.debug(err);
         return callback(err, null);
       }
@@ -262,7 +262,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
      });//hash
   }//registerNewUser
 
-  updateProfile(id:number, newProfile: mkuser.UserProfile, callback: (err: Error, result: boolean) => void){
+  updateProfile(id:number, newProfile: mkuser.UserProfile, callback: (err: Error, result: boolean) => void) {
     var self: mkuser.Module =  this;
     this.db.getConnection(function(err, connection, cleanup) {
         if(err) {
@@ -276,7 +276,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
               cleanup();
               return callback(err, false);
             }
-            if(rows[0].isUnique !== 1){
+            if(rows[0].isUnique !== 1) {
               //Duplicate email
               cleanup();
               return callback(new Error("Duplicate Email"), null);
@@ -310,23 +310,23 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
             function(err, rows) {
               var myError = null;
               if(err) {
-                myError = new utils.errors.DatabaseError(err, "SELECT salt and pwdhash caused an error.");
+                myError = new DatabaseError(err, "SELECT salt and pwdhash caused an error.");
               }
               if (rows.length !== 1) {
-                myError = new utils.errors.ApplicationError(null, {} , "Select returned more than a single row");
+                myError = new ApplicationError(null, {} , "Select returned more than a single row");
               }
               callback(myError, rows[0].pwdhash, rows[0].salt);
             }
           );
         },
-        function(userHash, userSalt, callback){
-          nodepwd.hash(passwords.oldPassword, userSalt, function(err, hash){
+        function(userHash, userSalt, callback) {
+          nodepwd.hash(passwords.oldPassword, userSalt, function(err, hash) {
             var myError = null;
-            if(err){
-              myError = new utils.errors.ApplicationError(err,  {}, "Error while hasing current password.");
+            if(err) {
+              myError = new ApplicationError(err,  {}, "Error while hasing current password.");
             }
-            if(hash !== userHash){
-              myError = new utils.errors.ApplicationError(null, {}, "Provided password doesn't match current one");
+            if(hash !== userHash) {
+              myError = new ApplicationError(null, {}, "Provided password doesn't match current one");
             }
             callback(myError, userSalt);
           });
@@ -334,8 +334,8 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         function(userSalt, callback) {
           nodepwd.hash(passwords.newPassword, userSalt, function(err, newHash) {
             var myError = null;
-            if(err){
-              myError = new utils.errors.ApplicationError(err, {}, "Error hashing new password");
+            if(err) {
+              myError = new ApplicationError(err, {}, "Error hashing new password");
             }
             callback(myError, newHash);
           });
@@ -347,11 +347,11 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
             function(err, rows) {
               var myError = null;
               if(err) {
-                myError = new utils.errors.DatabaseError(err, "Databse error while updating user password");
+                myError = new DatabaseError(err, "Databse error while updating user password");
               }
               logger.debug(rows);
               if( rows.affectedRows !== 1) {
-                myError =  new utils.errors.ApplicationError(null, {}, "Update request did not affect change to user row");
+                myError =  new ApplicationError(null, {}, "Update request did not affect change to user row");
               }
               callback(myError);
             }
@@ -382,7 +382,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     );
   }
 
-  resetPassword(email, callback: (err: Error) => void){
+  resetPassword(email, callback: (err: Error) => void) {
     var self = this;
     this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
@@ -390,53 +390,46 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
       }
       async.waterfall([
         function getSaltWithEmail(next) {
-          logger.verbose("Getting salt with email: ", email);
+          logger.debug("Getting salt with email:", email);
           connection.query(
             "SELECT salt FROM user WHERE email = ?",
             [email],
-            function(err,rows){
+            function(err,rows) {
               if(err) {
-                next(new utils.errors.DatabaseError(err), null);
+                return next(new DatabaseError(err), null);
               }
-              next(rows.length === 0 && new utils.errors.ApplicationError(null,
-                {},
-                "Email doesn't belong to any user"
-                ),
-                rows[0].salt
-              );
-
-          })
+              if(_.isEmpty(rows)) {
+                return next(new ApplicationError(null, {email: "invalid"}));
+              }
+              next(null, rows[0].salt);
+          });
         },
-        function generateNewPassword(salt, next){
-          logger.verbose("Generating new password with salt: ", salt.substr(0,10) , " ...");
+        function generateNewPassword(salt, next) {
+          logger.debug("Generating new password");
           var password = generatePassword(8);
-          nodepwd.hash(password, salt, function(err, hash){
+          nodepwd.hash(password, salt, function(err, hash) {
             next(err, password, hash);
           });
         },
-        function updateUserPassword(password, passwordHash, next){
-          logger.verbose("Updating password to " , password);
+        function updateUserPassword(password, passwordHash, next) {
+          logger.debug("Updating password to", password);
           connection.query("UPDATE user SET pwdhash = ? WHERE email = ?",
             [passwordHash, email],
-            function(err, rows){
+            function(err, rows) {
               var myError = null;
               if(err) {
-                next( new utils.errors.DatabaseError(err,
-                  "Databse error while updating user password"),
-                  null
+                return next(new DatabaseError(err,
+                  "Database error while updating user password")
                 );
               }
-              logger.debug(rows, "Result of password update");
-              next(rows.affectedRows !== 1 &&
-                new utils.errors.ApplicationError(null,
-                {},
-                "Update request did not affect change to user row")
-                , password
-              );
+              logger.debug("Result of password update", rows);
+              // we can safely assume the update will succeed because we
+              // validated the email existed already
+              next(null, password);
           })
         },
-        function sendEmail(password, next){
-          logger.verbose("Update successful, sending email to user");
+        function sendEmail(password, next) {
+          logger.debug("Update successful, sending email to user");
 
           //prepare SendEmail object
           var emailParams = {
@@ -447,11 +440,10 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           self.communications.sendEmail(emailParams, next);
         }
       ],
-      function(err){
+      function(err) {
         cleanup();
         callback(err);
       });
-
     });
   }
 
@@ -459,7 +451,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     id:number,
     newPermissions,
     callback: (err: Error, result: boolean) => void
-  ){
+  ) {
     var self: mkuser.Module =  this;
     this.db.getConnection(function(err, connection, cleanup) {
         if(err) {
@@ -476,11 +468,11 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     });//getConnection
   }
 
-  getUsersList(params, callback){
+  getUsersList(params, callback) {
     this.callWithConnection(this.__getUsersList, params, callback);
   }
 
-  __getUsersList(connection, params:{}, callback: (err: Error, users) => void ){
+  __getUsersList(connection, params:{}, callback: (err: Error, users) => void ) {
     var self: mkuser.Module =  this;
     var query = connection.query(
       "SELECT \

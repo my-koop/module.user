@@ -70,7 +70,7 @@
   "passwordRecoveryWelcome" : "Mise à zéro de mot de passe",
   "passwordRecoveryExplanation" : "Saisissez le courriel que vous avez utilisé pour créer votre compte. Vous recevrez un message contenant un nouveau mot de passe.",
   "passwordRecoverySubmit" : "Générer un nouveau mot de passe",
-  "passwordRecoveryEmailPlaceholder" : "exemple@email.com"
+  "passwordRecoveryEmailPlaceholder" : "utilisateur@domaine.com",
   "adminEditIdField" : "Numéro d'utilisateur",
   "permissions_edit_instructions": "Pour retirer un privilège, laisser la case décochée ou le champ vide. Si la case d'une section est cochée, tous les privilèges actuels et futurs de cette section seront accordés à l'utilisteur.",
   "permissions_edit_hasall": "Possède tous les privilèges actuels et futurs sous cette catégorie",
