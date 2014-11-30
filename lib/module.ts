@@ -491,7 +491,44 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
 
       }//function
     );
+  }
 
+  getNotesForId(params, callback){
+    this.callWithConnection(this.__getNotesForId, params, callback);
+  }
+
+  __getNotesForId(connection, params, callback: (err: Error, notes) => void){
+
+    var query = connection.query(
+      "SELECT \
+         user_notes.date, \
+         user_notes.message, \
+         concat(user.firstname,' ', user.lastname) as author \
+       FROM user_notes \
+       LEFT JOIN user ON user_notes.authorId = user.id \
+       WHERE user_notes.targetId = ? \
+       ORDER by user_notes.date desc",
+       [params.id],
+       function(err, rows){
+         callback(err && new DatabaseError(err),
+           { notes: _.map(rows, function(row){ return row} ) }
+         );
+       }
+    );
+  }
+
+  newNote(params: dbQueryStruct.NewNote, callback){
+    this.callWithConnection(this.__newNote, params, callback);
+  }
+
+  __newNote(connection, params, callback){
+    var query = connection.query(
+      "INSERT INTO user_notes SET ?",
+      [params],
+      function(err, res){
+        callback(err && new DatabaseError(err));
+      }
+    );
   }
 }//class
 

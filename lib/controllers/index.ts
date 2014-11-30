@@ -183,4 +183,38 @@ export function attachControllers(
       {}
     )
   );
+  binder.attach(
+    {
+      endPoint: endPoints.user.notes.list
+    },
+    binder.makeSimpleController(
+      "getNotesForId",
+      {
+        parseFunc: function(req: Express.Request) {
+          var params = {
+            id: parseInt(req.param("id"))
+          };
+          return params;
+        }
+      }
+    )
+  );
+    binder.attach(
+    {
+      endPoint: endPoints.user.notes.new
+    },
+    binder.makeSimpleController(
+      "newNote",
+      {
+        parseFunc: function(req: Express.Request) {
+          var params: dbQueryStruct.NewNote = {
+            targetId: parseInt(req.param("id")),
+            message: req.param("message"),
+            authorId: req.session.user.id,
+          };
+          return params;
+        }
+      }
+    )
+  );
 }

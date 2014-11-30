@@ -14,4 +14,10 @@
     salt: string;
     signupDate: Date;
   }
+
+  export interface NewNote {
+    targetId: number;
+    authorId: number;
+    message: string;
+  }
  }

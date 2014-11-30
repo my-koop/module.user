@@ -3,7 +3,11 @@
   "myAccountWelcome": "Mon compte",
   "invalidUserId": "Identifiant d'utilisateur invalide",
   "signin": "Veuillez vous connecter",
-  "loggedin": "Vous êtes connectés! Vous serez redigirés vers l'accueil.",
+  "access_denied": "Vous n'êtes pas autorisé à accéder à cette page.",
+  "access_denied_login": "Il semble que vous ne soyez pas connecté, il \
+pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
+  "login_link": "vous connecter",
+  "loggedin": "Vous êtes connecté! Vous serez redigirés sous peu...",
   "field_email" : "Courriel",
   "field_password" : "Mot de passe",
   "field_remember_me" : "Se souvenir de mes informations",
@@ -13,6 +17,7 @@
   "myaccount_tab_profile" : "Profil",
   "myaccount_tab_password" : "Mot de passe",
   "useredit_tab_permissions" : "Privilèges",
+  "useredit_tab_notes" : "Notes",
   "update_password_success" : "Votre mot de passe a été changé!",
   "field_old_password" : "Mot de passe Actuel",
   "field_new_password" : "Nouveau mot de passe",
@@ -84,5 +89,19 @@
   "userListHeaderLastname" : "Nom",
   "userListHeaderisActive" : "Membre",
   "userListHeaderActiveUntil" : "Expiration",
-  "userListEditButton" : "Modifier le compte de cet usager"
+  "userListEditButton" : "Modifier le compte de cet usager",
+  "userNotesAuthor" : "Écrit par",
+  "userNotesTimePrefix" : "Le",
+  "userNotesWelcome" : "Notes sur cet usager",
+  "userNotesInputLabel" : "Message de la note",
+  "userNotesSubmit" : "Ajouter une note",
+  navbar: {
+    register: "Inscription",
+    login: "Connexion",
+    myAccount: "Mon compte",
+    logout: "Déconnexion"
+  },
+  sidebar: {
+    users: "Utilisateurs"
+  },
 }

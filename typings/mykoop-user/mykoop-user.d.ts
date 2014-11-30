@@ -52,6 +52,10 @@ declare module mkuser {
     resetPassword(email, callback: (err: Error) => void) : void;
     getUsersList(params:{}, callback: (err, users) => void);
     __getUsersList(connection: mysql.IConnection, params: {}, callback: (err, users) => void);
+    getNotesForId(params: {id: number}, callback: (err, notes) => void);
+    __getNotesForId(connection: mysql.IConnection, params, callback);
+    newNote(params: dbQueryStruct.NewNote, callback: (err: Error) => void);
+    __newNote(connection: mysql.IConnection, params: dbQueryStruct.NewNote, callback);
   }
 
 }

@@ -52,6 +52,14 @@ var Items = React.createClass({
   render: function() {
     var self = this;
     var CONFIG = {
+      defaultOrdering: [
+        "id",
+        "email",
+        "firstname",
+        "lastname",
+        "isMember",
+        "activeUntil"
+      ],
       columns: {
         id: {
           name: __("user::userListHeaderId"),
