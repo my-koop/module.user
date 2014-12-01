@@ -69,6 +69,12 @@ the problem, do you want to attempt to",
   "update_profile_failure_message" : "Unable to update your profile.",
   "update_profile_success_message" : "Your profile has been updated.",
   "adminEditInvalidID" : "This user Id isn't linked to a user.",
+  "adminEditIdField" : "User ID",
+  "passwordRecoveryRequest_success" : "An email containing your new password has been sent to your address.",
+  "passwordRecoveryWelcome" : "Password Recovery",
+  "passwordRecoveryExplanation" : "Enter the email address you used to register an account. You will receive a new password at the same address.",
+  "passwordRecoverySubmit" : "Reset Password",
+  "passwordRecoveryEmailPlaceholder" : "user@domain.com",
   "adminEditIdField" : "User Id",
   "permissions_edit_instructions": "To remove a permission, leave the checkbox unchecked or the number field empty. If a section is checked, all current and future permissions under it will be granted.",
   "permissions_edit_hasall": "Has all current and future sub-permissions for this section",
@@ -97,5 +103,13 @@ the problem, do you want to attempt to",
   },
   sidebar: {
     users: "Users"
+  },
+
+  pwdRecovery: {
+    app: {
+      email: {
+        invalid: "Unable to reset your password. Make sure you entered a valid email."
+      }
+    }
   },
 }

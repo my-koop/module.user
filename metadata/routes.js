@@ -49,5 +49,11 @@ function addRoutes(metaDataBuilder) {
         name: "register",
         path: "register"
     });
+    metaDataBuilder.addFrontendRoute({
+        idPath: ["simple", "passwordrecovery"],
+        component: "PasswordRecoveryPage",
+        name: "passwordrecovery",
+        path: "passwordrecovery"
+    });
 }
 exports.addRoutes = addRoutes;
