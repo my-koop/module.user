@@ -5,17 +5,18 @@ module.user
 ##Register form contribution
 Add to metadata
 ```js
-userContributions: {
-  registerForm: {
-    identifier: {
-      titleKey: string;
-      component: {
-        resolve: "component",
-        value: string;
+user: {
+  contributions: {
+    registerForm: {
+      identifier: {
+        titleKey: string;
+        component: {
+          resolve: "component",
+          value: string;
+        },
       },
-
-    },
-    ...
+      ...
+    }
   }
 }
 ```

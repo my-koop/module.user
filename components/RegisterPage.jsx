@@ -14,7 +14,8 @@ var _ = require("lodash");
 var __ = require("language").__;
 var async = require("async");
 
-var userContributions = require("dynamic-metadata").userContributions;
+var userMeta = require("dynamic-metadata").user;
+var userContributions = userMeta && userMeta.contributions;
 var registerContributions = _.toArray(
   userContributions && userContributions.registerForm
 ).filter(function(contribution) {
@@ -40,7 +41,6 @@ registerContributions = [
 var totalPanels = registerContributions.length;
 
 var RegisterPage = React.createClass({
-
   mixins: [React.addons.LinkedStateMixin],
 
   getInitialState: function() {
@@ -142,34 +142,37 @@ var RegisterPage = React.createClass({
       this.refs.contribution0.getAccountInfo(),
       this.refs.contribution1.getOptionalInfo()
     );
-    if( self.canSendRequest() && (self.pendingRequest = true) ) {
+    if(self.canSendRequest() && (self.pendingRequest = true)) {
       async.waterfall([
         function registerUser(next) {
           actions.user.register({
             i18nErrors: {},
             data: data
           }, next);
-        }, function notifyContributions(userInfo, res, next) {
+        },
+        function notifyContributions(userInfo, res, next) {
           async.each(self.contributionRefs, function(ref, callback) {
             var onUserCreated = self.refs[ref].onUserCreated;
             (onUserCreated && onUserCreated(userInfo.id, callback)) || callback();
           }, function(err) {
             next(null, err);
           });
-        }, function checkResult(contributionError, next) {
+        },
+        function checkResult(contributionError, next) {
           if(contributionError) {
             // FIXME:: show error to user
             console.error(contributionError);
           }
           self.setState({success: 1}, next);
-        }, function redirect(next) {
+        },
+        function redirect(next) {
           // Redirect to homepage after 2 seconds
           setTimeout(function() {
             Router.transitionTo("home");
           }, 2000);
           next();
         }
-      ], function (err, contributionError) {
+      ], function (err) {
         self.pendingRequest = false;
         if(err) {
           //FIXME:: handle validation data to notify user
@@ -190,8 +193,8 @@ var RegisterPage = React.createClass({
       var checkGoingUpDownKey = self.checkGoingUpDownKey;
       var checkGoingUpKey = self.checkGoingUpKey;
       var checkGoingDownKey = self.checkGoingDownKey;
-      // Last panel have no where to go after so we block it there
-      var isLast = i === registerContributions.length - 1
+      // Last panel have nowhere to go after so we block it there
+      var isLast = i === (registerContributions.length - 1);
       var ref = "contribution" + i;
       self.contributionRefs.push(ref);
       return (
@@ -202,7 +205,7 @@ var RegisterPage = React.createClass({
             checkGoingUpKey={checkGoingUpKey}
             checkGoingDownKey={checkGoingDownKey}
           />
-          { !isLast ?
+          {!isLast ?
             <BSButton
               onClick={self.nextPanel}
               className="pull-right"

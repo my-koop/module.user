@@ -1,6 +1,6 @@
 var React  = require("react");
 
-var BSInput     = require("react-bootstrap/Input");
+var BSInput = require("react-bootstrap/Input");
 
 var __ = require("language").__;
 
