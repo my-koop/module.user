@@ -9,7 +9,6 @@ var ajax = require("ajax");
 var actions = require("actions");
 var localSession = require("session").local;
 var Router = require("react-router");
-var routeData = require("dynamic-metadata").routes;
 
 var website = require("website");
 
@@ -101,6 +100,9 @@ var LoginBox = React.createClass({
           return;
         }
 
+        var onLoginSuccess = self.props.onLoginSuccess;
+        localSession.user = userInfo;
+
         self.setState({
           successMessage: __("user::loggedin"),
           errorMessage: null,
@@ -108,9 +110,11 @@ var LoginBox = React.createClass({
           passwordFieldState: 1
         },function(err, res) {
           setTimeout(function() {
-            if (self.props.onLoginSuccess) {
-              self.props.onLoginSuccess();
+            if (onLoginSuccess) {
+              onLoginSuccess();
             }
+
+            website.render();
 
             // Redirect post-login. If there is a pre-login transition,
             // re-execute it, otherwise redirect to the homepage.
@@ -121,27 +125,17 @@ var LoginBox = React.createClass({
             }
           }, 2000);
         });
-
-        localSession.user = userInfo;
-        website.render();
       }
     );
   },
 
-  redirect: function(location) {
-    console.log("redirecting");
-    switch(location) {
-      case "register":
-        Router.transitionTo(routeData.simple.children.register.name);
-        break;
-      case "forgotPassword":
-        //FIX ME Add redirect to forgot password page once it is implemented
-        break;
-      default: break;
-    };
+  redirect: function(routeName) {
+    Router.transitionTo(routeName);
+    self.props.onRedirect && self.props.onRedirect();
   },
 
   render: function() {
+    var self = this;
     return (
       <div>
         <MKAlert bsStyle="danger" permanent>
@@ -198,14 +192,14 @@ var LoginBox = React.createClass({
           <BSButton
             block
             bsStyle="primary"
-            onClick={this.redirect.bind(null,"register")}
+            onClick={_.bind(this.redirect, this, "register")}
           >
             {__("user::button_redirect_register")}
           </BSButton>
           <BSButton
-          block
-          bsStyle="info"
-          onclick={this.redirect.bind(null,"forgotPassword")}
+            block
+            bsStyle="info"
+            onClick={_.bind(this.redirect, this, "passwordrecovery")}
           >
             {__("user::button_redirect_lostpwd")}
           </BSButton>

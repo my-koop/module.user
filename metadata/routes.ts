@@ -55,4 +55,11 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
     name: "register",
     path: "register"
   });
+
+  metaDataBuilder.addFrontendRoute({
+    idPath: ["simple", "passwordrecovery"],
+    component: "PasswordRecoveryPage",
+    name: "passwordrecovery",
+    path: "passwordrecovery"
+  });
 }

@@ -69,6 +69,12 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
   "update_profile_failure_message" : "La mise à jour a échoué",
   "update_profile_success_message" : "Votre profile a été mis à jour",
   "adminEditInvalidID" : "Ce numéro d'utilisateur n'est pas relié à compte",
+  "adminEditIdField" : "Identifiant d'utilisateur",
+  "passwordRecoveryRequest_success" : "Un courriel contenant un mot de passe temporaire a été envoyé à votre adresse courriel.",
+  "passwordRecoveryWelcome" : "Réinitialisation du mot de passe",
+  "passwordRecoveryExplanation" : "Saisissez le courriel que vous avez utilisé pour créer votre compte. Vous recevrez un message contenant un nouveau mot de passe.",
+  "passwordRecoverySubmit" : "Générer un nouveau mot de passe",
+  "passwordRecoveryEmailPlaceholder" : "utilisateur@domaine.com",
   "adminEditIdField" : "Numéro d'utilisateur",
   "permissions_edit_instructions": "Pour retirer un privilège, laisser la case décochée ou le champ vide. Si la case d'une section est cochée, tous les privilèges actuels et futurs de cette section seront accordés à l'utilisteur.",
   "permissions_edit_hasall": "Possède tous les privilèges actuels et futurs sous cette catégorie",
@@ -87,5 +93,23 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
   "userNotesTimePrefix" : "Le",
   "userNotesWelcome" : "Notes sur cet usager",
   "userNotesInputLabel" : "Message de la note",
-  "userNotesSubmit" : "Ajouter une note"
+  "userNotesSubmit" : "Ajouter une note",
+  "userNotesShowMore" : "Montrer plus de notes",
+  navbar: {
+    register: "Inscription",
+    login: "Connexion",
+    myAccount: "Mon compte",
+    logout: "Déconnexion"
+  },
+  sidebar: {
+    users: "Utilisateurs"
+  },
+
+  pwdRecovery: {
+    app: {
+      email: {
+        invalid: "Impossible de réinitialiser le mot de passe, vérifiez si vous avez inscrit le bon courriel."
+      }
+    }
+  },
 }

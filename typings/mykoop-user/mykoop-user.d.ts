@@ -63,6 +63,7 @@ declare module mkuser {
       params: GetIdForEmail.Params,
       callback: GetIdForEmail.Callback
     );
+    resetPassword(email, callback: (err: Error) => void) : void;
     getUsersList(params:{}, callback: (err, users) => void);
     __getUsersList(connection: mysql.IConnection, params: {}, callback: (err, users) => void);
     getNotesForId(params: {id: number}, callback: (err, notes) => void);

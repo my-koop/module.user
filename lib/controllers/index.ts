@@ -19,6 +19,7 @@ import getSession = require("./getSession");
 import registerUser = require("./registerUser");
 import updateProfile = require("./updateProfile");
 import updatePassword = require("./updatePassword");
+import resetPassword = require("./resetPassword");
 import updatePermissions = require("./updatePermissions");
 
 export function attachControllers(
@@ -169,6 +170,10 @@ export function attachControllers(
         }
       }
     )
+  );
+  binder.attach(
+    {endPoint: endPoints.user.resetPassword},
+    resetPassword
   );
   binder.attach(
     {

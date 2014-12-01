@@ -8,6 +8,7 @@ var __         = require("language").__;
 var formatDate = require("language").formatDate;
 var actions    = require("actions");
 
+var sliceIncrement = 5;
 var Notes = React.createClass({
   mixins: [React.addons.LinkedStateMixin],
 
@@ -15,39 +16,43 @@ var Notes = React.createClass({
     userId: React.PropTypes.number.isRequired,
   },
 
-  getInitialState: function(){
+  getInitialState: function() {
     return {
       notes: null,
-      message: null
+      message: "",
+      sliceCount: sliceIncrement,
     }
   },
 
-  getNotes: function(){
+  getNotes: function() {
     var self = this;
     actions.user.notes.list({
       data: {
         id: self.props.userId
       }
-    }, function(err, res){
-        if(err){
-          console.error(err);
-          MKAlertTrigger.showAlert(err);
-        } else {
-          self.setState({
-            notes: res.notes
-          })
-        }
+    }, function(err, res) {
+      if(err) {
+        console.error(err);
+        MKAlertTrigger.showAlert(err);
+      } else {
+        _.each(res.notes, function(note) {
+          note.date = new Date(note.date);
+        });
+        self.setState({
+          notes: res.notes
+        });
+      }
     });
   },
 
-  componentWillMount: function(){
+  componentWillMount: function() {
     this.getNotes();
   },
 
-  onSubmit: function(e){
+  onSubmit: function(e) {
     e.preventDefault();
     var self = this;
-    if(self.state.message === null){
+    if(_.isEmpty(self.state.message)) {
       return;
     }
     actions.user.notes.new({
@@ -56,29 +61,40 @@ var Notes = React.createClass({
         message: self.state.message
       }
     }, function(err, res) {
-        if(err){
-          console.error(err);
-          MKAlertTrigger.showAlert(err);
-        } else {
-          self.getNotes();
-        }
+      if(err) {
+        console.error(err);
+        return MKAlertTrigger.showAlert(err);
       }
-    )
+      self.setState({
+        message: ""
+      }, function() {
+        self.getNotes();
+      });
+    });
   },
 
-  render: function(){
+  showMoreNotes: function() {
+    this.setState({
+      sliceCount: this.state.sliceCount + sliceIncrement
+    });
+  },
 
-    var notePanels = _.map(this.state.notes, function(note, i){
-      var header = __("user::userNotesAuthor") + " "
-        + note.author + " "
-        + __("user::userNotesTimePrefix") + " "
-        + formatDate(new Date(note.date), "LLL");
-      return (
-        <BSPanel key={i} header={header}>
-          {note.message}
-        </BSPanel>
-      );
-    })
+  render: function() {
+    var notePanels = _(this.state.notes)
+      .first(this.state.sliceCount)
+      .map(function(note, i) {
+        var header = __("user::userNotesAuthor") + " "
+          + note.author + " "
+          + __("user::userNotesTimePrefix") + " "
+          + formatDate(note.date, "LLL");
+        return (
+          <BSPanel key={i} header={header}>
+            {note.message}
+          </BSPanel>
+        );
+      })
+      .value();
+
     return (
         <div>
           <h2>
@@ -94,9 +110,19 @@ var Notes = React.createClass({
               type="submit"
               value={__("user::userNotesSubmit")}
               bsStyle="success"
+              disabled={_.isEmpty(this.state.message)}
             />
           </form>
           {notePanels}
+          { this.state.sliceCount < _.size(this.state.notes) ?
+            <BSButton
+              bsSize="small"
+              bsStyle="primary"
+              onClick={this.showMoreNotes}
+            >
+              {__("user::userNotesShowMore")}
+            </BSButton>
+          : null }
         </div>
 
     );
