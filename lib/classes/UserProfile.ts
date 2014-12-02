@@ -17,7 +17,7 @@ class UserProfile implements mkuser.UserProfile {
   public email          : string;
   public firstname      : string;
   public lastname       : string;
-  public birthdate      : Date;
+  public birthdate      : string;
   public phone          : string;
   public origin         : string;
   public referral       : string;
@@ -37,7 +37,7 @@ class UserProfile implements mkuser.UserProfile {
     this.referralSpecify = userRow.referralSpecify,
     this.usageFrequency  = userRow.usageFrequency,
     this.usageNote       = userRow.usageNote,
-    this.permissions       = userRow.perms
+    this.permissions     = userRow.perms
   }
 
 }

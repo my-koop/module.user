@@ -2,9 +2,11 @@ var React  = require("react");
 
 var BSInput = require("react-bootstrap/Input");
 
+var MKDateTimePicker = require("mykoop-core/components/DateTimePicker");
+
 var __ = require("language").__;
 
-var RegisterAccountInfo = React.createClass({
+var RegisterOptionalInfo = React.createClass({
   mixins: [React.addons.LinkedStateMixin],
 
   propTypes: {
@@ -46,11 +48,19 @@ var RegisterAccountInfo = React.createClass({
           valueLink = {this.linkState("phone")}
           onKeyDown={this.props.checkGoingUpKey}
         />
-        <BSInput
-          type="text"
-          label={__("user::form_profile_label_birthdate")}
-          placeholder={__("user::form_profile_placeholder_birthdate")}
-          valueLink = {this.linkState("birthdate")}
+        <label htmlFor="birthdatePicker">
+          {__("user::form_profile_label_birthdate")}
+        </label>,
+        <MKDateTimePicker
+          id="birthdatePicker"
+          value={this.state.birthdate}
+          time={false}
+          format="M/d/yyyy"
+          onChange={function(date, str) {
+            self.setState({
+              birthdate: date
+            });
+          }}
         />
         <BSInput
           type="select"
@@ -105,4 +115,4 @@ var RegisterAccountInfo = React.createClass({
   }
 });
 
-module.exports = RegisterAccountInfo;
+module.exports = RegisterOptionalInfo;
