@@ -58,7 +58,8 @@ var Items = React.createClass({
         "firstname",
         "lastname",
         "isMember",
-        "activeUntil"
+        "activeUntil",
+        "actions"
       ],
       columns: {
         id: {
@@ -84,9 +85,9 @@ var Items = React.createClass({
             );
           }
         },
-
         actions: {
           name: __("actions"),
+          headerProps: {className: "list-mod-min-width-1"},
           isStatic: true,
           cellGenerator: function(user) {
             return (
