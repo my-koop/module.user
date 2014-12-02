@@ -10,7 +10,10 @@ function addRoutes(metaDataBuilder) {
         idPath: ["public", "myaccount"],
         component: "MyAccountPage",
         name: "myAccount",
-        path: "myaccount"
+        path: "myaccount",
+        permissions: {
+            loggedIn: true
+        },
     });
     metaDataBuilder.addFrontendRoute({
         idPath: ["dashboard", "adminEdit"],

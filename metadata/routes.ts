@@ -12,7 +12,10 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
     idPath: ["public", "myaccount"],
     component: "MyAccountPage",
     name: "myAccount",
-    path: "myaccount"
+    path: "myaccount",
+    permissions: {
+      loggedIn: true
+    },
   });
 
   metaDataBuilder.addFrontendRoute({
