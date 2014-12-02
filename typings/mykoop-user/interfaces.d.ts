@@ -1,18 +1,41 @@
+declare module mkuser {
+  module RegisterNewUser {
+    export interface Params {
+      email: string;
+      firstname: string;
+      lastname: string;
+      birthdate?: Date;
+      phone?: string;
+      origin?: string;
+      usageFrequency?: string;
+      usageNote?: string;
+      referral?: string;
+      passwordToHash: string;
+      confPassword: string;
+    }
+    export interface CallbackResult {
+      id: number;
+    }
+    export interface Callback {
+      (err: Error, result?: CallbackResult): void;
+    }
+  }
+
+  module GetIdForEmail {
+    export interface Params {
+      email: string;
+    }
+    export interface CallbackResult extends Number {
+      // id is -1 if not found
+    }
+    export interface Callback {
+      (err: Error, result?: CallbackResult): void;
+    }
+  }
+}
+
 declare module UserInterfaces {
 
-  export interface RegisterNewUser {
-    email: string;
-    firstname: string;
-    lastname: string;
-    birthdate?: Date;
-    phone?: string;
-    origin?: string;
-    usageFrequency?: string;
-    usageNote?: string;
-    referral?: string;
-    passwordToHash: string;
-    confPassword: string;
-  }
   export interface LoginRequestData {
     email: string;
     password: string;
