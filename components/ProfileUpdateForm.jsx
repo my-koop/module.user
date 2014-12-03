@@ -6,8 +6,8 @@ var BSCol   = require("react-bootstrap/Col");
 var UserProfile = require("../lib/classes/UserProfile");
 
 var MKAlert          = require("mykoop-core/components/Alert");
-var MKPermissionSet  = require("./PermissionSet");
 var MKDateTimePicker = require("mykoop-core/components/DateTimePicker");
+var MKPermissionSet  = require("./PermissionSet");
 
 var formatDate  = require("language").formatDate;
 var actions     = require("actions");
