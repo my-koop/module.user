@@ -1,13 +1,17 @@
-﻿var React       = require("react");
-var BSInput     = require("react-bootstrap/Input");
-var UserProfile = require("../lib/classes/UserProfile");
-var ajax        = require("ajax");
-var actions     = require("actions");
-var BSAlert     = require("react-bootstrap/Alert");
-var __          = require("language").__;
-var formatDate  = require("language").formatDate;
+﻿var React = require("react");
 
-var MKPermissionSet = require("./PermissionSet");
+var BSInput = require("react-bootstrap/Input");
+var BSCol   = require("react-bootstrap/Col");
+
+var UserProfile = require("../lib/classes/UserProfile");
+
+var MKAlert          = require("mykoop-core/components/Alert");
+var MKDateTimePicker = require("mykoop-core/components/DateTimePicker");
+var MKPermissionSet  = require("./PermissionSet");
+
+var formatDate  = require("language").formatDate;
+var actions     = require("actions");
+var __          = require("language").__;
 
 var ProfileUpdateForm = React.createClass({
 
@@ -125,12 +129,10 @@ var ProfileUpdateForm = React.createClass({
   render: function() {
     var self = this;
     return (
-      <div>
-        {this.state.message ?
-          <BSAlert bsStyle={this.state.messageStyle}>
-            {this.state.message}
-          </BSAlert>
-        : null}
+      <BSCol md={6}>
+        <MKAlert bsStyle={this.state.messageStyle}>
+          {this.state.message}
+        </MKAlert>
         <form onSubmit={this.onSubmit}>
           <BSInput
             type="email"
@@ -162,12 +164,17 @@ var ProfileUpdateForm = React.createClass({
             ref="phone"
             valueLink = {this.makeValueLink("phone")}
           />
-          <BSInput
-            type="text"
-            label={__("user::form_profile_label_birthdate")}
-            placeholder={__("user::form_profile_placeholder_birthdate")}
-            valueLink = {this.makeValueLink("birthdate")}
-            ref="birthdate"
+          <label htmlFor="birthdatePicker">
+            {__("user::form_profile_label_birthdate")}
+          </label>,
+          <MKDateTimePicker
+            id="birthdatePicker"
+            value={this.state.profileData.birthdate}
+            time={false}
+            format="M/d/yyyy"
+            onChange={function(date, str) {
+              self.handleFieldChange("birthdate", date);
+            }}
           />
           <BSInput
             type="select"
@@ -224,7 +231,7 @@ var ProfileUpdateForm = React.createClass({
             bsStyle="primary"
             value={__("user::update_profile_submit_button")} />
         </form>
-      </div>
+      </BSCol>
     );
   }
 });
