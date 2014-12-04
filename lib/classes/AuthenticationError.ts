@@ -7,6 +7,7 @@ class AuthenticationError extends utils.errors {
     ...args: any[]
   ) {
     super(err, msg, args);
+    this.statusCode = 403;
   }
 
   serialize(): ErrorInterfaces.SerializeResult {

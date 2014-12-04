@@ -17,12 +17,6 @@ function login(req: express.Request, res: express.Response) {
   }
   self.login(loginInfo, function(err, userProfile) {
     if (err) {
-      if (err instanceof AuthenticationError) {
-        logger.verbose(err);
-        return res.error(err, 403);
-      }
-
-      logger.error(err);
       return res.error(err);
     }
 

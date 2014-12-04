@@ -90,6 +90,10 @@ the problem, do you want to attempt to",
   "userListHeaderActiveUntil" : "Active Until",
   "userListEditButton" : "Edit this user's account",
   "userNotesWelcome" : "Notes for this user",
+
+  deactivateProfile: "Deactivate account",
+  activateProfile: "Activate account",
+
   navbar: {
     register: "Register",
     login: "Login",

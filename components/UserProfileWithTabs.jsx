@@ -22,7 +22,8 @@ var UserProfileWithTabs = React.createClass({
   propTypes: {
     current: React.PropTypes.bool,
     userId: React.PropTypes.number.isRequired,
-    metaPlugins: React.PropTypes.string
+    metaPlugins: React.PropTypes.string,
+    onProfileRetrieved: React.PropTypes.func
   },
 
   expectHashEvent: false,
@@ -53,7 +54,10 @@ var UserProfileWithTabs = React.createClass({
 
   componentWillMount: function () {
     var self = this;
-    this.getRemoteProfile({userId: this.props.userId});
+    this.getRemoteProfile(
+      {userId: this.props.userId},
+      this.props.onProfileRetrieved
+    );
   },
 
   componentDidMount: function() {

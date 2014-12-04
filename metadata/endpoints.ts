@@ -23,6 +23,10 @@ var endpoints = {
         method: "put"
       }
     },
+    activation: {
+      path: "/users/:id/activation",
+      method: "put"
+    },
     updatePassword: {
       path: "/users/:id/password",
       method: "put",

@@ -32,6 +32,19 @@ declare module mkuser {
       (err: Error, result?: CallbackResult): void;
     }
   }
+
+  module UserActivation {
+    export interface Params {
+      id: number;
+      activate: number;
+    }
+    export interface Result {
+      isActive: number;
+    }
+    export interface Callback {
+      (err: Error, result?: Result): void;
+    }
+  }
 }
 
 declare module UserInterfaces {
