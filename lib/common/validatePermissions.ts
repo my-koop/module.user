@@ -1,6 +1,10 @@
 var _ = require("lodash");
 
 function validatePermissions(userPermissions, requiredPermissions): boolean {
+  //Super admin
+  if(userPermissions === true) {
+    return true
+  }
   // Try to find a required permission that is not met by the user.
   return _.every(requiredPermissions, function(permission, key) {
     var userPermission = userPermissions[key];
