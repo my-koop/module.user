@@ -38,15 +38,15 @@ var PermissionMixin = {
   },
 
   propTypes: {
-    permissions: React.PropTypes.object.isRequired
+    permissions: React.PropTypes.object
   },
 
   getInitialState: function() {
    return {
     userMeetsPermissions: PermissionMixin.statics.validateUserPermissions(
-      this.props.permissions
-    )
-   };
+        this.props && this.props.permissions
+      )
+    };
   }
 }
 
