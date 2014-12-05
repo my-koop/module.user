@@ -5,6 +5,7 @@ var BSButton = require("react-bootstrap/Button");
 
 var MKUserProfileWithTabs = require("./UserProfileWithTabs");
 var MKIcon = require("mykoop-core/components/Icon");
+var MKConfirmationTrigger = require("mykoop-core/components/ConfirmationTrigger");
 
 var __ = require("language").__;
 var actions = require("actions");
@@ -49,19 +50,23 @@ var AdminEditProfile = React.createClass({
     var changeProfileActived = isProfileActive !== null ?
       (
         <span className="pull-right h1">
-          <BSButton
-            bsStyle={isProfileActive ? "danger" : "success"}
-            onClick={this.toggleUserActive}
+          <MKConfirmationTrigger
+            message={__("areYouSure")}
+            onYes={this.toggleUserActive}
           >
-            <MKIcon
-              fixedWidth
-              glyph={isProfileActive ? "close": "check"}
-            />
-            {__(isProfileActive ?
-              "user::deactivateProfile"
-            : "user::activateProfile"
-            )}
-          </BSButton>
+            <BSButton
+              bsStyle={isProfileActive ? "danger" : "success"}
+            >
+              <MKIcon
+                fixedWidth
+                glyph={isProfileActive ? "close": "check"}
+              />
+              {__(isProfileActive ?
+                "user::deactivateProfile"
+              : "user::activateProfile"
+              )}
+            </BSButton>
+          </MKConfirmationTrigger>
         </span>
       )
       : null;
