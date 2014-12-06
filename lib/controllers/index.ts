@@ -25,6 +25,8 @@ import updatePermissions = require("./updatePermissions");
 export function attachControllers(
   binder: utils.ModuleControllersBinder<mkuser.Module>
 ) {
+  var user = binder.moduleInstance;
+
   binder.attach(
     {
       endPoint: endPoints.user.login,
@@ -200,7 +202,7 @@ export function attachControllers(
       }
     )
   );
-    binder.attach(
+  binder.attach(
     {
       endPoint: endPoints.user.notes.new
     },
@@ -217,5 +219,17 @@ export function attachControllers(
         }
       }
     )
+  );
+
+  binder.attach(
+    {
+      endPoint: endPoints.user.activation
+    },
+    binder.makeSimpleController(user.userActivation, function(req) {
+      return {
+        id: parseInt(req.param("id")) || 0,
+        activate: parseInt(req.param("activate")) || 0
+      };
+    })
   );
 }

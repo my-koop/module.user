@@ -70,7 +70,16 @@ declare module mkuser {
     __getNotesForId(connection: mysql.IConnection, params, callback);
     newNote(params: dbQueryStruct.NewNote, callback: (err: Error) => void);
     __newNote(connection: mysql.IConnection, params: dbQueryStruct.NewNote, callback);
-  }
 
+    userActivation(
+      params: mkuser.UserActivation.Params,
+      callback: mkuser.UserActivation.Callback
+    );
+    __userActivation(
+      connection: mysql.IConnection,
+      params: mkuser.UserActivation.Params,
+      callback: mkuser.UserActivation.Callback
+    );
+  }
 }
 

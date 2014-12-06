@@ -90,6 +90,10 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
   "userListHeaderActiveUntil" : "Expiration",
   "userListEditButton" : "Modifier le compte de cet usager",
   "userNotesWelcome" : "Notes sur cet usager",
+
+  deactivateProfile: "Désactiver le compte",
+  activateProfile: "Activer le compte",
+
   navbar: {
     register: "Inscription",
     login: "Connexion",

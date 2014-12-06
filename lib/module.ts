@@ -13,6 +13,8 @@ var _ = require("lodash");
 
 var DatabaseError = utils.errors.DatabaseError;
 var ApplicationError = utils.errors.ApplicationError;
+var AccessDeniedError = ApplicationError.AccessDeniedError;
+var ResourceNotFoundError = ApplicationError.ResourceNotFoundError;
 import AuthenticationError = require("./classes/AuthenticationError");
 
 class UserModule extends utils.BaseModule implements mkuser.Module {
@@ -114,7 +116,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           connection.query(
             "SELECT ?? FROM user WHERE email = ? ",
             [
-              ["id", "salt", "pwdhash", "perms"],
+              ["id", "salt", "pwdhash", "perms", "deactivated"],
               loginInfo.email
             ],
             function (err, rows) {
@@ -131,9 +133,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
             //Email is not associated to a user.
             return next(new AuthenticationError(null, "Couldn't find user email."));
           }
-
           userInfo = rows[0];
-
           next();
         },
         function buildHash(next) {
@@ -148,7 +148,13 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
             //Incorrect password
             return next(new AuthenticationError(null, "Password doesn't match."));
           }
-
+          if(userInfo.deactivated) {
+            return next(new AccessDeniedError(
+              null,
+              {email: "denied"},
+              "Account deactivated"
+            ));
+          }
           next();
         },
         function computePermissions(next) {
@@ -196,7 +202,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
       }
       connection.query(
         "SELECT ?? FROM user WHERE id = ?",
-        [UserProfile.COLUMNS,id],
+        [UserProfile.COLUMNS, id],
         function(err, rows) {
           cleanup();
           if (err) {
@@ -562,6 +568,34 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         callback(err && new DatabaseError(err));
       }
     );
+  }
+
+  userActivation(
+    params: mkuser.UserActivation.Params,
+    callback: mkuser.UserActivation.Callback
+  ) {
+    this.callWithConnection(this.__userActivation, params, callback);
+  }
+
+  __userActivation(
+    connection: mysql.IConnection,
+    params: mkuser.UserActivation.Params,
+    callback: mkuser.UserActivation.Callback
+  ) {
+    var activation = params.activate ? null : 1;
+    connection.query(
+      "UPDATE user SET deactivated=? WHERE id=?",
+      [activation, params.id],
+      function(err, res) {
+        if(err) {
+          return callback(new DatabaseError(err));
+        }
+        if(res.affectedRows !== 1) {
+          return callback(new ResourceNotFoundError(null, {id: "notFound"}));
+        }
+        callback(null, {isActive: +params.activate});
+      }
+    )
   }
 }//class
 
