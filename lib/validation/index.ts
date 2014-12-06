@@ -48,53 +48,59 @@ export function validateUpdateUserPassword(obj) {
 //FIXME: Validate birthdate
 var updateProfileContraint = {
   email: {
-    presence: true
+    presence:{
+      message: "^validationEmailPresence"
+    }
   },
   firstname: {
-    presence: true
+    presence: {
+      message: "^validationFirstnamePresence"
+    }
   },
   lastname: {
-    presence: true
+    presence: {
+      message: "^validationLastnamePresence"
+    },
   },
   phone: {
     length: {
       maximum: 25,
-      message: "^validation_phone_length"
+      message: "^validationPhoneLength"
     }
   },
   origin: {
     inclusion : {
       within: ["udem", "brebeuf", "other"],
-      message: "^validation_origin_value"
+      message: "^validationOriginValue"
     }
   },
   usageNote: {
     length: {
       maximum: 128,
-      message: "^validation_usageNote_length"
+      message: "^validationUsageNoteLength"
     }
   },
   usageFrequency: {
     inclusion : {
       within: ["everyday", "fewWeek", "fewMonth", "fewYear", "never"],
-      message: "^validation_usageFrequency_value"
+      message: "^validationUsageFrequencyValue"
     }
   },
   referral: {
     inclusion : {
       within: ["visit", "friend", "ads", "other"],
-      message: "^validation_referral_value"
+      message: "^validationReferralValue"
     }
   },
   referralSpecify: {
     length: {
       maximum: 128,
-      message: "^validation_referralSpecify_length"
+      message: "^validationReferralSpecifyLength"
     }
   },
 }
 
 export function validateUpdateProfile(obj) {
-  return validate(obj, updateProfileContraint);
+  return validate(obj, updateProfileContraint, {flatten: true});
 
 }

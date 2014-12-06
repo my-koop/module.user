@@ -11,6 +11,7 @@ var MKPermissionSet  = require("./PermissionSet");
 
 var formatDate  = require("language").formatDate;
 var actions     = require("actions");
+var _           = require("lodash");
 var __          = require("language").__;
 
 var ProfileUpdateForm = React.createClass({
@@ -85,12 +86,12 @@ var ProfileUpdateForm = React.createClass({
 
   processValidationErrors: function(errors){
     var fieldStyles = {};
-    var message = errors.map(function(errorString){
+    var message = _.map(errors, function(errorString){
       var split = errorString.split(":");
       fieldStyles[split[0]] = "error";
       return (
         <p>
-          {split[1]}
+          { __("user::" + split[1])}
         </p>
         ) ;
     });
