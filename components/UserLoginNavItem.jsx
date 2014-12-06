@@ -15,7 +15,7 @@ var UserLoginNavItem = React.createClass({
 
   render: function() {
     return (
-      <BSNavItem onSelect={this.onMenuLogin} key="userlogin">
+      <BSNavItem onSelect={this.onMenuLogin} key="userlogin" {...this.props}>
         <BSModalTrigger
           ref="loginmodal"
           modal={<MKLoginModal />}
