@@ -104,7 +104,7 @@ var ProfileUpdateForm = React.createClass({
   requestFeedback: function(err){
     console.log(err);
     this.setState({
-      fieldStyles: null
+      fieldStyles: {}
     });
     if(err){
       if(err.context === "validation"){
@@ -172,7 +172,7 @@ var ProfileUpdateForm = React.createClass({
             placeholder={__("user::form_profile_placeholder_email")}
             ref="email"
             autofocus
-            bsStyle={this.state.fieldStyles.email}
+            bsStyle={this.state.fieldStyles.email || null}
             valueLink = {this.makeValueLink("email")}
           />
            <BSInput
