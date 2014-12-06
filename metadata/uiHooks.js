@@ -73,7 +73,7 @@ var uiHooks = {
             content: {
                 icon: "users",
                 text: "user::sidebar.users",
-                link: "home"
+                link: "users"
             },
             priority: 100,
             permissions: {

@@ -5,10 +5,16 @@
       __description: "User Profile",
       full: "Access all data of any user profile",
       edit: "Edit the profile of any user",
+      password: "Change the password of any user",
       permissions: {
         __description: "Permissions",
         view: "View the permissions of any user",
         edit: "Edit the permissions of any user"
+      },
+      notes: {
+        __description: "Notes",
+        view: "List the notes linked to any user",
+        create: "Create a note linked to any user"
       }
     }
   }

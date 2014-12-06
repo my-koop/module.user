@@ -36,14 +36,17 @@ export function attachControllers(
     },
     login
   );
+
   binder.attach(
     {endPoint: endPoints.user.current.getSession},
     getSession
   );
+
   binder.attach(
     {endPoint: endPoints.user.current.logout},
     logout
   );
+
   binder.attach(
     {
       endPoint: endPoints.user.exists
@@ -55,6 +58,7 @@ export function attachControllers(
       return params;
     })
   );
+
   binder.attach(
     {
       endPoint: endPoints.user.getPublicProfile,
@@ -69,6 +73,7 @@ export function attachControllers(
     },
     getProfile.getPublicProfile
   );
+
   binder.attach(
     {
       endPoint: endPoints.user.register,
@@ -79,6 +84,7 @@ export function attachControllers(
     },
     registerUser
   );
+
   binder.attach(
     {
       endPoint: endPoints.user.current.updateProfile,
@@ -91,6 +97,7 @@ export function attachControllers(
       updateProfile
     ]
   );
+
   binder.attach(
     {
       endPoint: endPoints.user.getFullProfile,
@@ -104,6 +111,7 @@ export function attachControllers(
     },
     getProfile.getFullProfile
   );
+
   binder.attach(
     {
       endPoint: endPoints.user.updateProfile,
@@ -114,19 +122,23 @@ export function attachControllers(
       updateProfile
     ]
   );
+
   binder.attach(
     {
       endPoint: endPoints.user.updatePermissions,
       permissions: {
         user: {
-          permissions: {
-            edit: true
+          profile: {
+            permissions: {
+              edit: true
+            }
           }
         }
       }
     },
     updatePermissions
   );
+
   binder.attach(
     {
       endPoint: endPoints.user.current.updatePassword,
@@ -137,6 +149,7 @@ export function attachControllers(
       updatePassword
     ]
   );
+
   binder.attach(
     {
       endPoint: endPoints.user.updatePassword,
@@ -173,22 +186,41 @@ export function attachControllers(
       }
     )
   );
+
   binder.attach(
     {endPoint: endPoints.user.resetPassword},
     resetPassword
   );
+
   binder.attach(
     {
-      endPoint: endPoints.user.list
+      endPoint: endPoints.user.list,
+      permissions: {
+        user: {
+          profile: {
+            full: true
+          }
+        }
+      }
     },
     binder.makeSimpleController(
       "getUsersList",
       {}
     )
   );
+
   binder.attach(
     {
-      endPoint: endPoints.user.notes.list
+      endPoint: endPoints.user.notes.list,
+      permissions: {
+        user: {
+          profile: {
+            notes: {
+              view: true
+            }
+          }
+        }
+      }
     },
     binder.makeSimpleController(
       "getNotesForId",
@@ -202,9 +234,19 @@ export function attachControllers(
       }
     )
   );
+
   binder.attach(
     {
-      endPoint: endPoints.user.notes.new
+      endPoint: endPoints.user.notes.new,
+      permissions: {
+        user: {
+          profile: {
+            notes: {
+              edit: true
+            }
+          }
+        }
+      }
     },
     binder.makeSimpleController(
       "newNote",

@@ -79,8 +79,8 @@ var AdminEditProfile = React.createClass({
         <span className="clearfix" />
         <MKUserProfileWithTabs
           userId={userId}
-          metaPlugins="adminEditPlugins"
           onProfileRetrieved={this.checkProfile}
+          metaContributions="profileEdit"
         />
       </BSCol>
     );

@@ -19,7 +19,7 @@ var MyAccountPage = React.createClass({
         <MKUserProfileWithTabs
           current
           userId={localSession.user.id}
-          metaPlugins="myAccountPlugins"
+          metaContributions="myAccount"
         />
       </BSCol>
     );

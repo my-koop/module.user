@@ -25,7 +25,9 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
     path: "user/:id",
     permissions: {
       user: {
-        edit: true
+        profile: {
+          edit: true
+        }
       }
     },
     // For tests
