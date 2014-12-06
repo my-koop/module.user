@@ -60,6 +60,16 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     return perms;
   }
 
+  static validateCurrentUser(req, callback) {
+    callback(
+      (
+        !req.session.user ||
+        req.session.user.id !== parseInt(req.param("id"))
+      ) &&
+      new Error("Not current user.")
+    );
+  }
+
   init() {
     var db = <mkdatabase.Module>this.getModuleManager().get("database");
     var routerModule = <mykoop.Router>this.getModuleManager().get("router");

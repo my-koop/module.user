@@ -9,7 +9,6 @@ assert.equal(endPoints.user.emailExists.method, "get");
 // Helper controllers.
 import attachSessionUserId = require("./attachSessionUserId");
 import attachParamUserId = require("./attachParamUserId");
-import validateCurrentUser = require("./validateCurrentUser");
 
 // Controllers.
 import login = require("./login");
@@ -26,6 +25,7 @@ export function attachControllers(
   binder: utils.ModuleControllersBinder<mkuser.Module>
 ) {
   var user = binder.moduleInstance;
+  var validateCurrentUser = (<any>user.constructor).validateCurrentUser;
 
   binder.attach(
     {

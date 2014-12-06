@@ -33,6 +33,18 @@ var PermissionMixin = {
         }
       }
 
+      if (__DEV__) {
+        if (!hasEnoughPermissions) {
+          console.info(
+            "Invalid user permissions, tried to validate",
+            permissions,
+            "against",
+            localSession.user ? localSession.user.perms : undefined,
+            localSession.user ? "(User #" + localSession.user.id + ")" : ""
+          );
+        }
+      }
+
       return hasEnoughPermissions;
     }
   },

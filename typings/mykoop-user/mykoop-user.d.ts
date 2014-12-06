@@ -29,6 +29,12 @@ declare module mkuser {
   }
 
   export interface Module extends mykoop.IModule {
+    /* Documentation for static methods.
+    static serializePermissions(permissions: any): string;
+    static deserializePermissions(permissions: string): any;
+    static validateCurrentUser(req: Express.Request, callback: Function): void;
+    */
+
     userExists(
       params: User.IdExists.Params,
       callback: User.IdExists.Callback

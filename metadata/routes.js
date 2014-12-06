@@ -40,6 +40,13 @@ function addRoutes(metaDataBuilder) {
         component: "Users",
         name: "users",
         path: "users",
+        permissions: {
+            user: {
+                profile: {
+                    view: true
+                }
+            }
+        }
     });
     /* Simple routes. */
     metaDataBuilder.addFrontendRoute({

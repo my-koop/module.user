@@ -44,6 +44,13 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
     component: "Users",
     name: "users",
     path: "users",
+    permissions: {
+      user: {
+        profile: {
+          view: true
+        }
+      }
+    }
   });
 
   /* Simple routes. */
