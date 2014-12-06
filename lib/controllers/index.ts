@@ -227,8 +227,8 @@ export function attachControllers(
     },
     binder.makeSimpleController(user.userActivation, function(req) {
       return {
-        id: parseInt(req.param("id")),
-        activate: parseInt(req.param("activate"))
+        id: parseInt(req.param("id")) || 0,
+        activate: parseInt(req.param("activate")) || 0
       };
     })
   );

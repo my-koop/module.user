@@ -62,8 +62,8 @@ var AdminEditProfile = React.createClass({
                 glyph={isProfileActive ? "close": "check"}
               />
               {__(isProfileActive ?
-                "user::deactivateProfile"
-              : "user::activateProfile"
+                  "user::deactivateProfile"
+                : "user::activateProfile"
               )}
             </BSButton>
           </MKConfirmationTrigger>
