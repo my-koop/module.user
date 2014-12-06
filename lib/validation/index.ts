@@ -49,53 +49,53 @@ export function validateUpdateUserPassword(obj) {
 var updateProfileContraint = {
   email: {
     presence:{
-      message: "^validationEmailPresence"
+      message: "^email:validationEmailPresence"
     }
   },
   firstname: {
     presence: {
-      message: "^validationFirstnamePresence"
+      message: "^firstname:validationFirstnamePresence"
     }
   },
   lastname: {
     presence: {
-      message: "^validationLastnamePresence"
+      message: "^lastname:validationLastnamePresence"
     },
   },
   phone: {
     length: {
       maximum: 25,
-      message: "^validationPhoneLength"
-    }
-  },
-  origin: {
-    inclusion : {
-      within: ["udem", "brebeuf", "other"],
-      message: "^validationOriginValue"
-    }
-  },
-  usageNote: {
-    length: {
-      maximum: 128,
-      message: "^validationUsageNoteLength"
-    }
-  },
-  usageFrequency: {
-    inclusion : {
-      within: ["everyday", "fewWeek", "fewMonth", "fewYear", "never"],
-      message: "^validationUsageFrequencyValue"
+      message: "^phone:validationPhoneLength"
     }
   },
   referral: {
     inclusion : {
       within: ["visit", "friend", "ads", "other"],
-      message: "^validationReferralValue"
+      message: "^referral:validationReferralValue"
+    }
+  },
+  usageFrequency: {
+    inclusion : {
+      within: ["everyday", "fewWeek", "fewMonth", "fewYear", "never"],
+      message: "^usageFrequency:validationUsageFrequencyValue"
     }
   },
   referralSpecify: {
     length: {
       maximum: 128,
-      message: "^validationReferralSpecifyLength"
+      message: "^referralSpecify:validationReferralSpecifyLength"
+    }
+  },
+   origin: {
+    inclusion : {
+      within: ["udem", "brebeuf", "other"],
+      message: "^origin:validationOriginValue"
+    }
+  },
+  usageNote: {
+    length: {
+      maximum: 128,
+      message: "^usageNote:validationUsageNoteLength"
     }
   },
 }

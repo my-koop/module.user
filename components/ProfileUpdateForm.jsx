@@ -172,7 +172,7 @@ var ProfileUpdateForm = React.createClass({
             placeholder={__("user::form_profile_placeholder_email")}
             ref="email"
             autofocus
-            bsStyle={this.state.emailStyle}
+            bsStyle={this.state.fieldStyles.email}
             valueLink = {this.makeValueLink("email")}
           />
            <BSInput
@@ -180,6 +180,7 @@ var ProfileUpdateForm = React.createClass({
             label={__("user::form_profile_label_firstname")}
             placeholder={__("user::form_profile_placeholder_firstname")}
             ref="firstname"
+            bsStyle={this.state.fieldStyles.firstname}
             valueLink = {this.makeValueLink("firstname")}
           />
           <BSInput
@@ -187,6 +188,7 @@ var ProfileUpdateForm = React.createClass({
             label={__("user::form_profile_label_lastname")}
             placeholder={__("user::form_profile_placeholder_lastname")}
             ref="lastname"
+            bsStyle={this.state.fieldStyles.lastname}
             valueLink = {this.makeValueLink("lastname")}
           />
           <BSInput
@@ -194,6 +196,7 @@ var ProfileUpdateForm = React.createClass({
             label={__("user::form_profile_label_phone")}
             placeholder={__("user::form_profile_placeholder_phone")}
             ref="phone"
+            bsStyle={this.state.fieldStyles.phone}
             valueLink = {this.makeValueLink("phone")}
           />
           <label htmlFor="birthdatePicker">
@@ -213,6 +216,7 @@ var ProfileUpdateForm = React.createClass({
             defaultValue="visit"
             label={__("user::form_profile_label_visit_select")}
             valueLink={this.makeValueLink("referral")}
+            bsStyle={this.state.fieldStyles.referral}
           >
             <option value="visit">{__("user::form_profile_select_option_visit")}</option>
             <option value="friend">{__("user::form_profile_select_option_friend")}</option>
@@ -223,6 +227,7 @@ var ProfileUpdateForm = React.createClass({
             <BSInput
               type="text"
               label={__("user::form_profile_label_referralSpecify")}
+              bsStyle={this.state.fieldStyles.referralSpecify}
               valueLink={this.makeValueLink("referralSpecify")}
             />
           : null
@@ -232,7 +237,8 @@ var ProfileUpdateForm = React.createClass({
             defaultValue="everyday"
             label={__("user::form_profile_label_usage_select")}
             ref="usage"
-            valueLink = {this.makeValueLink("usage")}
+            valueLink = {this.makeValueLink("usageFrequency")}
+            bsStyle={this.state.fieldStyles.usageFrequency}
           >
             <option value="everyday">{__("user::form_profile_select_option_everyday")}</option>
             <option value="fewWeek">{__("user::form_profile_select_option_fewWeek")}</option>
@@ -246,6 +252,7 @@ var ProfileUpdateForm = React.createClass({
             label={__("user::form_profile_label_origin_select")}
             ref="origin"
             valueLink = {this.makeValueLink("origin")}
+            bsStyle={this.state.fieldStyles.origin}
           >
             <option value="udem">{__("user::form_profile_select_option_udem")}</option>
             <option value="brebeuf">{__("user::form_profile_select_option_brebeuf")}</option>
@@ -257,6 +264,7 @@ var ProfileUpdateForm = React.createClass({
             placeholder={__("user::form_profile_placeholder_usageNote")}
             ref="usageNote"
             valueLink = {this.makeValueLink("usageNote")}
+            bsStyle={this.state.fieldStyles.usageNote}
           />
           <BSInput
             type="submit"
