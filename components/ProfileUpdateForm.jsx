@@ -42,9 +42,10 @@ var ProfileUpdateForm = React.createClass({
   getInitialState: function() {
     return {
       profileData: this.props.profile,
+      fieldStyles: {},
       message: null,
       messageStyle: null,
-      emailStyle: null,
+      messageHeader: null
     }
   },
 
@@ -71,10 +72,56 @@ var ProfileUpdateForm = React.createClass({
 
   setMessage: function(Message, isError){
     var style = (isError) ? "warning" : "success";
+    var header;
+    if(isError) {
+      var header = (<h2> Header </h2>)
+    }
     this.setState({
       message: Message,
+      messageHeader: header,
       messageStyle: style
     })
+  },
+
+  processValidationErrors: function(errors){
+    var fieldStyles = {};
+    var message = errors.map(function(errorString){
+      var split = errorString.split(":");
+      fieldStyles[split[0]] = "error";
+      return (
+        <p>
+          {split[1]}
+        </p>
+        ) ;
+    });
+    this.setMessage(message, isError = true);
+    this.setState({
+      fieldStyles: fieldStyles
+    });
+  },
+
+  requestFeedback: function(err){
+    console.log(err);
+    this.setState({
+      fieldStyles: null
+    });
+    if(err){
+      if(err.context === "validation"){
+          this.processValidationErrors(err.validation);
+      } else if(err.message == "Error: Duplicate Email"){
+        this.setMessage("Someone is already using this email :" + profileData.email, isError = true);
+        var profile = this.state.profileData;
+        this.setState({
+          emailStyle: "warning",
+        });
+      } else {
+        this.setMessage("Unable to update your profile", isError = true);
+      }
+    } else {
+      //Display Success
+      this.setMessage("Your profile has been updated.",isError = false);
+
+    }
   },
 
   onSubmit: function(e){
@@ -104,23 +151,7 @@ var ProfileUpdateForm = React.createClass({
           referralSpecify: profileData.referralSpecify
         }
       },function(err, result){
-          if(err || !result.updateSuccess){
-            console.log(err);
-            if(err.message == "Error: Duplicate Email"){
-              self.setMessage(__("errors::error_duplicate_email") + profileData.email, isError = true);
-              self.setState({
-                emailStyle: "warning",
-              });
-            } else {
-              self.setMessage(__("user::update_profile_failure_message"), isError = true);
-            }
-          } else {
-            //Display Success
-            self.setMessage(__("user::update_profile_success_message"), isError = false);
-            self.setState({
-              emailStyle: null
-            });
-          }
+          self.requestFeedback(err);
       }
     );
   },
