@@ -149,7 +149,7 @@ var RegisterPage = React.createClass({
           actions.user.register({
             i18nErrors: {
               prefix: "user::errors",
-              keys: ["validation"]
+              keys: ["app"]
             },
             data: data
           }, next);
