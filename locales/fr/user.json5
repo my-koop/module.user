@@ -115,16 +115,44 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
       }
     }
   },
-  //i18n errors
-  errors: {
+
+  error: {
     app: {
-      password: {
-        notFound: "Le mot de passe ne doit pas être vide"
+      firstname: {
+        notFound: "Le prénom ne peut être vide."
+      },
+      lastname: {
+        notFound: "Le nom de famille ne peut être vide."
       },
       email: {
-        notFound: "Le courriel ne doit pas être vide",
-        invalid: "Le courriel n'a pas un bon format"
-      }
+        notFound: "Le courriel ne peut être vide."
+      },
+      password: {
+        notFound: "Le mot de passe ne peut être vide."
+      },
+      confpassword: {
+        notFound: "La confirmation du mot de passe ne peut être vide.",
+        registerPasswordMatch: "La confirmation du mot de passe doit \
+        correspondre au mot de passe."
+      },
+      phone: {
+        maximumLength: "Le numéro de téléphone ne doit pas excéder 25 charactères"
+      },
+      referral: {
+        invalidSelection : "La référence choisie est invalide."
+      },
+      usageFrequency: {
+        invalidSelection : "La fréquence d'usage choisie est invalide."
+      },
+      referralSpecify: {
+        maximumLength: "La spécification de la référence ne doit pas excéder 128 charactères"
+      },
+      origin: {
+        invalidSelection: "L'origine choisie est invalide"
+      },
+      usageNote: {
+        maximumLength: "La description de votre utilisation du vélo ne doit pas excéder 128 charactères"
+      },
     }
   }
 }

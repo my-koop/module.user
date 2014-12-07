@@ -1,14 +1,15 @@
 // see http://validatejs.org/ for documentation on how to do contraints
 var validate = require("mykoop-utils/common/index").validation;
 
-//FIX ME : Commented until we can handle custom validators
-// validate.validators.passwordsMatch = function (value, options, key, attributes){
-//   if(value !== attributes.newPassword){
-//     return "New passwords must match";
-//   } else {
-//     return null;
-//   }
-// }
+
+var registerPasswordMatch = function (value, options, key, attributes){
+   if(typeof attributes.password != "undefined" &&
+      attributes.password !== attributes.confpassword){
+     return "^notMatch";
+   }
+}
+validate.addValidator("registerPasswordMatch", registerPasswordMatch);
+
 
 
 var updatePasswordConstraint = {
@@ -51,12 +52,12 @@ var registerConstraint = {
     presence: {
       message: "^notFound"
     }
-  },
+   },
   lastname: {
-    presence: {
-      message: "^notFound"
-    }
-  },
+     presence: {
+       message: "^notFound"
+     }
+   },
   email: {
     presence: {
       message: "^notFound"
@@ -70,30 +71,44 @@ var registerConstraint = {
   confpassword: {
     presence: {
       message: "^notFound"
-    }
+    },
+    registerPasswordMatch: ""
   },
   phone: {
-
-  },
-  birthdate: {
-
+    length: {
+      maximum: 25,
+      message: "^maximumLength"
+    }
   },
   referral: {
-    length: {
-      maximum:
+    inclusion: {
+      within: ["visit", "friend", "ads", "other"],
+      message: "^invalidSelection"
+    }
+  },
+  usageFrequency: {
+    inclusion: {
+      within: ["everyday", "fewWeek", "fewMonth", "fewYear", "never"],
+      message: "^invalidSelection"
     }
   },
   referralSpecify: {
-
-  },
-  usageFrequency: {
-
+    length: {
+      maximum: 128,
+      message: "^maximumLength"
+    }
   },
   origin: {
-
+    inclusion: {
+      within: ["udem", "brebeuf", "other"],
+      message: "^invalidSelection"
+    }
   },
   usageNote: {
-
+    length: {
+      maximum: 128,
+      message: "^maximumLength"
+    }
   }
 }
 
