@@ -116,7 +116,7 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
     }
   },
 
-  error: {
+  errors: {
     app: {
       firstname: {
         notFound: "Le prénom ne peut être vide."
@@ -132,8 +132,7 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
       },
       confpassword: {
         notFound: "La confirmation du mot de passe ne peut être vide.",
-        registerPasswordMatch: "La confirmation du mot de passe doit \
-        correspondre au mot de passe."
+        registerPasswordMatch: "La confirmation du mot de passe doit correspondre au mot de passe."
       },
       phone: {
         maximumLength: "Le numéro de téléphone ne doit pas excéder 25 charactères"

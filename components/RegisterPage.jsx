@@ -147,7 +147,10 @@ var RegisterPage = React.createClass({
       async.waterfall([
         function registerUser(next) {
           actions.user.register({
-            i18nErrors: {},
+            i18nErrors: {
+              prefix: "user::errors",
+              keys: ["validation"]
+            },
             data: data
           }, next);
         },

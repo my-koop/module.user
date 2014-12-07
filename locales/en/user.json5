@@ -116,7 +116,7 @@ the problem, do you want to attempt to",
     }
   },
 
-  error: {
+  errors: {
     app: {
       firstname: {
         notFound: "Firstname cannot be left empty."
@@ -151,7 +151,7 @@ the problem, do you want to attempt to",
       },
       usageNote: {
         maximumLength: "Usage description must not exceed 128 characters"
-      },
+      }
     }
   }
 }
