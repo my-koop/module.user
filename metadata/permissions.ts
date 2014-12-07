@@ -1,5 +1,6 @@
 var permissions = {
   user: {
+    activation: true,
     profile: {
       view: true,
       edit: true,

@@ -1,6 +1,7 @@
 {
   user: {
     __description: "User",
+    activation: "Activate or deactivate any user",
     profile: {
       __description: "User Profile",
       view: "Access all data of any user profile",

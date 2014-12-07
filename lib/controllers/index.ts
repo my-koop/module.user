@@ -267,7 +267,12 @@ export function attachControllers(
 
   binder.attach(
     {
-      endPoint: endPoints.user.activation
+      endPoint: endPoints.user.activation,
+      permissions: {
+        user: {
+          activation: true
+        }
+      }
     },
     binder.makeSimpleController(user.userActivation, function(req) {
       return {
