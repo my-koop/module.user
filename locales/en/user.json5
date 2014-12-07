@@ -1,4 +1,5 @@
 {
+  users: "Users",
   "adminEditWelcome": "Editing user #__userId__",
   "myAccountWelcome": "My Account",
   "invalidUserId": "User id requested is invalid",
@@ -99,10 +100,11 @@ the problem, do you want to attempt to",
     register: "Register",
     login: "Login",
     myAccount: "My Account",
-    logout: "Logout"
+    logout: "Logout",
+    users: "$t(user::users)"
   },
   sidebar: {
-    users: "Users"
+    users: "$t(user::users)"
   },
 
   pwdRecovery: {

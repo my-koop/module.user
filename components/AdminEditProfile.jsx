@@ -17,6 +17,7 @@ var AdminEditProfile = React.createClass({
 
   getInitialState: function() {
     return {
+      userFullName: null,
       isProfileActive: null
     }
   },
@@ -24,6 +25,7 @@ var AdminEditProfile = React.createClass({
   checkProfile: function(err, userProfile) {
     if(!err) {
       this.setState({
+        userFullName: userProfile.firstname + " " + userProfile.lastname,
         isProfileActive: !userProfile.deactivated
       });
     }
@@ -85,6 +87,9 @@ var AdminEditProfile = React.createClass({
           <BSCol xs={12}>
             <h1 className="pull-left">
               {__("user::adminEditWelcome", {userId: userId})}
+              {this.state.userFullName ?
+                <small> {this.state.userFullName}</small>
+              : null}
             </h1>
             {changeProfileActived}
           </BSCol>

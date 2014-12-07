@@ -1,4 +1,5 @@
 {
+  users: "Utilisateurs",
   "adminEditWelcome": "Modification de l'utilisateur #__userId__",
   "myAccountWelcome": "Mon compte",
   "invalidUserId": "Identifiant d'utilisateur invalide",
@@ -99,10 +100,11 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
     register: "Inscription",
     login: "Connexion",
     myAccount: "Mon compte",
-    logout: "Déconnexion"
+    logout: "Déconnexion",
+    users: "$t(user::users)"
   },
   sidebar: {
-    users: "Utilisateurs"
+    users: "$t(user::users)"
   },
 
   pwdRecovery: {

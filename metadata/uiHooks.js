@@ -1,4 +1,20 @@
 var uiHooks = {
+    navbar_main_dashboard: {
+        users: {
+            type: "item",
+            content: {
+                icon: "users",
+                text: "user::navbar.users",
+                link: "users"
+            },
+            priority: 100,
+            permissions: {
+                user: {
+                    view: true
+                }
+            }
+        }
+    },
     navbar_secondary: {
         register: {
             type: "item",
