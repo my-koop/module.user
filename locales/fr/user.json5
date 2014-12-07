@@ -111,4 +111,15 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
       }
     }
   },
+  //i18n errors
+  errors: {
+    app: {
+      password: {
+        notFound: "Le mot de passe ne doit pas être vide"
+      },
+      email: {
+        notFound: "Le courriel ne doit pas être vide"
+      }
+    }
+  }
 }

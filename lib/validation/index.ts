@@ -44,3 +44,20 @@ export function validateUpdateUserPassword(obj) {
 
   return validate(obj, updatePasswordConstraint);
 }
+
+var loginConstraint = {
+  email: {
+    presence: {
+      message: "^notFound"
+    }
+  },
+  password: {
+    presence: {
+      message: "^notFound"
+    }
+  }
+}
+
+export function validateLogin(obj){
+  return validate(obj, loginConstraint);
+}

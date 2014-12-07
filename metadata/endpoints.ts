@@ -45,7 +45,11 @@ var endpoints = {
     },
     login: {
       path: "/users/login",
-      method: "post"
+      method: "post",
+      validation: {
+        resolve: "validation",
+        value: "validateLogin"
+      }
     },
     getPublicProfile: {
       path: "/users/:id",

@@ -11,7 +11,7 @@ var localSession = require("session").local;
 var Router = require("react-router");
 
 var website = require("website");
-
+var _ = require("lodash");
 var __ = require("language").__;
 
 var LoginBox = React.createClass({
@@ -76,27 +76,25 @@ var LoginBox = React.createClass({
     var self = this;
     actions.user.login(
       {
+        i18nErrors: {
+          prefix: "user::errors",
+          keys: ["app"]
+        },
         data: {
           email: self.state.email,
           password: self.state.password
         }
       },
       function (err, userInfo) {
-        if (err) {
-          var errorMessage;
-
-          if (err.validation) {
-            //TODO.
-          } else {
-            errorMessage = __("errors::error", {context: err.context});
+        if(err) {
+          if(err.context == "validation"){
+            var keys = _.keys(err.app);
+            self.setState({
+              emailFieldState: _.contains(keys, "email")? 2 : null,
+              passwordFieldState: _.contains(keys, "password")? 2 : null,
+              errorMessage: __(err.i18n[0].key)
+            })
           }
-
-          self.setState({
-            errorMessage: errorMessage,
-            successMessage: null,
-            emailFieldState: 2,
-            passwordFieldState: 2
-          });
           return;
         }
 
