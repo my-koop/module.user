@@ -54,24 +54,7 @@ var LoginBox = React.createClass({
     }
   },
 
-  basicFormValidation: function() {
-    // FIXME:: replace with reusable validation backend and frontend system
-    var isValid = true;
-    if(!this.state.email || !this.state.password) {
-      this.setState({
-        emailFieldState: !this.state.email ? 2 : null,
-        passwordFieldState: !this.state.password ? 2 : null,
-        errorMessage: __("errors::error_authentication_both_fields")
-      });
-      isValid = false;
-    }
-    return isValid;
-  },
-
   onSubmit: function(e) {
-    if(!this.basicFormValidation()) {
-      return;
-    }
     //form validation before submit;
     var self = this;
     actions.user.login(
