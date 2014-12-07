@@ -6,6 +6,6 @@
   "validation_confpassword_mismatch" : "Password confirmation doesn't match",
   "validation_fill_all" : "All fields are required",
   "validation_wrong_password" : "Current password is incorrect.",
-  "error_duplicate_email" : "Someone is already using this email",
+  "error_duplicate_email" : "Someone is already using this email: ",
   "error_nopermissions": "You don't have sufficient permissions to access this."
 }

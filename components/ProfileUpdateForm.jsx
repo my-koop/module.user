@@ -72,10 +72,6 @@ var ProfileUpdateForm = React.createClass({
 
   setMessage: function(Message, isError){
     var style = (isError) ? "warning" : "success";
-    var header;
-    if(isError) {
-      var header = (<h2> Header </h2>)
-    }
     this.setState({
       message: Message,
       messageStyle: style
@@ -107,11 +103,10 @@ var ProfileUpdateForm = React.createClass({
     if(err){
       if(err.context === "validation"){
           this.processValidationErrors(err.validation);
-      } else if(err.message == "Error: Duplicate Email"){
-        this.setMessage("Someone is already using this email :" + profileData.email, isError = true);
-        var profile = this.state.profileData;
-        this.setState({
-          emailStyle: "warning",
+      } else if(err.context == "application" && err.app.email == "duplicate"){
+        self.setMessage(__("errors::error_duplicate_email") + profileData.email, isError = true);
+        self.setState({
+          fieldStyles["email"]: "warning",
         });
       } else {
         this.setMessage("Unable to update your profile", isError = true);
@@ -119,7 +114,6 @@ var ProfileUpdateForm = React.createClass({
     } else {
       //Display Success
       this.setMessage("Your profile has been updated.",isError = false);
-
     }
   },
 
