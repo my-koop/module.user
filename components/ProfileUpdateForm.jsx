@@ -96,7 +96,6 @@ var ProfileUpdateForm = React.createClass({
   },
 
   requestFeedback: function(err){
-    console.log(err);
     this.setState({
       fieldStyles: {}
     });
@@ -104,9 +103,11 @@ var ProfileUpdateForm = React.createClass({
       if(err.context === "validation"){
           this.processValidationErrors(err.validation);
       } else if(err.context == "application" && err.app.email == "duplicate"){
-        self.setMessage(__("errors::error_duplicate_email") + profileData.email, isError = true);
-        self.setState({
-          fieldStyles["email"]: "warning",
+        this.setMessage(__("errors::error_duplicate_email") + this.state.profileData.email, isError = true);
+        var fieldStyles = {};
+        fieldStyles.email = "error";
+        this.setState({
+          fieldStyles: fieldStyles,
         });
       } else {
         this.setMessage("Unable to update your profile", isError = true);
