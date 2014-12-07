@@ -296,19 +296,19 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           function(err, rows) {
             if (err) {
               cleanup();
-              return callback(err, false);
+              return callback(err && new DatabaseError(err), false);
             }
             if(rows[0].isUnique !== 1) {
               //Duplicate email
               cleanup();
-              return callback(new Error("Duplicate Email"), null);
+               return callback(new ApplicationError(null, {email: "duplicate"}),null);
             } else {
               connection.query(
                 "UPDATE user SET ? WHERE id = ? ",
                 [newProfile,id],
                 function(err, rows) {
                   cleanup();
-                  return callback(err, !err && rows.affectedRows === 1);
+                  return callback(err && new DatabaseError(err), rows && rows.affectedRows === 1);
                 }//function
               );//update query
             }

@@ -106,7 +106,7 @@ var ProfileUpdateForm = React.createClass({
       },function(err, result){
           if(err || !result.updateSuccess){
             console.log(err);
-            if(err.message == "Error: Duplicate Email"){
+            if(err.context == "application" && err.app.email == "duplicate"){
               self.setMessage(__("errors::error_duplicate_email") + profileData.email, isError = true);
               self.setState({
                 emailStyle: "warning",
