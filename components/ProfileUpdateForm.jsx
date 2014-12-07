@@ -45,8 +45,7 @@ var ProfileUpdateForm = React.createClass({
       profileData: this.props.profile,
       fieldStyles: {},
       message: null,
-      messageStyle: null,
-      messageHeader: null
+      messageStyle: null
     }
   },
 
@@ -79,7 +78,6 @@ var ProfileUpdateForm = React.createClass({
     }
     this.setState({
       message: Message,
-      messageHeader: header,
       messageStyle: style
     })
   },
