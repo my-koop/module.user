@@ -95,7 +95,7 @@ var ProfilePermissionsUpdateForm = React.createClass({
             {__("user::permissions_super_admin")}
           </MKAlert> : [
             <MKAlert bsStyle="success" key="success">
-              {this.state.success ? __("success") : null}
+              {this.state.success ? __("user::permissions_edit_success") : null}
             </MKAlert>,
             <div key="instructions">
               {userCanEditPermissions ?

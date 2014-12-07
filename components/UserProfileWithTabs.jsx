@@ -49,7 +49,7 @@ var UserProfileWithTabs = React.createClass({
       this.getAllowedTabsInfo(tabsInfo)
     );
 
-    contributionRenderCache = {0: true};
+    var contributionRenderCache = {0: true};
     contributionRenderCache[key] = true;
 
     return {
