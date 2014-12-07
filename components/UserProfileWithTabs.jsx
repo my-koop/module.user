@@ -46,7 +46,7 @@ var UserProfileWithTabs = React.createClass({
     var tabsInfo = this.getTabsInfo(this.props.metaContributions);
     var key = this.getTabIndexFromHash(
       window.location.hash.substr(1),
-      tabsInfo
+      this.getAllowedTabsInfo(tabsInfo)
     );
 
     contributionRenderCache = {0: true};
@@ -97,6 +97,22 @@ var UserProfileWithTabs = React.createClass({
     );
   },
 
+  getAllowedTabsInfo: function(tabsInfo) {
+    var self = this;
+
+    return _(tabsInfo || this.state.tabsInfo)
+    .filter(function(contribution){
+      var permissions = contribution.permissions;
+
+      if (!permissions) {
+        return true;
+      }
+
+      return self.constructor.validateUserPermissions(permissions);
+    })
+    .value();
+  },
+
   getTabsInfo: function(metaContributions) {
     var contributions = metaContributions ?
       _.toArray(userContributions[metaContributions])
@@ -119,10 +135,13 @@ var UserProfileWithTabs = React.createClass({
   },
 
   getTabIndexFromHash: function(hash, tabsInfo) {
-    tabsInfo = tabsInfo || this.state.tabsInfo;
+    var self = this;
+    tabsInfo = tabsInfo || this.getAllowedTabsInfo();
 
     var key = _.indexOf(
-      _.map(tabsInfo, function(tab) {return getHash(tab);}),
+      _(tabsInfo)
+      .map(function(tab) {return getHash(tab);})
+      .value(),
       hash
     );
 
@@ -150,17 +169,8 @@ var UserProfileWithTabs = React.createClass({
     var userId = this.getUserId();
 
     if(userId !== null) {
-      var tabsInfo = this.state.tabsInfo;
+      var tabsInfo = this.getAllowedTabsInfo();
       content = _(tabsInfo)
-      .filter(function(contribution){
-        var permissions = contribution.permissions;
-
-        if (!permissions) {
-          return true;
-        }
-
-        return self.constructor.validateUserPermissions(permissions);
-      })
       .map(function(contribution, index) {
         var contributionComponent = contribution.component();
         return (

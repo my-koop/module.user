@@ -53,19 +53,28 @@ function addRoutes(metaDataBuilder) {
         idPath: ["simple", "login"],
         component: "LoginPage",
         name: "login",
-        path: "login"
+        path: "login",
+        permissions: {
+            loggedIn: false
+        }
     });
     metaDataBuilder.addFrontendRoute({
         idPath: ["simple", "register"],
         component: "RegisterPage",
         name: "register",
-        path: "register"
+        path: "register",
+        permissions: {
+            loggedIn: false
+        }
     });
     metaDataBuilder.addFrontendRoute({
         idPath: ["simple", "passwordrecovery"],
         component: "PasswordRecoveryPage",
         name: "passwordrecovery",
-        path: "passwordrecovery"
+        path: "passwordrecovery",
+        permissions: {
+            loggedIn: false
+        }
     });
 }
 exports.addRoutes = addRoutes;

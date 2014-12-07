@@ -3,6 +3,7 @@ import validation = require("../validation/index");
 import utils = require("mykoop-utils");
 import Express = require("express");
 import assert = require("assert");
+
 // Assertions
 assert.equal(endPoints.user.emailExists.method, "get");
 
@@ -43,7 +44,12 @@ export function attachControllers(
   );
 
   binder.attach(
-    {endPoint: endPoints.user.current.logout},
+    {
+      endPoint: endPoints.user.current.logout,
+      permissions: {
+        loggedIn: true
+      }
+    },
     logout
   );
 
@@ -65,7 +71,7 @@ export function attachControllers(
       permissions: {
         user: {
           profile: {
-            full: true
+            view: true
           }
         }
       },
@@ -104,7 +110,7 @@ export function attachControllers(
       permissions: {
         user: {
           profile: {
-            full: true
+            view: true
           }
         }
       }
@@ -198,7 +204,7 @@ export function attachControllers(
       permissions: {
         user: {
           profile: {
-            full: true
+            view: true
           }
         }
       }
@@ -214,10 +220,8 @@ export function attachControllers(
       endPoint: endPoints.user.notes.list,
       permissions: {
         user: {
-          profile: {
-            notes: {
-              view: true
-            }
+          notes: {
+            view: true
           }
         }
       }
@@ -240,10 +244,8 @@ export function attachControllers(
       endPoint: endPoints.user.notes.new,
       permissions: {
         user: {
-          profile: {
-            notes: {
-              edit: true
-            }
+          notes: {
+            edit: true
           }
         }
       }

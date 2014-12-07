@@ -3,18 +3,31 @@
     __description: "User",
     profile: {
       __description: "User Profile",
-      full: "Access all data of any user profile",
+      view: "Access all data of any user profile",
       edit: "Edit the profile of any user",
       password: "Change the password of any user",
       permissions: {
         __description: "Permissions",
         view: "View the permissions of any user",
         edit: "Edit the permissions of any user"
-      },
-      notes: {
-        __description: "Notes",
-        view: "List the notes linked to any user",
-        create: "Create a note linked to any user"
+      }
+    },
+    notes: {
+      __description: "Notes",
+      view: "List the notes linked to any user",
+      create: "Create and link a note to any user"
+    },
+    permissions: {
+      __description: "Permission masks",
+      create: "Create a permission mask",
+      read: "List permission masks",
+      update: "Update a permission mask",
+      delete: "Delete a permission mask",
+      users: {
+        __description: "Operations on users",
+        view: "List users of a specific permission mask",
+        add: "Add a user to a permission mask",
+        remove: "Remove a user from a permission mask"
       }
     }
   }
