@@ -25,7 +25,7 @@ var RegisterOptionalInfo = React.createClass({
       birthdate: this.state.birthdate,
       referral: this.state.referral,
       referralSpecify: this.state.referralSpecify,
-      usage: this.state.usage,
+      usageFrequency: this.state.usageFrequency,
       origin: this.state.origin,
       usageNote: this.state.usageNote
     };
@@ -85,7 +85,7 @@ var RegisterOptionalInfo = React.createClass({
           type="select"
           defaultValue="everyday"
           label={__("user::form_profile_label_usage_select")}
-          valueLink = {this.linkState("usage")}
+          valueLink = {this.linkState("usageFrequency")}
         >
           <option value="everyday">{__("user::form_profile_select_option_everyday")}</option>
           <option value="fewWeek">{__("user::form_profile_select_option_fewWeek")}</option>

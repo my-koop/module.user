@@ -46,6 +46,61 @@ export function validateUpdateUserPassword(obj) {
   return validate(obj, updatePasswordConstraint);
 }
 
+var registerConstraint = {
+  firstname: {
+    presence: {
+      message: "^notFound"
+    }
+  },
+  lastname: {
+    presence: {
+      message: "^notFound"
+    }
+  },
+  email: {
+    presence: {
+      message: "^notFound"
+    }
+  },
+  password: {
+    presence: {
+      message: "^notFound"
+    }
+  },
+  confpassword: {
+    presence: {
+      message: "^notFound"
+    }
+  },
+  phone: {
+
+  },
+  birthdate: {
+
+  },
+  referral: {
+    length: {
+      maximum:
+    }
+  },
+  referralSpecify: {
+
+  },
+  usageFrequency: {
+
+  },
+  origin: {
+
+  },
+  usageNote: {
+
+  }
+}
+
+export function validateRegister(obj){
+  return validate(obj, registerConstraint);
+}
+
 var loginConstraint = {
   email: {
     presence: {
