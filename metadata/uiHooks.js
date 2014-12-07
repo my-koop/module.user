@@ -10,7 +10,9 @@ var uiHooks = {
             priority: 100,
             permissions: {
                 user: {
-                    view: true
+                    profile: {
+                        view: true
+                    }
                 }
             }
         }
@@ -94,7 +96,9 @@ var uiHooks = {
             priority: 100,
             permissions: {
                 user: {
-                    view: true
+                    profile: {
+                        view: true
+                    }
                 }
             }
         }
