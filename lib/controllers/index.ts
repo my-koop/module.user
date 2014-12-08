@@ -121,6 +121,13 @@ export function attachControllers(
   binder.attach(
     {
       endPoint: endPoints.user.updateProfile,
+      permissions: {
+        user: {
+          profile: {
+            edit: true
+          }
+        }
+      },
       customPermissionDenied: validateCurrentUser
     },
     [
@@ -162,7 +169,7 @@ export function attachControllers(
       permissions: {
         user: {
           profile: {
-            edit: true
+            password: true
           }
         }
       },
