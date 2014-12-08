@@ -1,15 +1,35 @@
 {
   user: {
     __description: "Utilisateur",
+    activation: "Activer ou désactiver tout utilisateur",
     profile: {
       __description: "Profil utilisateur",
-      full: "Accéder à toutes les données de tout utilisateur",
+      view: "Accéder à toutes les données du profil de tout utilisateur",
       edit: "Modifier le profil de tout utilisateur",
+      password: "Modifier le mot de passe de tout utilisateur",
       permissions: {
         __description: "Privilèges",
         view: "Afficher les privilèges de tout utilisateur",
         edit: "Modifier les privilèges de tout utilisateur"
-      }
+      },
     },
+    notes: {
+      __description: "Notes",
+      view: "Lister les notes liées à tout utilisateur",
+      create: "Créer une note liée à un utilisateur"
+    },
+    permissions: {
+      __description: "Masques de privilèges",
+      create: "Créer un masque de privilèges",
+      read: "Afficher les masques de privilèges",
+      update: "Mettre à jour un masque de privilèges",
+      delete: "Supprimer un masque de privilèges",
+      users: {
+        __description: "Opérations sur les utilisateurs",
+        view: "Afficher les utilisateurs d'un masque de privilèges spécifique",
+        add: "Ajouter un utilisateur à un masque de privilèges",
+        remove: "Retirer un utilisateur d'un masque de privilèges"
+      }
+    }
   }
 }

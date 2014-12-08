@@ -14,9 +14,6 @@ var Notes = React.createClass({
   render: function() {
     return (
       <div>
-        <h2>
-          {__("user::userNotesWelcome")}
-        </h2>
         <MKNotes
           resourceId={this.props.userId}
           retrieveNotesAction={actions.user.notes.list}

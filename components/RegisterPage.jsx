@@ -14,16 +14,17 @@ var _ = require("lodash");
 var __ = require("language").__;
 var async = require("async");
 
-var userMeta = require("dynamic-metadata").user;
-var userContributions = userMeta && userMeta.contributions;
-var registerContributions = _.toArray(
-  userContributions && userContributions.registerForm
-).filter(function(contribution) {
+var userContributions = require("dynamic-metadata").contributions.user;
+var registerContributions = _(userContributions.registerForm)
+.filter(function(contribution) {
   return contribution.titleKey && _.isFunction(contribution.component);
-}).map(function(contribution) {
+})
+.sortBy("priority")
+.map(function(contribution) {
   contribution.component = contribution.component();
   return contribution;
-});
+})
+.value();
 
 var MKRegisterAccountInfo = require("./RegisterAccountInfo");
 var MKRegisterOptionalInfo = require("./RegisterOptionalInfo");

@@ -228,7 +228,8 @@ var ProfileUpdateForm = React.createClass({
           />
           <BSInput
             type="submit"
-            bsStyle="primary"
+            className="pull-right"
+            bsStyle="success"
             value={__("user::update_profile_submit_button")} />
         </form>
       </BSCol>
