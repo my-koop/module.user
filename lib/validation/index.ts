@@ -50,6 +50,9 @@ var updateProfileContraint = {
   email: {
     presence:{
       message: "^email:validationEmailPresence"
+    },
+    email: {
+      message: "^email:validationEmailValid"
     }
   },
   firstname: {

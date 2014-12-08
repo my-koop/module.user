@@ -114,6 +114,7 @@ the problem, do you want to attempt to",
 
   //Update profile validation
   validationEmailPresence : "Email field must not be left empty",
+  validationEmailValid: "The email your entered doesn't seem to be valid",
   validationFirstnamePresence : "First name field must not be left empty",
   validationLastnamePresence : "Last name field must not be left empty",
   validationPhoneLength : "Phone number can not exceed 25 characters",
