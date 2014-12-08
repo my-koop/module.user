@@ -179,7 +179,10 @@ var RegisterPage = React.createClass({
       ], function (err) {
         self.pendingRequest = false;
         if(err) {
-          //FIXME:: handle validation data to notify user
+          if(err.context == "validation"){
+            self.refs.contribution0.setValidationFeedback(err);
+            self.refs.contribution1.setValidationFeedback(err);
+          }
           return self.setState({
             success: 0
           });

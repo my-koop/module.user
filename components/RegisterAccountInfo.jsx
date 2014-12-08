@@ -1,8 +1,10 @@
 var React  = require("react");
 
 var BSInput = require("react-bootstrap/Input");
+var MKAlert = require("mykoop-core/components/Alert");
 
 var __ = require("language").__;
+var _ = require("lodash");
 
 var RegisterAccountInfo = React.createClass({
   mixins: [React.addons.LinkedStateMixin],
@@ -14,8 +16,13 @@ var RegisterAccountInfo = React.createClass({
 
   // Initialize state to avoid crashes if nothing is entered
   getInitialState: function() {
-    return {};
+    return {
+      fieldStates: {},
+      message: null
+    };
   },
+
+  stateKeys: ["firstname", "lastname", "email", "password", "confpassword"],
 
   getAccountInfo: function() {
     return {
@@ -27,6 +34,30 @@ var RegisterAccountInfo = React.createClass({
     };
   },
 
+  setValidationFeedback: function(errors) {
+
+    //Getting all localised error messages
+    console.log(errors.i18n);
+    var message = _.map(errors.i18n, function(locales){
+      console.log(locales);
+      return (
+        <p>
+          { __(locales.key) }
+        </p>
+      );
+    });
+
+    //Field highlighting
+    var fieldStates = {};
+    _.intersection(this.stateKeys, _.keys(errors.app)).forEach(function(key){
+      fieldStates[key] = "error";
+    })
+    this.setState({
+      fieldStates: fieldStates,
+      message: message
+    })
+  },
+
   onEnterFocus: function() {
     this.refs.firstname.getInputDOMNode().focus();
   },
@@ -36,6 +67,9 @@ var RegisterAccountInfo = React.createClass({
 
     return (
       <div>
+        <MKAlert bsStyle="warning">
+          {this.state.message}
+        </MKAlert>
         <BSInput
           type="text"
           label={__("user::form_profile_label_firstname")}
@@ -43,6 +77,7 @@ var RegisterAccountInfo = React.createClass({
           autoFocus
           ref="firstname"
           valueLink = {this.linkState("firstName")}
+          bsStyle={this.state.fieldStates.firstname || null}
           onKeyDown={this.props.checkGoingUpKey}
           required
         />
@@ -51,6 +86,7 @@ var RegisterAccountInfo = React.createClass({
           label={__("user::form_profile_label_lastname")}
           placeholder={__("user::form_profile_placeholder_lastname")}
           valueLink = {this.linkState("lastName")}
+          bsStyle={this.state.fieldStates.lastname || null}
           required
         />
         <BSInput
@@ -58,6 +94,7 @@ var RegisterAccountInfo = React.createClass({
           label={__("user::form_profile_label_email")}
           placeholder={__("user::form_profile_placeholder_email")}
           valueLink = {this.linkState("email")}
+          bsStyle={this.state.fieldStates.email || null}
           required
         />
         <BSInput
@@ -65,6 +102,7 @@ var RegisterAccountInfo = React.createClass({
           label={__("user::form_profile_label_password")}
           placeholder={__("user::form_profile_placeholder_password")}
           valueLink = {this.linkState("password")}
+          bsStyle={this.state.fieldStates.password || null}
           required
         />
         <BSInput
@@ -72,6 +110,7 @@ var RegisterAccountInfo = React.createClass({
           label={__("user::form_profile_label_conf_password")}
           placeholder={__("user::form_profile_placeholder_conf_password")}
           valueLink = {this.linkState("confpassword")}
+          bsStyle={this.state.fieldStates.confpassword || null}
           onKeyDown={this.props.checkGoingDownKey}
           required
         />

@@ -3,7 +3,7 @@ var React  = require("react");
 var BSInput = require("react-bootstrap/Input");
 
 var MKDateTimePicker = require("mykoop-core/components/DateTimePicker");
-
+var MKAlert               = require("mykoop-core/components/Alert");
 var __ = require("language").__;
 
 var RegisterOptionalInfo = React.createClass({
@@ -14,9 +14,22 @@ var RegisterOptionalInfo = React.createClass({
     checkGoingDownKey: React.PropTypes.func.isRequired,
   },
 
+  stateKeys: [
+    "phone",
+    "birthdate",
+    "referral",
+    "referralSpecify",
+    "usageFrequency",
+    "origine",
+    "usageNote"
+  ],
+
   // Initialize state to avoid crashes if nothing is entered
   getInitialState: function() {
-    return {};
+    return {
+      fieldStates: {},
+      message: null
+    };
   },
 
   getOptionalInfo: function() {
@@ -26,7 +39,7 @@ var RegisterOptionalInfo = React.createClass({
       referral: this.state.referral,
       referralSpecify: this.state.referralSpecify,
       usageFrequency: this.state.usageFrequency,
-      origin: this.state.origin,
+      origine: this.state.origine,
       usageNote: this.state.usageNote
     };
   },
@@ -35,17 +48,40 @@ var RegisterOptionalInfo = React.createClass({
     this.refs.phone.getInputDOMNode().focus();
   },
 
+  setValidationFeedback: function(errors) {
+    //Getting all localised error messages
+    var message = _.map(errors.i18n, function(locales){
+      return (
+        <p> { __(locales.key) } </p>
+      );
+    });
+
+    //Field highlighting
+    var fieldStates = {};
+    _.intersection(this.stateKeys, _.keys(errors.app)).forEach(function(key){
+      fieldStates[key] = "error";
+    })
+    this.setState({
+      fieldStates: fieldStates,
+      message: message
+    })
+  },
+
   render: function() {
     var self = this;
 
     return (
       <div>
+        <MKAlert bsStyle="warning">
+          {this.state.message}
+        </MKAlert>
         <BSInput
           type="text"
           label={__("user::form_profile_label_phone")}
           placeholder={__("user::form_profile_placeholder_phone")}
           ref="phone"
           valueLink = {this.linkState("phone")}
+          bsStyle={this.state.fieldStates.phone || null}
           onKeyDown={this.props.checkGoingUpKey}
         />
         <label htmlFor="birthdatePicker">
@@ -66,6 +102,7 @@ var RegisterOptionalInfo = React.createClass({
           type="select"
           defaultValue="visit"
           label={__("user::form_profile_label_visit_select")}
+          bsStyle={this.state.fieldStates.referral || null}
           valueLink={this.linkState("referral")}
         >
           <option value="visit">{__("user::form_profile_select_option_visit")}</option>
@@ -77,6 +114,7 @@ var RegisterOptionalInfo = React.createClass({
           <BSInput
             type="text"
             label={__("user::form_profile_label_referralSpecify")}
+            bsStyle={this.state.fieldStates.referralSpecify || null}
             valueLink={this.linkState("referralSpecify")}
           />
         : null
@@ -86,6 +124,7 @@ var RegisterOptionalInfo = React.createClass({
           defaultValue="everyday"
           label={__("user::form_profile_label_usage_select")}
           valueLink = {this.linkState("usageFrequency")}
+          bsStyle={this.state.fieldStates.usageFrequency || null}
         >
           <option value="everyday">{__("user::form_profile_select_option_everyday")}</option>
           <option value="fewWeek">{__("user::form_profile_select_option_fewWeek")}</option>
@@ -98,6 +137,7 @@ var RegisterOptionalInfo = React.createClass({
           defaultValue="udem"
           label={__("user::form_profile_label_origin_select")}
           valueLink = {this.linkState("origin")}
+          bsStyle={this.state.fieldStates.origine || null}
         >
           <option value="udem">{__("user::form_profile_select_option_udem")}</option>
           <option value="brebeuf">{__("user::form_profile_select_option_brebeuf")}</option>
@@ -109,6 +149,7 @@ var RegisterOptionalInfo = React.createClass({
           placeholder={__("user::form_profile_placeholder_usageNote")}
           onKeyDown={this.props.checkGoingDownKey}
           valueLink = {this.linkState("usageNote")}
+          bsStyle={this.state.fieldStates.usageNote || null}
         />
      </div>
     );
