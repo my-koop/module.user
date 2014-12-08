@@ -10,7 +10,6 @@ var __                = require("language").__;
 var formatDate        = require("language").formatDate;
 var actions           = require("actions");
 var Router            = require("react-router");
-var getRouteName      = require("mykoop-utils/frontend/getRouteName");
 
 var Items = React.createClass({
   getInitialState: function() {
@@ -43,7 +42,21 @@ var Items = React.createClass({
           }
         },
         callback: function() {
-          Router.transitionTo(getRouteName(["dashboard", "adminEdit"]), {id: user.id});
+          Router.transitionTo("adminEdit", {id: user.id});
+        }
+      },
+      // FIXME:: Check for bill creation permission
+      // FIXME:: user module should not know about the transaction module
+      {
+        icon: "credit-card",
+        tooltip: {
+          text: __("user::createBillForUser"),
+          overlayProps: {
+            placement: "top"
+          }
+        },
+        callback: function() {
+          Router.transitionTo("newBill", {}, {email: user.email});
         }
       }
     ];
@@ -87,7 +100,7 @@ var Items = React.createClass({
         },
         actions: {
           name: __("actions"),
-          headerProps: {className: "list-mod-min-width-1"},
+          headerProps: {className: "list-mod-min-width-2"},
           isStatic: true,
           cellGenerator: function(user) {
             return (
