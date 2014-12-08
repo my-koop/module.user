@@ -34,7 +34,7 @@ declare module mkuser {
     static deserializePermissions(permissions: string): any;
     static validateCurrentUser(req: Express.Request, callback: Function): void;
     */
-
+    validatePermissions(userPermissions, requiredPermissions): boolean;
     userExists(
       params: User.IdExists.Params,
       callback: User.IdExists.Callback
@@ -48,7 +48,16 @@ declare module mkuser {
       loginInfo: UserInterfaces.LoginRequestData,
       callback: (err: Error, result?: LoginResponse
     ) => void): void;
-    getProfile(id: number, callback: (err: Error, result: UserProfile) => void): void;
+
+    getProfile(
+      params: {id: number},
+      callback: (err: Error, result: UserProfile) => void
+    );
+    __getProfile(
+      connection: mysql.IConnection,
+      params: {id: number},
+      callback: (err: Error, result: UserProfile) => void
+    );
     registerNewUser(
       profile: RegisterNewUser.Params,
       callback: RegisterNewUser.Callback

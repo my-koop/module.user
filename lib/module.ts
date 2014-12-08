@@ -8,7 +8,7 @@ var traverse = require("traverse");
 import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
 var generatePassword = require("password-generator");
-
+import validatePermissions = require("./common/validatePermissions");
 var _ = require("lodash");
 
 var DatabaseError = utils.errors.DatabaseError;
@@ -20,6 +20,8 @@ import AuthenticationError = require("./classes/AuthenticationError");
 class UserModule extends utils.BaseModule implements mkuser.Module {
   db: mkdatabase.Module;
   communications : mkcommunications.Module;
+  validatePermissions = validatePermissions;
+
   static serializePermissions(permissions) {
     // Assume the passed-in permissions are meant to be mutated.
 
@@ -204,29 +206,33 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     });//getConnection
   }//tryLogin
 
-  //FIX ME : define id type
-  getProfile(id:number, callback: (err: Error, result: UserProfile) => void) {
-    this.db.getConnection(function(err, connection, cleanup) {
-      if(err) {
-        return callback(err, null);
+  getProfile(
+    params: {id:number},
+    callback: (err: Error, result?: UserProfile) => void
+  ) {
+    this.callWithConnection(this.__getProfile, params, callback);
+  }
+
+  __getProfile(
+    connection: mysql.IConnection,
+    params: {id:number},
+    callback: (err: Error, result?: UserProfile) => void
+  ) {
+    connection.query(
+      "SELECT ?? FROM user WHERE id = ?",
+      [UserProfile.COLUMNS, params.id],
+      function(err, rows) {
+        if (err) {
+          return callback(err, null);
+        }
+
+        if(rows.length === 1) {
+          rows[0].perms = UserModule.deserializePermissions(rows[0].perms);
+          return callback(null, new UserProfile(rows[0]));
+        }
+        callback(new ResourceNotFoundError(null, {id:"notFound"}));
       }
-      connection.query(
-        "SELECT ?? FROM user WHERE id = ?",
-        [UserProfile.COLUMNS, id],
-        function(err, rows) {
-          cleanup();
-          if (err) {
-            return callback(err, null);
-          }
-
-          if(rows.length === 1) {
-            rows[0].perms = UserModule.deserializePermissions(rows[0].perms);
-            return callback(null, new UserProfile(rows[0]));
-          }
-          callback(new Error("No result"), null);
-
-      });
-    });
+    );
   }
 
   registerNewUser(

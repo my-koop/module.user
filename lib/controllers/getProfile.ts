@@ -13,7 +13,7 @@ function getUserProfileCommon(params) {
   }
 
   var self: mkuser.Module = this;
-  self.getProfile(id, function(err, profile) {
+  self.getProfile({id: id}, function(err, profile) {
     if (err) {
       return res.error(err);
     }
