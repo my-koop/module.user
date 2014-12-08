@@ -1,8 +1,10 @@
 var React = require("react");
 
+var BSRow = require("react-bootstrap/Row");
 var BSCol = require("react-bootstrap/Col");
 var BSButton = require("react-bootstrap/Button");
 
+var MKPermissionMixin = require("./PermissionMixin");
 var MKUserProfileWithTabs = require("./UserProfileWithTabs");
 var MKIcon = require("mykoop-core/components/Icon");
 var MKConfirmationTrigger = require("mykoop-core/components/ConfirmationTrigger");
@@ -11,8 +13,11 @@ var __ = require("language").__;
 var actions = require("actions");
 
 var AdminEditProfile = React.createClass({
+  mixins: [MKPermissionMixin],
+
   getInitialState: function() {
     return {
+      userFullName: null,
       isProfileActive: null
     }
   },
@@ -20,6 +25,7 @@ var AdminEditProfile = React.createClass({
   checkProfile: function(err, userProfile) {
     if(!err) {
       this.setState({
+        userFullName: userProfile.firstname + " " + userProfile.lastname,
         isProfileActive: !userProfile.deactivated
       });
     }
@@ -47,42 +53,53 @@ var AdminEditProfile = React.createClass({
   render: function() {
     var userId = parseInt(this.props.params.id);
     var isProfileActive = this.state.isProfileActive;
-    var changeProfileActived = isProfileActive !== null ?
-      (
-        <span className="pull-right h1">
-          <MKConfirmationTrigger
-            message={__("areYouSure")}
-            onYes={this.toggleUserActive}
+    var canDeactivateAccount = this.constructor.validateUserPermissions({
+      user: {
+        activation: true
+      }
+    });
+    var changeProfileActived = canDeactivateAccount &&
+                               isProfileActive !== null ? (
+      <span className="pull-right h1">
+        <MKConfirmationTrigger
+          message={__("areYouSure")}
+          onYes={this.toggleUserActive}
+        >
+          <BSButton
+            bsStyle={isProfileActive ? "danger" : "success"}
           >
-            <BSButton
-              bsStyle={isProfileActive ? "danger" : "success"}
-            >
-              <MKIcon
-                fixedWidth
-                glyph={isProfileActive ? "close": "check"}
-              />
-              {__(isProfileActive ?
-                  "user::deactivateProfile"
-                : "user::activateProfile"
-              )}
-            </BSButton>
-          </MKConfirmationTrigger>
-        </span>
-      )
-      : null;
+            <MKIcon
+              fixedWidth
+              glyph={isProfileActive ? "close": "check"}
+            />
+            {__(isProfileActive ?
+                "user::deactivateProfile"
+              : "user::activateProfile"
+            )}
+          </BSButton>
+        </MKConfirmationTrigger>
+      </span>
+    ) : null;
+
     return (
-      <BSCol>
-        <h1 className="pull-left">
-          {__("user::adminEditWelcome", {userId: userId})}
-        </h1>
-        {changeProfileActived}
-        <span className="clearfix" />
+      <div>
+        <BSRow>
+          <BSCol xs={12}>
+            <h1 className="pull-left">
+              {__("user::adminEditWelcome", {userId: userId})}
+              {this.state.userFullName ?
+                <small> {this.state.userFullName}</small>
+              : null}
+            </h1>
+            {changeProfileActived}
+          </BSCol>
+        </BSRow>
         <MKUserProfileWithTabs
           userId={userId}
-          metaPlugins="adminEditPlugins"
           onProfileRetrieved={this.checkProfile}
+          metaContributions="profileEdit"
         />
-      </BSCol>
+      </div>
     );
   }
 });

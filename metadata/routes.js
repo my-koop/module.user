@@ -22,7 +22,9 @@ function addRoutes(metaDataBuilder) {
         path: "user/:id",
         permissions: {
             user: {
-                edit: true
+                profile: {
+                    edit: true
+                }
             }
         },
         // For tests
@@ -38,25 +40,41 @@ function addRoutes(metaDataBuilder) {
         component: "Users",
         name: "users",
         path: "users",
+        permissions: {
+            user: {
+                profile: {
+                    view: true
+                }
+            }
+        }
     });
     /* Simple routes. */
     metaDataBuilder.addFrontendRoute({
         idPath: ["simple", "login"],
         component: "LoginPage",
         name: "login",
-        path: "login"
+        path: "login",
+        permissions: {
+            loggedIn: false
+        }
     });
     metaDataBuilder.addFrontendRoute({
         idPath: ["simple", "register"],
         component: "RegisterPage",
         name: "register",
-        path: "register"
+        path: "register",
+        permissions: {
+            loggedIn: false
+        }
     });
     metaDataBuilder.addFrontendRoute({
         idPath: ["simple", "passwordrecovery"],
         component: "PasswordRecoveryPage",
         name: "passwordrecovery",
-        path: "passwordrecovery"
+        path: "passwordrecovery",
+        permissions: {
+            loggedIn: false
+        }
     });
 }
 exports.addRoutes = addRoutes;

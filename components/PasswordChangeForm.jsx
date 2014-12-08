@@ -1,6 +1,9 @@
 ﻿var React   = require("react/addons");
+
+var BSCol = require("react-bootstrap/Col");
 var BSInput = require("react-bootstrap/Input");
 var BSAlert = require("react-bootstrap/Alert");
+
 var actions = require("actions");
 var __      = require("language").__;
 
@@ -109,7 +112,7 @@ var PasswordChangeForm = React.createClass({
 
   render: function() {
     return (
-      <div>
+      <BSCol md={6}>
         {this.state.message ?
           <BSAlert bsStyle={this.getMessageStyle()}>
             {this.state.message}
@@ -138,10 +141,11 @@ var PasswordChangeForm = React.createClass({
           />
           <BSInput
             type="submit"
-            bsStyle="primary"
+            className="pull-right"
+            bsStyle="success"
             value={__("user::field_update_password_submit")} />
         </form>
-      </div>
+      </BSCol>
     );
   }
 });

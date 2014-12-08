@@ -1,4 +1,5 @@
 {
+  users: "Users",
   "adminEditWelcome": "Editing user #__userId__",
   "myAccountWelcome": "My Account",
   "invalidUserId": "User id requested is invalid",
@@ -76,11 +77,13 @@ the problem, do you want to attempt to",
   "passwordRecoverySubmit" : "Reset Password",
   "passwordRecoveryEmailPlaceholder" : "user@domain.com",
   "adminEditIdField" : "User Id",
+  "permissions_super_admin" : "This user has irrevocable access to all permissions.",
   "permissions_edit_instructions": "To remove a permission, leave the checkbox unchecked or the number field empty. If a section is checked, all current and future permissions under it will be granted.",
   "permissions_edit_hasall": "Has all current and future sub-permissions for this section",
   "permissions_edit_maximum": "Maximum value of __maximum__. Larger values will be capped.",
   "permissions_edit_nolimit": "No limit",
   "permissions_edit_update": "Update Permissions",
+  "permissions_edit_success": "You have successfully updated the permissions!",
   "userListWelcome" : "List of all users",
   "userListHeaderId" : "ID",
   "userListHeaderEmail" : "Email",
@@ -98,10 +101,11 @@ the problem, do you want to attempt to",
     register: "Register",
     login: "Login",
     myAccount: "My Account",
-    logout: "Logout"
+    logout: "Logout",
+    users: "$t(user::users)"
   },
   sidebar: {
-    users: "Users"
+    users: "$t(user::users)"
   },
 
   pwdRecovery: {

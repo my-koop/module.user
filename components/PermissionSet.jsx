@@ -77,7 +77,18 @@ var PermissionSet = React.createClass({
   render: function() {
     var self = this;
 
-    var permList = _.map(this.props.refPerms, function(permission, permissionName) {
+    var permList = _(this.props.refPerms)
+    .map(function(permission, permissionName) {
+      return {key: permissionName, value: permission};
+    })
+    .sortBy(function(permission) {
+      return _.isPlainObject(permission.value) ?
+        _.keys(permission.value).length :
+        0;
+    })
+    .map(function(permissionObj) {
+      var permission = permissionObj.value;
+      var permissionName = permissionObj.key;
       var newPermPath = self.props.permPath.concat(permissionName);
 
       // Is it further nested?

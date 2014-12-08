@@ -1,4 +1,5 @@
 {
+  users: "Utilisateurs",
   "adminEditWelcome": "Modification de l'utilisateur #__userId__",
   "myAccountWelcome": "Mon compte",
   "invalidUserId": "Identifiant d'utilisateur invalide",
@@ -76,11 +77,13 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
   "passwordRecoverySubmit" : "Générer un nouveau mot de passe",
   "passwordRecoveryEmailPlaceholder" : "utilisateur@domaine.com",
   "adminEditIdField" : "Numéro d'utilisateur",
+  "permissions_super_admin" : "Cet utilisateur possède tous les privilèges et ce de façon irrévocable.",
   "permissions_edit_instructions": "Pour retirer un privilège, laisser la case décochée ou le champ vide. Si la case d'une section est cochée, tous les privilèges actuels et futurs de cette section seront accordés à l'utilisateur.",
   "permissions_edit_hasall": "Possède tous les privilèges actuels et futurs sous cette catégorie",
   "permissions_edit_maximum": "Valeur maximale de __maximum__. Les plus grandes valeurs seront ignorées.",
   "permissions_edit_nolimit": "Aucune limite",
   "permissions_edit_update": "Mettre à jour",
+  "permissions_edit_success": "Vous avez mis les privilèges à jour avec succès!",
   "userListWelcome" : "Liste des usagers",
   "userListHeaderId" : "ID",
   "userListHeaderEmail" : "Courriel",
@@ -98,10 +101,11 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
     register: "Inscription",
     login: "Connexion",
     myAccount: "Mon compte",
-    logout: "Déconnexion"
+    logout: "Déconnexion",
+    users: "$t(user::users)"
   },
   sidebar: {
-    users: "Utilisateurs"
+    users: "$t(user::users)"
   },
 
   pwdRecovery: {
