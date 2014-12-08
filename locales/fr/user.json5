@@ -116,6 +116,18 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
     }
   },
 
+  //Update profile validation
+  validationEmailPresence : "Le champs du courriel ne doit pas être vide.",
+  validationEmailValid: "Le courriel entré ne semble pas valide",
+  validationFirstnamePresence : "Le champs du prénom ne doit pas être vide.",
+  validationLastnamePresence : "Le champs du nom de famille ne doit pas être vide.",
+  validationPhoneLength : "Le numéro de téléphone ne doit  pas dépasser 25 charactères",
+  validationOriginValue : "La sélection de votre origine est invalide",
+  validationUsageNoteLength : "La description de votre usage de la bicyclette ne doit pas dépasser 125 charactères",
+  validationUsageFrequencyValue : "La sélection pour la fréquence d'utilisation est invalide.",
+  validationReferralValue : "La sélection pour la référence est invalide",
+  validationReferralSpecifyLength : "La précision sur la référence ne doit pas dépasser 125 charactères",
+
   errors: {
     app: {
       firstname: {

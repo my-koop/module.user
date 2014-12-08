@@ -20,7 +20,11 @@ var endpoints = {
       },
       updateProfile: {
         path: "/users/current",
-        method: "put"
+        method: "put",
+        validation: {
+          resolve: "validation",
+          value: "validateUpdateProfile"
+        }
       }
     },
     activation: {
@@ -37,7 +41,11 @@ var endpoints = {
     },
     updateProfile: {
       path: "/users/:id",
-      method: "put"
+      method: "put",
+      validation: {
+        resolve: "validation",
+        value: "validateUpdateProfile"
+      }
     },
     updatePermissions: {
       path: "/users/:id/permissions",

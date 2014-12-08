@@ -95,6 +95,7 @@ export function attachControllers(
   binder.attach(
     {
       endPoint: endPoints.user.current.updateProfile,
+      validation: validation.validateUpdateProfile,
       permissions: {
         loggedIn: true
       }
@@ -122,6 +123,7 @@ export function attachControllers(
   binder.attach(
     {
       endPoint: endPoints.user.updateProfile,
+      validation: validation.validateUpdateProfile,
       permissions: {
         user: {
           profile: {

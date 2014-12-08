@@ -10,8 +10,6 @@ var registerPasswordMatch = function (value, options, key, attributes){
 }
 validate.addValidator("registerPasswordMatch", registerPasswordMatch);
 
-
-
 var updatePasswordConstraint = {
   id: {
     numericality: {
@@ -26,9 +24,8 @@ var updatePasswordConstraint = {
     presence: true
   },
   confNewPassword: {
-    presence: true
+    presence: true,
   },
-
 }
 
 export function validateUpdateUserPassword(obj) {
@@ -45,6 +42,68 @@ export function validateUpdateUserPassword(obj) {
   }
 
   return validate(obj, updatePasswordConstraint);
+}
+
+//FIXME: Validate birthdate
+var updateProfileContraint = {
+  email: {
+    presence:{
+      message: "^email:validationEmailPresence"
+    },
+    email: {
+      message: "^email:validationEmailValid"
+    }
+  },
+  firstname: {
+    presence: {
+      message: "^firstname:validationFirstnamePresence"
+    }
+  },
+  lastname: {
+    presence: {
+      message: "^lastname:validationLastnamePresence"
+    },
+  },
+  phone: {
+    length: {
+      maximum: 25,
+      message: "^phone:validationPhoneLength"
+    }
+  },
+  referral: {
+    inclusion : {
+      within: ["visit", "friend", "ads", "other"],
+      message: "^referral:validationReferralValue"
+    }
+  },
+  usageFrequency: {
+    inclusion : {
+      within: ["everyday", "fewWeek", "fewMonth", "fewYear", "never"],
+      message: "^usageFrequency:validationUsageFrequencyValue"
+    }
+  },
+  referralSpecify: {
+    length: {
+      maximum: 128,
+      message: "^referralSpecify:validationReferralSpecifyLength"
+    }
+  },
+   origin: {
+    inclusion : {
+      within: ["udem", "brebeuf", "other"],
+      message: "^origin:validationOriginValue"
+    }
+  },
+  usageNote: {
+    length: {
+      maximum: 128,
+      message: "^usageNote:validationUsageNoteLength"
+    }
+  },
+}
+
+export function validateUpdateProfile(obj) {
+  return validate(obj, updateProfileContraint, {flatten: true});
 }
 
 var registerConstraint = {
