@@ -20,7 +20,7 @@ var RegisterAccountInfo = React.createClass({
     };
   },
 
-  stateKeys: ["firstname", "lastname", "email", "password", "confpassword"],
+  stateKeys: ["firstName", "lastName", "email", "password", "confpassword"],
 
   getAccountInfo: function() {
     return {
@@ -44,7 +44,7 @@ var RegisterAccountInfo = React.createClass({
   },
 
   onEnterFocus: function() {
-    this.refs.firstname.getInputDOMNode().focus();
+    this.refs.firstName.getInputDOMNode().focus();
   },
 
   render: function() {
@@ -57,10 +57,10 @@ var RegisterAccountInfo = React.createClass({
           label={__("user::form_profile_label_firstname")}
           placeholder={__("user::form_profile_placeholder_firstname")}
           autoFocus
-          ref="firstname"
+          ref="firstName"
           valueLink = {this.linkState("firstName")}
-          bsStyle={this.state.fieldStates.firstname || null}
-          hasFeedback={!!this.state.fieldStates.firstname}
+          bsStyle={this.state.fieldStates.firstName || null}
+          hasFeedback={!!this.state.fieldStates.firstName}
           onKeyDown={this.props.checkGoingUpKey}
           required
         />
@@ -69,8 +69,8 @@ var RegisterAccountInfo = React.createClass({
           label={__("user::form_profile_label_lastname")}
           placeholder={__("user::form_profile_placeholder_lastname")}
           valueLink = {this.linkState("lastName")}
-          bsStyle={this.state.fieldStates.lastname || null}
-          hasFeedback={!!this.state.fieldStates.lastname}
+          bsStyle={this.state.fieldStates.lastName || null}
+          hasFeedback={!!this.state.fieldStates.lastName}
           required
         />
         <BSInput

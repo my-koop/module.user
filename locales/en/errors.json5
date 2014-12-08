@@ -8,45 +8,4 @@
   "validation_wrong_password" : "Current password is incorrect.",
   "error_duplicate_email" : "Someone is already using this email: ",
   "error_nopermissions": "You don't have sufficient permissions to access this.",
-
-  validation: {
-    app: {
-      firstname: {
-        notFound: "Firstname cannot be left empty."
-      },
-      lastname: {
-        notFound: "Lastname cannot be left empty."
-      },
-      email: {
-        notFound: "Email cannot be left empty.",
-        duplicate: "This email is already used.",
-        invalid: "Email format is invalid."
-      },
-      password: {
-        notFound: "Password cannot be left empty."
-      },
-      confpassword: {
-        notFound: "Password confirmation cannot be left empty.",
-        notMatch: "Passwords dont match."
-      },
-      phone: {
-        maximumLength: "Phone number must not exceed 25 characters."
-      },
-      referral: {
-        invalidSelection : "Referral selection is invalid."
-      },
-      usageFrequency: {
-        invalidSelection : "Usage Frequency is invalid."
-      },
-      referralSpecify: {
-        maximumLength: "Referral specification must not exceed 128 characters."
-      },
-      origin: {
-        invalidSelection: "Origin selection is invalid."
-      },
-      usageNote: {
-        maximumLength: "Usage description must not exceed 128 characters."
-      }
-    }
-  }
 }

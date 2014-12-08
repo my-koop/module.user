@@ -48,12 +48,12 @@ export function validateUpdateUserPassword(obj) {
 }
 
 var registerConstraint = {
-  firstname: {
+  firstName: {
     presence: {
       message: "^notFound"
     }
    },
-  lastname: {
+  lastName: {
      presence: {
        message: "^notFound"
      }

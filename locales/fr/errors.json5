@@ -8,46 +8,4 @@
   "error_unable_to_update" : "La mise à jour à échoué.",
   "error_duplicate_email" : "Un autre utilisateur utilise déjà ce courriel: ",
   "error_nopermissions": "Vous n'avez pas des privilèges suffisants pour accéder à ceci.",
-
-  validation: {
-    app: {
-      firstname: {
-        notFound: "Le prénom ne peut être vide."
-      },
-      lastname: {
-        notFound: "Le nom de famille ne peut être vide."
-      },
-      email: {
-        notFound: "Le courriel ne peut être vide.",
-        duplicate: "Ce courriel est déjà utilisé.",
-        invalid: "Le format du courriel est invalide."
-      },
-      password: {
-        notFound: "Le mot de passe ne peut être vide."
-      },
-      confpassword: {
-        notFound: "La confirmation du mot de passe ne peut être vide.",
-        notMatch: "Les deux mots de passes ne correspondent pas."
-      },
-      phone: {
-        maximumLength: "Le numéro de téléphone ne doit pas excéder 25 charactères."
-      },
-      referral: {
-        invalidSelection: "La référence choisie est invalide."
-      },
-      usageFrequency: {
-        invalidSelection: "La fréquence d'usage choisie est invalide."
-      },
-      referralSpecify: {
-        maximumLength: "La spécification de la référence ne doit pas excéder 128 charactères."
-      },
-      origine: {
-        invalidSelection: "L'origine choisie est invalide."
-      },
-      usageNote: {
-        maximumLength: "La description de votre utilisation du vélo ne doit pas excéder 128 charactères."
-      }
-    }
-  }
-
 }
