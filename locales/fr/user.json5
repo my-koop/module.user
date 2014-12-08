@@ -118,7 +118,8 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
         notFound: "Le mot de passe ne doit pas être vide"
       },
       email: {
-        notFound: "Le courriel ne doit pas être vide"
+        notFound: "Le courriel ne doit pas être vide",
+        invalid: "Le courriel n'a pas un bon format"
       }
     }
   }
