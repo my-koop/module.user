@@ -64,7 +64,11 @@ var endpoints = {
         },
         register: {
             path: "/users",
-            method: "post"
+            method: "post",
+            validation: {
+                resolve: "validation",
+                value: "validateRegister"
+            }
         },
         emailExists: {
             path: "/users/email/isValid",

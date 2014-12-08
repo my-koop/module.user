@@ -16,7 +16,7 @@ function registerUser(req: express.Request, res: express.Response) {
     usageNote:      req.param("usageNote"),
     usageFrequency: req.param("usage",null),
     referral:       req.param("referral",null),
-    // FIXME: Handle referral specify
+    referralSpecify:req.param("referralSpecify",null),
     passwordToHash: req.param("password"),
     confPassword:   req.param("confpassword")
   };

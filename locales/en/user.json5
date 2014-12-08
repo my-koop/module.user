@@ -33,10 +33,10 @@ the problem, do you want to attempt to",
   "register_panel_next" : "Next",
   "register_trigger_message" : "Are you sure all the information is valid?",
   "register_submit_button" : "Submit",
-  "form_profile_placeholder_firstname" : "Firstname",
-  "form_profile_label_firstname"  : "Firstname",
-  "form_profile_placeholder_lastname" : "Lastname",
-  "form_profile_label_lastname" : "Lastname",
+  "form_profile_placeholder_firstname" : "First name",
+  "form_profile_label_firstname"  : "First name",
+  "form_profile_placeholder_lastname" : "Last name",
+  "form_profile_label_lastname" : "Last name",
   "form_profile_label_email" : "E-Mail",
   "form_profile_placeholder_email" : "Email",
   "form_profile_label_password" : "Password",
@@ -87,8 +87,8 @@ the problem, do you want to attempt to",
   "userListWelcome" : "List of all users",
   "userListHeaderId" : "ID",
   "userListHeaderEmail" : "Email",
-  "userListHeaderFirstname" : "Firstname",
-  "userListHeaderLastname" : "Lastname",
+  "userListHeaderFirstname" : "First name",
+  "userListHeaderLastname" : "Last name",
   "userListHeaderisActive" : "Member",
   "userListHeaderActiveUntil" : "Active Until",
   "userListEditButton" : "Edit this user's account",
@@ -115,15 +115,44 @@ the problem, do you want to attempt to",
       }
     }
   },
-  //i18n errors
+
   errors: {
     app: {
-      password: {
-        notFound: "Password cannot be empty"
+      firstName: {
+        notFound: "First name cannot be left empty."
+      },
+      lastName: {
+        notFound: "Last name cannot be left empty."
       },
       email: {
-        notFound: "Email field cannot be empty",
-        invalid: "Invalid email format"
+        notFound: "Email cannot be left empty.",
+        duplicate: "This email is already used.",
+        invalid: "Email format is invalid."
+      },
+      password: {
+        notFound: "Password cannot be left empty."
+      },
+      confpassword: {
+        notFound: "Password confirmation cannot be left empty.",
+        notMatch: "Passwords dont match."
+      },
+      phone: {
+        maximumLength: "Phone number must not exceed 25 characters."
+      },
+      referral: {
+        invalidSelection : "Referral selection is invalid."
+      },
+      usageFrequency: {
+        invalidSelection : "Usage Frequency is invalid."
+      },
+      referralSpecify: {
+        maximumLength: "Referral specification must not exceed 128 characters."
+      },
+      origin: {
+        invalidSelection: "Origin selection is invalid."
+      },
+      usageNote: {
+        maximumLength: "Usage description must not exceed 128 characters"
       }
     }
   }

@@ -4,7 +4,7 @@ var BSInput       = require("react-bootstrap/Input");
 var BSButton      = require("react-bootstrap/Button");
 var BSButtonGroup = require("react-bootstrap/ButtonGroup");
 var MKAlert = require("mykoop-core/components/Alert");
-var MKFeedbackI18nMixin = require("mykoop-core/components/FeedbackI18nMixin");
+var MKFeedbacki18nMixin = require("mykoop-core/components/Feedbacki18nMixin");
 
 var ajax = require("ajax");
 var actions = require("actions");
@@ -16,7 +16,7 @@ var _ = require("lodash");
 var __ = require("language").__;
 
 var LoginBox = React.createClass({
-  mixins: [React.addons.LinkedStateMixin, MKFeedbackI18nMixin],
+  mixins: [React.addons.LinkedStateMixin, MKFeedbacki18nMixin],
 
   propTypes: {
     state: PropTypes.object,
