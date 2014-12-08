@@ -61,7 +61,8 @@ var registerConstraint = {
   email: {
     presence: {
       message: "^notFound"
-    }
+    },
+    email: {message: "^invalid"}
   },
   password: {
     presence: {

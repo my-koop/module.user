@@ -3,7 +3,6 @@ var React  = require("react");
 var BSInput = require("react-bootstrap/Input");
 
 var MKDateTimePicker = require("mykoop-core/components/DateTimePicker");
-var MKAlert               = require("mykoop-core/components/Alert");
 var __ = require("language").__;
 
 var RegisterOptionalInfo = React.createClass({
@@ -28,7 +27,6 @@ var RegisterOptionalInfo = React.createClass({
   getInitialState: function() {
     return {
       fieldStates: {},
-      message: null
     };
   },
 
@@ -49,13 +47,6 @@ var RegisterOptionalInfo = React.createClass({
   },
 
   setValidationFeedback: function(errors) {
-    //Getting all localised error messages
-    var message = _.map(errors.i18n, function(locales){
-      return (
-        <p> { __(locales.key) } </p>
-      );
-    });
-
     //Field highlighting
     var fieldStates = {};
     _.intersection(this.stateKeys, _.keys(errors.app)).forEach(function(key){
@@ -63,8 +54,7 @@ var RegisterOptionalInfo = React.createClass({
     })
     this.setState({
       fieldStates: fieldStates,
-      message: message
-    })
+    });
   },
 
   render: function() {
@@ -72,9 +62,6 @@ var RegisterOptionalInfo = React.createClass({
 
     return (
       <div>
-        <MKAlert bsStyle="warning">
-          {this.state.message}
-        </MKAlert>
         <BSInput
           type="text"
           label={__("user::form_profile_label_phone")}
@@ -82,6 +69,7 @@ var RegisterOptionalInfo = React.createClass({
           ref="phone"
           valueLink = {this.linkState("phone")}
           bsStyle={this.state.fieldStates.phone || null}
+          hasFeedback={!!this.state.fieldStates.phone}
           onKeyDown={this.props.checkGoingUpKey}
         />
         <label htmlFor="birthdatePicker">
@@ -103,6 +91,7 @@ var RegisterOptionalInfo = React.createClass({
           defaultValue="visit"
           label={__("user::form_profile_label_visit_select")}
           bsStyle={this.state.fieldStates.referral || null}
+          hasFeedback={!!this.state.fieldStates.referral}
           valueLink={this.linkState("referral")}
         >
           <option value="visit">{__("user::form_profile_select_option_visit")}</option>
@@ -115,6 +104,7 @@ var RegisterOptionalInfo = React.createClass({
             type="text"
             label={__("user::form_profile_label_referralSpecify")}
             bsStyle={this.state.fieldStates.referralSpecify || null}
+            hasFeedback={!!this.state.fieldStates.referralSpecify}
             valueLink={this.linkState("referralSpecify")}
           />
         : null
@@ -125,6 +115,7 @@ var RegisterOptionalInfo = React.createClass({
           label={__("user::form_profile_label_usage_select")}
           valueLink = {this.linkState("usageFrequency")}
           bsStyle={this.state.fieldStates.usageFrequency || null}
+          hasFeedback={!!this.state.fieldStates.usageFrequency}
         >
           <option value="everyday">{__("user::form_profile_select_option_everyday")}</option>
           <option value="fewWeek">{__("user::form_profile_select_option_fewWeek")}</option>
@@ -138,6 +129,7 @@ var RegisterOptionalInfo = React.createClass({
           label={__("user::form_profile_label_origin_select")}
           valueLink = {this.linkState("origin")}
           bsStyle={this.state.fieldStates.origine || null}
+          hasFeedback={!!this.state.fieldStates.origine}
         >
           <option value="udem">{__("user::form_profile_select_option_udem")}</option>
           <option value="brebeuf">{__("user::form_profile_select_option_brebeuf")}</option>
@@ -150,6 +142,7 @@ var RegisterOptionalInfo = React.createClass({
           onKeyDown={this.props.checkGoingDownKey}
           valueLink = {this.linkState("usageNote")}
           bsStyle={this.state.fieldStates.usageNote || null}
+          hasFeedback={!!this.state.fieldStates.usageNote}
         />
      </div>
     );
