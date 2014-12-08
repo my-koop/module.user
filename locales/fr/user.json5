@@ -96,6 +96,7 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
 
   deactivateProfile: "Désactiver le compte",
   activateProfile: "Activer le compte",
+  createBillForUser: "Créer une nouvelle facture pour cet utilisateur",
 
   navbar: {
     register: "Inscription",
