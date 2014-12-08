@@ -4,6 +4,7 @@ var BSInput       = require("react-bootstrap/Input");
 var BSButton      = require("react-bootstrap/Button");
 var BSButtonGroup = require("react-bootstrap/ButtonGroup");
 var MKAlert = require("mykoop-core/components/Alert");
+var MKFeedbacki18nMixin = require("mykoop-core/components/Feedbacki18nMixin");
 
 var ajax = require("ajax");
 var actions = require("actions");
@@ -11,12 +12,11 @@ var localSession = require("session").local;
 var Router = require("react-router");
 
 var website = require("website");
-
+var _ = require("lodash");
 var __ = require("language").__;
 
 var LoginBox = React.createClass({
-
-  mixins: [React.addons.LinkedStateMixin],
+  mixins: [React.addons.LinkedStateMixin, MKFeedbacki18nMixin],
 
   propTypes: {
     state: PropTypes.object,
@@ -35,9 +35,6 @@ var LoginBox = React.createClass({
     return {
       email: state.email,
       password: state.password,
-      emailFieldState: state.emailFieldState,
-      passwordFieldState : state.passwordFieldState,
-      errorMessage: state.errorMessage
     };
   },
 
@@ -54,61 +51,41 @@ var LoginBox = React.createClass({
     }
   },
 
-  basicFormValidation: function() {
-    // FIXME:: replace with reusable validation backend and frontend system
-    var isValid = true;
-    if(!this.state.email || !this.state.password) {
-      this.setState({
-        emailFieldState: !this.state.email ? 2 : null,
-        passwordFieldState: !this.state.password ? 2 : null,
-        errorMessage: __("errors::error_authentication_both_fields")
-      });
-      isValid = false;
-    }
-    return isValid;
-  },
-
   onSubmit: function(e) {
-    if(!this.basicFormValidation()) {
-      return;
-    }
     //form validation before submit;
     var self = this;
+    this.clearFeedback();
     actions.user.login(
       {
+        i18nErrors: {
+          prefix: "user::errors",
+          keys: ["app"]
+        },
         data: {
           email: self.state.email,
           password: self.state.password
         }
       },
       function (err, userInfo) {
-        if (err) {
-          var errorMessage;
-
-          if (err.validation) {
-            //TODO.
-          } else {
-            errorMessage = __("errors::error", {context: err.context});
+        if(err) {
+          if(err.context == "validation") {
+            var keys = _.keys(err.app);
+            self.setState({
+              emailFieldState: _.contains(keys, "email") ? 2 : null,
+              passwordFieldState: _.contains(keys, "password") ? 2 : null
+            });
           }
-
-          self.setState({
-            errorMessage: errorMessage,
-            successMessage: null,
-            emailFieldState: 2,
-            passwordFieldState: 2
-          });
-          return;
+          return self.setFeedback(err.i18n, "danger");
         }
 
         var onLoginSuccess = self.props.onLoginSuccess;
         localSession.user = userInfo;
 
+        self.setFeedback({key: "user::loggedin"}, "success");
         self.setState({
-          successMessage: __("user::loggedin"),
-          errorMessage: null,
           emailFieldState: 1,
           passwordFieldState: 1
-        },function(err, res) {
+        }, function(err, res) {
           setTimeout(function() {
             if (onLoginSuccess) {
               onLoginSuccess();
@@ -138,12 +115,7 @@ var LoginBox = React.createClass({
     var self = this;
     return (
       <div>
-        <MKAlert bsStyle="danger" permanent>
-          {this.state.errorMessage}
-        </MKAlert>
-        <MKAlert bsStyle="success">
-          {this.state.successMessage}
-        </MKAlert>
+        {this.renderFeedback()}
         <iframe name="rememberme" src="about:blank" className="hidden"/>
         <form
           target="rememberme"

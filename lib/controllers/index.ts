@@ -31,6 +31,7 @@ export function attachControllers(
   binder.attach(
     {
       endPoint: endPoints.user.login,
+      validation: validation.validateLogin,
       customPermissionGranted: function (req, callback) {
         callback(req.session.user && new Error("Already logged in."));
       }
@@ -83,7 +84,7 @@ export function attachControllers(
   binder.attach(
     {
       endPoint: endPoints.user.register,
-      // TODO:: Validation
+      validation: validation.validateRegister,
       customPermissionGranted: function (req, callback) {
         callback(req.session.user && new Error("Already logged in."));
       }

@@ -1,14 +1,14 @@
+// see http://validatejs.org/ for documentation on how to do contraints
 var validate = require("mykoop-utils/common/index").validation;
 
-//FIX ME : Commented until we can handle custom validators
-// validate.validators.passwordsMatch = function (value, options, key, attributes){
-//   if(value !== attributes.newPassword){
-//     return "New passwords must match";
-//   } else {
-//     return null;
-//   }
-// }
 
+var registerPasswordMatch = function (value, options, key, attributes){
+   if(typeof attributes.password != "undefined" &&
+      attributes.password !== attributes.confpassword){
+     return "^notMatch";
+   }
+}
+validate.addValidator("registerPasswordMatch", registerPasswordMatch);
 
 var updatePasswordConstraint = {
   id: {
@@ -24,9 +24,8 @@ var updatePasswordConstraint = {
     presence: true
   },
   confNewPassword: {
-    presence: true
+    presence: true,
   },
-
 }
 
 export function validateUpdateUserPassword(obj) {
@@ -105,5 +104,92 @@ var updateProfileContraint = {
 
 export function validateUpdateProfile(obj) {
   return validate(obj, updateProfileContraint, {flatten: true});
+}
 
+var registerConstraint = {
+  firstName: {
+    presence: {
+      message: "^notFound"
+    }
+   },
+  lastName: {
+     presence: {
+       message: "^notFound"
+     }
+   },
+  email: {
+    presence: {
+      message: "^notFound"
+    },
+    email: {message: "^invalid"}
+  },
+  password: {
+    presence: {
+      message: "^notFound"
+    }
+  },
+  confpassword: {
+    presence: {
+      message: "^notFound"
+    },
+    registerPasswordMatch: ""
+  },
+  phone: {
+    length: {
+      maximum: 25,
+      message: "^maximumLength"
+    }
+  },
+  referral: {
+    inclusion: {
+      within: ["visit", "friend", "ads", "other"],
+      message: "^invalidSelection"
+    }
+  },
+  usageFrequency: {
+    inclusion: {
+      within: ["everyday", "fewWeek", "fewMonth", "fewYear", "never"],
+      message: "^invalidSelection"
+    }
+  },
+  referralSpecify: {
+    length: {
+      maximum: 128,
+      message: "^maximumLength"
+    }
+  },
+  origin: {
+    inclusion: {
+      within: ["udem", "brebeuf", "other"],
+      message: "^invalidSelection"
+    }
+  },
+  usageNote: {
+    length: {
+      maximum: 128,
+      message: "^maximumLength"
+    }
+  }
+}
+
+export function validateRegister(obj){
+  return validate(obj, registerConstraint);
+}
+
+var loginConstraint = {
+  email: {
+    presence: {
+      message: "^notFound"
+    },
+    email: {message: "^invalid"}
+  },
+  password: {
+    presence: {
+      message: "^notFound"
+    }
+  }
+}
+
+export function validateLogin(obj){
+  return validate(obj, loginConstraint);
 }
