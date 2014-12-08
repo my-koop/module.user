@@ -115,4 +115,16 @@ the problem, do you want to attempt to",
       }
     }
   },
+  //i18n errors
+  errors: {
+    app: {
+      password: {
+        notFound: "Password cannot be empty"
+      },
+      email: {
+        notFound: "Email field cannot be empty",
+        invalid: "Invalid email format"
+      }
+    }
+  }
 }

@@ -1,3 +1,4 @@
+// see http://validatejs.org/ for documentation on how to do contraints
 var validate = require("mykoop-utils/common/index").validation;
 
 //FIX ME : Commented until we can handle custom validators
@@ -43,4 +44,22 @@ export function validateUpdateUserPassword(obj) {
   }
 
   return validate(obj, updatePasswordConstraint);
+}
+
+var loginConstraint = {
+  email: {
+    presence: {
+      message: "^notFound"
+    },
+    email: {message: "^invalid"}
+  },
+  password: {
+    presence: {
+      message: "^notFound"
+    }
+  }
+}
+
+export function validateLogin(obj){
+  return validate(obj, loginConstraint);
 }
