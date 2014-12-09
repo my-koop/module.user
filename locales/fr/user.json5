@@ -1,9 +1,11 @@
 {
   users: "Utilisateurs",
+  "adminEdit": "Modification de l'utilisateur",
   "adminEditWelcome": "Modification de l'utilisateur #__userId__",
   "myAccountWelcome": "Mon compte",
   "invalidUserId": "Identifiant d'utilisateur invalide",
   "signin": "Veuillez vous connecter",
+  denied: "Refusé",
   "access_denied": "Vous n'êtes pas autorisé à accéder à cette page.",
   "access_denied_login": "Il semble que vous ne soyez pas connecté, il \
 pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",

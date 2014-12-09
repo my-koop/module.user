@@ -3,6 +3,7 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
   /* Public routes. */
   metaDataBuilder.addFrontendRoute({
     idPath: ["public", "accessDenied"],
+    i18nKey: "user::denied",
     component: "AccessDeniedPage",
     name: "denied",
     path: "denied"
@@ -10,6 +11,7 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
 
   metaDataBuilder.addFrontendRoute({
     idPath: ["public", "myaccount"],
+    i18nKey: "user::navbar.myAccount",
     component: "MyAccountPage",
     name: "myAccount",
     path: "myaccount",
@@ -20,6 +22,7 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
 
   metaDataBuilder.addFrontendRoute({
     idPath: ["dashboard", "adminEdit"],
+    i18nKey: "user::adminEdit",
     component: "AdminEditProfile",
     name: "adminEdit",
     path: "user/:id",
@@ -41,6 +44,7 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
 
   metaDataBuilder.addFrontendRoute({
     idPath: ["dashboard", "users"],
+    i18nKey: "user::navbar.users",
     component: "Users",
     name: "users",
     path: "users",
@@ -56,6 +60,7 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
   /* Simple routes. */
   metaDataBuilder.addFrontendRoute({
     idPath: ["simple", "login"],
+    i18nKey: "user::navbar.login",
     component: "LoginPage",
     name: "login",
     path: "login",
@@ -66,6 +71,7 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
 
   metaDataBuilder.addFrontendRoute({
     idPath: ["simple", "register"],
+    i18nKey: "user::navbar.register",
     component: "RegisterPage",
     name: "register",
     path: "register",
@@ -76,6 +82,7 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
 
   metaDataBuilder.addFrontendRoute({
     idPath: ["simple", "passwordrecovery"],
+    i18nKey: "user::passwordRecoveryWelcome",
     component: "PasswordRecoveryPage",
     name: "passwordrecovery",
     path: "passwordrecovery",
