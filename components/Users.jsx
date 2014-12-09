@@ -48,7 +48,7 @@ var Items = React.createClass({
       // FIXME:: Check for bill creation permission
       // FIXME:: user module should not know about the transaction module
       {
-        icon: "credit-card",
+        icon: "book",
         tooltip: {
           text: __("user::createBillForUser"),
           overlayProps: {
