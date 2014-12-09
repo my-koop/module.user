@@ -110,11 +110,11 @@ var ProfileUpdateForm = React.createClass({
           fieldStyles: fieldStyles,
         });
       } else {
-        this.setMessage("Unable to update your profile", isError = true);
+        this.setMessage(__("user::update_profile_failure_message"), isError = true);
       }
     } else {
       //Display Success
-      this.setMessage("Your profile has been updated.",isError = false);
+      this.setMessage(__("user::update_profile_success_message"),isError = false);
     }
   },
 
