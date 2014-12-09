@@ -104,6 +104,7 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
     register: "Inscription",
     login: "Connexion",
     myAccount: "Mon compte",
+    dashboard: "Administration",
     logout: "Déconnexion",
     users: "$t(user::users)"
   },
