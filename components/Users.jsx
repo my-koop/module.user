@@ -89,13 +89,35 @@ var Items = React.createClass({
         },
         isMember: {
           name: __("user::userListHeaderisActive"),
+          customFilterData: function(user) {
+            return __("user::isMember", {context: user.isMember ? undefined : "not"});
+          },
+          cellGenerator: function(user) {
+            var text =  __("user::isMember", {context: user.isMember ? undefined : "not"});
+            return (
+              <span className={user.isMember ? "text-success" : "text-warning"}>
+                {text}
+              </span>
+            );
+          }
         },
         activeUntil: {
           name: __("user::userListHeaderActiveUntil"),
+          customFilterData: function(user) {
+            return user.activeUntil ? formatDate(new Date(user.activeUntil)) : null;
+          },
           cellGenerator: function(user) {
-            return (
-              (user.activeUntil !== null) ? formatDate(new Date(user.activeUntil)) : null
-            );
+            if(user.activeUntil !== null) {
+              var date = new Date(user.activeUntil);
+              var membershipExpired = new Date() > date;
+              var Wrapper = membershipExpired ? React.DOM.strong : React.DOM.span;
+              return (
+                <Wrapper className={membershipExpired && "text-danger"}>
+                  {formatDate(date)}
+                </Wrapper>
+              );
+            }
+            return null;
           }
         },
         actions: {
