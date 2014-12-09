@@ -520,7 +520,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
             return callback(new DatabaseError(err));
           }
           connection.query(
-            "DELETE FROM sessions WHERE data LIKE " + "'%\"id\":" + id + "%'",
+            "DELETE FROM sessions WHERE data LIKE " + "'%\"id\":" + +id + "%'",
             function(err, res) {
               cleanup();
               if(err) {
@@ -625,7 +625,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         }
         if(!params.activate) {
           connection.query(
-            "DELETE FROM sessions WHERE data LIKE " + "'%\"id\":" + params.id + "%'",
+            "DELETE FROM sessions WHERE data LIKE " + "'%\"id\":" + +params.id + "%'",
             function(err, res) {
               if(err) {
                 logger.error(err);
