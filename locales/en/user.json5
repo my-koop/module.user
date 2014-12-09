@@ -104,6 +104,7 @@ the problem, do you want to attempt to",
     register: "Register",
     login: "Login",
     myAccount: "My Account",
+    dashboard: "Administration",
     logout: "Logout",
     users: "$t(user::users)"
   },

@@ -59,6 +59,25 @@ var uiHooks = {
             },
             priority: 100
           },
+          /*FIXME: Find a way to define permissions for this.
+          dashboard: {
+            type: "item",
+            content: {
+              icon: "desktop",
+              text: "user::navbar.dashboard",
+              link: "/dashboard"
+            },
+            priority: 200
+          },
+          */
+          dashboard: {
+            type: "custom",
+            content: {
+              resolve: "component",
+              value: "DashboardMenuItem"
+            },
+            priority: 200
+          },
           logoutseparator: {
             type: "item",
             priority: 950
