@@ -504,21 +504,36 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
   private updatePermissions(
     id:number,
     newPermissions,
-    callback: (err: Error, result: boolean) => void
+    callback: (err: Error, result?: boolean) => void
   ) {
     var self: mkuser.Module =  this;
     this.db.getConnection(function(err, connection, cleanup) {
-        if(err) {
-          return callback(err, null);
-        }
-        connection.query(
-          "UPDATE user SET perms = ? WHERE id = ?",
-          [UserModule.serializePermissions(newPermissions), id],
-          function(err, rows) {
+      if(err) {
+        return callback(err, null);
+      }
+      connection.query(
+        "UPDATE user SET perms = ? WHERE id = ?",
+        [UserModule.serializePermissions(newPermissions), id],
+        function(err, rows) {
+          if(err) {
             cleanup();
-            return callback(err, !err && rows.affectedRows === 1);
-          }//function
-        );//update query
+            return callback(new DatabaseError(err));
+          }
+          connection.query(
+            "DELETE FROM sessions WHERE data LIKE " + "'%\"id\":" + id + "%'",
+            function(err, res) {
+              cleanup();
+              if(err) {
+                logger.error(err);
+              }
+              return callback(
+                err && new DatabaseError(err),
+                !err && rows.affectedRows === 1
+              );
+            }
+          );
+        }//function
+      );//update query
     });//getConnection
   }
 
@@ -607,6 +622,21 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         }
         if(res.affectedRows !== 1) {
           return callback(new ResourceNotFoundError(null, {id: "notFound"}));
+        }
+        if(!params.activate) {
+          connection.query(
+            "DELETE FROM sessions WHERE data LIKE " + "'%\"id\":" + params.id + "%'",
+            function(err, res) {
+              if(err) {
+                logger.error(err);
+              }
+              return callback(
+                err && new DatabaseError(err),
+                {isActive: +params.activate}
+              );
+            }
+          );
+          return;
         }
         callback(null, {isActive: +params.activate});
       }
