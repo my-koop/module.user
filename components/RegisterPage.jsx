@@ -13,7 +13,10 @@ var MKFeedbacki18nMixin = require("mykoop-core/components/Feedbacki18nMixin");
 var actions = require("actions");
 var _ = require("lodash");
 var __ = require("language").__;
+var website = require("website");
 var async = require("async");
+
+var localSession = require("session").local;
 
 var userContributions = require("dynamic-metadata").contributions.user;
 var registerContributions = _(userContributions.registerForm)
@@ -139,9 +142,15 @@ var RegisterPage = React.createClass({
           }, next);
         },
         function notifyContributions(userInfo, res, next) {
+          localSession.user = userInfo;
+
           async.each(self.contributionRefs, function(ref, callback) {
             var onUserCreated = self.refs[ref].onUserCreated;
-            (onUserCreated && onUserCreated(userInfo.id, callback)) || callback();
+            if(onUserCreated) {
+              return onUserCreated(userInfo.id, callback);
+            }
+
+            callback();
           }, function(err) {
             next(null, err);
           });
@@ -162,6 +171,8 @@ var RegisterPage = React.createClass({
         }
       ], function (err) {
         self.pendingRequest = false;
+        website.render();
+
         if(err) {
           if(err.app) {
             self.refs.contribution0.setValidationFeedback(err);

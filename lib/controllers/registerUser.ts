@@ -25,7 +25,20 @@ function registerUser(req: express.Request, res: express.Response) {
     if (err) {
       return res.error(err);
     }
-    res.send(result);
+
+    var initialUserSession: mkuser.LoginResponse = {
+      id: result.id,
+      email: profile.email,
+      perms: {
+        loggedIn: true
+      }
+    };
+
+    var session = req.session;
+
+    session.user = initialUserSession;
+
+    res.send(initialUserSession);
   });
 };
 

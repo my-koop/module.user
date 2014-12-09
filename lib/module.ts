@@ -247,7 +247,6 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     params: mkuser.RegisterNewUser.Params,
     callback: mkuser.RegisterNewUser.Callback
   ) {
-    //FIX ME : Add validation
     var self = this;
     async.waterfall([
       function checkEmail(next) {
