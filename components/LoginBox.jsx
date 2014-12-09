@@ -108,7 +108,7 @@ var LoginBox = React.createClass({
 
   redirect: function(routeName) {
     Router.transitionTo(routeName);
-    self.props.onRedirect && self.props.onRedirect();
+    this.props.onRedirect && this.props.onRedirect();
   },
 
   render: function() {
