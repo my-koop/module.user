@@ -28,6 +28,7 @@ var LoginModal = React.createClass({
 
     return this.transferPropsTo(
       <MKAbstractModal
+        bsSize="small"
         title={LoginTitle}
         modalBody={LoginBody}
         useCloseButtonFooter
