@@ -200,6 +200,7 @@ var ProfileUpdateForm = React.createClass({
             {__("user::form_profile_label_birthdate")}
           </label>,
           <MKDateTimePicker
+            className="form-group"
             id="birthdatePicker"
             value={this.state.profileData.birthdate}
             key="birthdatePicker"

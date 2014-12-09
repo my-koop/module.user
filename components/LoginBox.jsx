@@ -144,11 +144,12 @@ var LoginBox = React.createClass({
             hasFeedback
             valueLink={this.linkState("password")}
           />
+          {/*FIXME: Do later...
           <BSInput
             type="checkbox"
             label={__("user::field_remember_me")}
             checkedLink={this.linkState("rememberMe")}
-          />
+          />*/}
           <BSInput
             block
             type="submit"
