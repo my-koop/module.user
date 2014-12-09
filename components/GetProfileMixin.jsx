@@ -41,16 +41,19 @@ module.exports = {
       },
       function(err, result) {
         var profile = !err && result ? result.userProfile : null;
-        profile.birthdate = profile.birthdate ? new Date(profile.birthdate) : null;
-        if(profile.birthdate && isNaN(profile.birthdate.getTime())) {
-          profile.birthdate = null;
+        if(profile) {
+          profile.birthdate = profile.birthdate ? new Date(profile.birthdate) : null;
+          if(profile.birthdate && isNaN(profile.birthdate.getTime())) {
+            profile.birthdate = null;
+          }
+          if(profile.birthdate) {
+            profile.birthdate.setTime(
+              profile.birthdate.getTime() +
+              new Date(profile.birthdate.getTimezoneOffset()*60*1000).getTime()
+            );
+          }
         }
-        if(profile.birthdate) {
-          profile.birthdate.setTime(
-            profile.birthdate.getTime() +
-            new Date(profile.birthdate.getTimezoneOffset()*60*1000).getTime()
-          );
-        }
+
         self.setState({
           __profileData : profile,
           __idUser: profile ? userId : null,
