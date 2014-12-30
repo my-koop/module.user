@@ -8,16 +8,20 @@ var traverse = require("traverse");
 import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
 var generatePassword = require("password-generator");
-
+import validatePermissions = require("./common/validatePermissions");
 var _ = require("lodash");
 
 var DatabaseError = utils.errors.DatabaseError;
 var ApplicationError = utils.errors.ApplicationError;
+var AccessDeniedError = ApplicationError.AccessDeniedError;
+var ResourceNotFoundError = ApplicationError.ResourceNotFoundError;
 import AuthenticationError = require("./classes/AuthenticationError");
 
 class UserModule extends utils.BaseModule implements mkuser.Module {
   db: mkdatabase.Module;
   communications : mkcommunications.Module;
+  validatePermissions = validatePermissions;
+
   static serializePermissions(permissions) {
     // Assume the passed-in permissions are meant to be mutated.
 
@@ -56,6 +60,16 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     });
 
     return perms;
+  }
+
+  static validateCurrentUser(req, callback) {
+    callback(
+      (
+        !req.session.user ||
+        req.session.user.id !== parseInt(req.param("id"))
+      ) &&
+      new Error("Not current user.")
+    );
   }
 
   init() {
@@ -114,7 +128,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           connection.query(
             "SELECT ?? FROM user WHERE email = ? ",
             [
-              ["id", "salt", "pwdhash", "perms"],
+              ["id", "salt", "pwdhash", "perms", "deactivated"],
               loginInfo.email
             ],
             function (err, rows) {
@@ -131,9 +145,7 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
             //Email is not associated to a user.
             return next(new AuthenticationError(null, "Couldn't find user email."));
           }
-
           userInfo = rows[0];
-
           next();
         },
         function buildHash(next) {
@@ -148,7 +160,13 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
             //Incorrect password
             return next(new AuthenticationError(null, "Password doesn't match."));
           }
-
+          if(userInfo.deactivated) {
+            return next(new AccessDeniedError(
+              null,
+              {email: "denied"},
+              "Account deactivated"
+            ));
+          }
           next();
         },
         function computePermissions(next) {
@@ -188,29 +206,33 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     });//getConnection
   }//tryLogin
 
-  //FIX ME : define id type
-  getProfile(id:number, callback: (err: Error, result: UserProfile) => void) {
-    this.db.getConnection(function(err, connection, cleanup) {
-      if(err) {
-        return callback(err, null);
+  getProfile(
+    params: {id:number},
+    callback: (err: Error, result?: UserProfile) => void
+  ) {
+    this.callWithConnection(this.__getProfile, params, callback);
+  }
+
+  __getProfile(
+    connection: mysql.IConnection,
+    params: {id:number},
+    callback: (err: Error, result?: UserProfile) => void
+  ) {
+    connection.query(
+      "SELECT ?? FROM user WHERE id = ?",
+      [UserProfile.COLUMNS, params.id],
+      function(err, rows) {
+        if (err) {
+          return callback(err, null);
+        }
+
+        if(rows.length === 1) {
+          rows[0].perms = UserModule.deserializePermissions(rows[0].perms);
+          return callback(null, new UserProfile(rows[0]));
+        }
+        callback(new ResourceNotFoundError(null, {id:"notFound"}));
       }
-      connection.query(
-        "SELECT ?? FROM user WHERE id = ?",
-        [UserProfile.COLUMNS,id],
-        function(err, rows) {
-          cleanup();
-          if (err) {
-            return callback(err, null);
-          }
-
-          if(rows.length === 1) {
-            rows[0].perms = UserModule.deserializePermissions(rows[0].perms);
-            return callback(null, new UserProfile(rows[0]));
-          }
-          callback(new Error("No result"), null);
-
-      });
-    });
+    );
   }
 
   registerNewUser(
@@ -225,7 +247,6 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
     params: mkuser.RegisterNewUser.Params,
     callback: mkuser.RegisterNewUser.Callback
   ) {
-    //FIX ME : Add validation
     var self = this;
     async.waterfall([
       function checkEmail(next) {
@@ -290,19 +311,19 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
           function(err, rows) {
             if (err) {
               cleanup();
-              return callback(err, false);
+              return callback(err && new DatabaseError(err), false);
             }
             if(rows[0].isUnique !== 1) {
               //Duplicate email
               cleanup();
-              return callback(new Error("Duplicate Email"), null);
+               return callback(new ApplicationError(null, {email: "duplicate"}),null);
             } else {
               connection.query(
                 "UPDATE user SET ? WHERE id = ? ",
                 [newProfile,id],
                 function(err, rows) {
                   cleanup();
-                  return callback(err, !err && rows.affectedRows === 1);
+                  return callback(err && new DatabaseError(err), rows && rows.affectedRows === 1);
                 }//function
               );//update query
             }
@@ -483,21 +504,36 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
   private updatePermissions(
     id:number,
     newPermissions,
-    callback: (err: Error, result: boolean) => void
+    callback: (err: Error, result?: boolean) => void
   ) {
     var self: mkuser.Module =  this;
     this.db.getConnection(function(err, connection, cleanup) {
-        if(err) {
-          return callback(err, null);
-        }
-        connection.query(
-          "UPDATE user SET perms = ? WHERE id = ?",
-          [UserModule.serializePermissions(newPermissions), id],
-          function(err, rows) {
+      if(err) {
+        return callback(err, null);
+      }
+      connection.query(
+        "UPDATE user SET perms = ? WHERE id = ?",
+        [UserModule.serializePermissions(newPermissions), id],
+        function(err, rows) {
+          if(err) {
             cleanup();
-            return callback(err, !err && rows.affectedRows === 1);
-          }//function
-        );//update query
+            return callback(new DatabaseError(err));
+          }
+          connection.query(
+            "DELETE FROM sessions WHERE data LIKE " + "'%\"id\":" + +id + "%'",
+            function(err, res) {
+              cleanup();
+              if(err) {
+                logger.error(err);
+              }
+              return callback(
+                err && new DatabaseError(err),
+                !err && rows.affectedRows === 1
+              );
+            }
+          );
+        }//function
+      );//update query
     });//getConnection
   }
 
@@ -562,6 +598,49 @@ class UserModule extends utils.BaseModule implements mkuser.Module {
         callback(err && new DatabaseError(err));
       }
     );
+  }
+
+  userActivation(
+    params: mkuser.UserActivation.Params,
+    callback: mkuser.UserActivation.Callback
+  ) {
+    this.callWithConnection(this.__userActivation, params, callback);
+  }
+
+  __userActivation(
+    connection: mysql.IConnection,
+    params: mkuser.UserActivation.Params,
+    callback: mkuser.UserActivation.Callback
+  ) {
+    var activation = params.activate ? null : 1;
+    connection.query(
+      "UPDATE user SET deactivated=? WHERE id=?",
+      [activation, params.id],
+      function(err, res) {
+        if(err) {
+          return callback(new DatabaseError(err));
+        }
+        if(res.affectedRows !== 1) {
+          return callback(new ResourceNotFoundError(null, {id: "notFound"}));
+        }
+        if(!params.activate) {
+          connection.query(
+            "DELETE FROM sessions WHERE data LIKE " + "'%\"id\":" + +params.id + "%'",
+            function(err, res) {
+              if(err) {
+                logger.error(err);
+              }
+              return callback(
+                err && new DatabaseError(err),
+                {isActive: +params.activate}
+              );
+            }
+          );
+          return;
+        }
+        callback(null, {isActive: +params.activate});
+      }
+    )
   }
 }//class
 

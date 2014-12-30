@@ -10,7 +10,7 @@ var PermissionRedirectMixin = {
 
   componentWillMount: function() {
     if (!this.state.userMeetsPermissions) {
-      Router.transitionTo("denied");
+      Router.replaceWith("denied");
     } else {
       delete localSession.attemptedTransition;
     }

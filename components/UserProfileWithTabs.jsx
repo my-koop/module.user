@@ -1,28 +1,34 @@
 var React                = require("react");
 var BSCol                = require("react-bootstrap/Col");
+var BSRow                = require("react-bootstrap/Row");
 var BSTabbedArea         = require("react-bootstrap/TabbedArea");
 var BSTabPane            = require("react-bootstrap/TabPane");
 
 var MKPasswordChangeForm = require("./PasswordChangeForm");
 var MKProfileUpdateForm  = require("./ProfileUpdateForm");
 var MKGetProfileMixin    = require("./GetProfileMixin");
+var MKPermissionMixin    = require("./PermissionMixin");
 var MKAlert              = require("mykoop-core/components/Alert");
 
 var __ = require("language").__;
 var _  = require("lodash");
-var metadata = require("dynamic-metadata");
+var userContributions = require("dynamic-metadata").contributions.user;
 
 function getHash(tab) {
   return tab.hash || /(.*::)?(.*)/.exec(tab.titleKey || "")[2];
 }
 
 var UserProfileWithTabs = React.createClass({
-  mixins: [MKGetProfileMixin],
+  mixins: [
+    MKPermissionMixin,
+    MKGetProfileMixin
+  ],
 
   propTypes: {
     current: React.PropTypes.bool,
     userId: React.PropTypes.number.isRequired,
-    metaPlugins: React.PropTypes.string
+    onProfileRetrieved: React.PropTypes.func,
+    metaContributions: React.PropTypes.string
   },
 
   expectHashEvent: false,
@@ -32,28 +38,33 @@ var UserProfileWithTabs = React.createClass({
       // We are guaranteed to have a string with no more and no less than one
       // hash symbol in it.
       var key = this.getTabIndexFromHash(e.newURL.split("#")[1]);
-      this.setState({
-        selectedTabKey: key
-      });
+      this.selectTab(key);
     }
   },
 
   getInitialState: function() {
-    var tabsInfo = this.getTabsInfo(this.props.metaPlugins);
+    var tabsInfo = this.getTabsInfo(this.props.metaContributions);
     var key = this.getTabIndexFromHash(
       window.location.hash.substr(1),
-      tabsInfo
+      this.getAllowedTabsInfo(tabsInfo)
     );
+
+    var contributionRenderCache = {0: true};
+    contributionRenderCache[key] = true;
 
     return {
       tabsInfo: tabsInfo,
-      selectedTabKey: key
+      selectedTabKey: key,
+      contributionRenderCache: contributionRenderCache
     };
   },
 
   componentWillMount: function () {
     var self = this;
-    this.getRemoteProfile({userId: this.props.userId});
+    this.getRemoteProfile(
+      {userId: this.props.userId},
+      this.props.onProfileRetrieved
+    );
   },
 
   componentDidMount: function() {
@@ -70,8 +81,8 @@ var UserProfileWithTabs = React.createClass({
     if(this.props.userId !== nextProps.userId) {
       this.getRemoteProfile({userId: nextProps.userId});
     }
-    if(this.props.metaPlugins !== nextProps.metaPlugins) {
-      var tabsInfo = this.getTabsInfo(nextProps.metaPlugins);
+    if(this.props.metaContributions !== nextProps.metaContributions) {
+      var tabsInfo = this.getTabsInfo(nextProps.metaContributions);
       this.setState({
         tabsInfo: tabsInfo
       });
@@ -86,36 +97,69 @@ var UserProfileWithTabs = React.createClass({
     );
   },
 
-  getTabsInfo: function(metaPlugins) {
-    var plugins = metaPlugins ?
-      _.toArray(metadata[metaPlugins])
+  getAllowedTabsInfo: function(tabsInfo) {
+    var self = this;
+
+    return _(tabsInfo || this.state.tabsInfo)
+    .filter(function(contribution){
+      var permissions = contribution.permissions;
+
+      if (!permissions) {
+        return true;
+      }
+
+      return self.constructor.validateUserPermissions(permissions);
+    })
+    .value();
+  },
+
+  getTabsInfo: function(metaContributions) {
+    var contributions = metaContributions ?
+      _.toArray(userContributions[metaContributions])
       : [];
-    var tabsInfo = [
+
+    return _([
       {
         component: function() { return MKProfileUpdateForm; },
-        titleKey: "user::myaccount_tab_profile"
-      },
-      {
-        component: function() { return MKPasswordChangeForm; },
-        titleKey: "user::myaccount_tab_password",
-        hash: "password"
+        titleKey: "user::myaccount_tab_profile",
+        priority: 100
       }
-    ].concat(plugins).filter(function(tab) {
-      // avoid bad plugins
+    ])
+    .concat(contributions)
+    .sortBy("priority")
+    .filter(function(tab) {
+      // Ignore bad contributions.
       return tab && _.isString(tab.titleKey);
-    });
-    return tabsInfo;
+    })
+    .value();
   },
 
   getTabIndexFromHash: function(hash, tabsInfo) {
-    tabsInfo = tabsInfo || this.state.tabsInfo;
+    var self = this;
+    tabsInfo = tabsInfo || this.getAllowedTabsInfo();
 
     var key = _.indexOf(
-      _.map(tabsInfo, function(tab) {return getHash(tab);}),
+      _(tabsInfo)
+      .map(function(tab) {return getHash(tab);})
+      .value(),
       hash
     );
 
     return ~key && key || 0;
+  },
+
+  canRenderContribution: function(key) {
+    return !!this.state.contributionRenderCache[key];
+  },
+
+  selectTab: function(key) {
+    var contributionRenderCache = this.state.contributionRenderCache;
+    contributionRenderCache[key] = true;
+
+    this.setState({
+      selectedTabKey: key,
+      contributionRenderCache: contributionRenderCache
+    });
   },
 
   render: function() {
@@ -125,18 +169,23 @@ var UserProfileWithTabs = React.createClass({
     var userId = this.getUserId();
 
     if(userId !== null) {
-      var tabsInfo = this.state.tabsInfo;
-      content = _.map(tabsInfo, function(plugin, index) {
-        var PluginComponent = plugin.component();
+      var tabsInfo = this.getAllowedTabsInfo();
+      content = _(tabsInfo)
+      .map(function(contribution, index) {
+        var contributionComponent = contribution.component();
         return (
-          <BSTabPane key={index} tab={__(plugin.titleKey)}>
-            <BSCol lg={12}>
-              <PluginComponent
-                userId={userId}
-                profile={self.getUserProfile()}
-                current={self.props.current}
-              />
-            </BSCol>
+          <BSTabPane key={index} tab={__(contribution.titleKey)}>
+            <BSRow className="top-margin-10">
+              <BSCol lg={12}>
+                {self.canRenderContribution(index) ?
+                  <contributionComponent
+                    userId={userId}
+                    profile={self.getUserProfile()}
+                    current={self.props.current}
+                  /> : null
+                }
+              </BSCol>
+            </BSRow>
           </BSTabPane>
         );
       });
@@ -150,9 +199,7 @@ var UserProfileWithTabs = React.createClass({
             // This will however leave the # mark and make the page scroll.
             window.location.hash = "";
         }
-        self.setState({
-          selectedTabKey: key
-        });
+        self.selectTab(key);
       }
       content = (
         <BSTabbedArea

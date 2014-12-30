@@ -8,7 +8,7 @@ function updateProfile(req: express.Request, res: express.Response) {
     email          : req.param("email"),
     firstname      : req.param("firstname"),
     lastname       : req.param("lastname"),
-    birthdate      : new Date(req.param("birthdate")),
+    birthdate      : req.param("birthdate"),
     phone          : req.param("phone"),
     origin         : req.param("origin"),
     referral       : req.param("referral"),
@@ -19,8 +19,7 @@ function updateProfile(req: express.Request, res: express.Response) {
 
   this.updateProfile(id,newProfile, function(err, success) {
     if (err) {
-      logger.verbose(err.toString());
-      return res.status(500).send(err.toString());
+      return res.error(err);
     }
 
     res.send({

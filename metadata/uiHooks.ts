@@ -1,4 +1,22 @@
 var uiHooks = {
+  navbar_main_dashboard: {
+    users: {
+      type: "item",
+      content: {
+        icon: "users",
+        text: "user::navbar.users",
+        link: "users"
+      },
+      priority: 100,
+      permissions: {
+        user: {
+          profile: {
+            view: true
+          }
+        }
+      }
+    }
+  },
   navbar_secondary: {
     register: {
       type: "item",
@@ -41,6 +59,25 @@ var uiHooks = {
             },
             priority: 100
           },
+          /*FIXME: Find a way to define permissions for this.
+          dashboard: {
+            type: "item",
+            content: {
+              icon: "desktop",
+              text: "user::navbar.dashboard",
+              link: "/dashboard"
+            },
+            priority: 200
+          },
+          */
+          dashboard: {
+            type: "custom",
+            content: {
+              resolve: "component",
+              value: "DashboardMenuItem"
+            },
+            priority: 200
+          },
           logoutseparator: {
             type: "item",
             priority: 950
@@ -73,12 +110,14 @@ var uiHooks = {
       content: {
         icon: "users",
         text: "user::sidebar.users",
-        link: "home"
+        link: "users"
       },
       priority: 100,
       permissions: {
         user: {
-          view: true
+          profile: {
+            view: true
+          }
         }
       }
     }

@@ -7,12 +7,8 @@ class AuthenticationError extends utils.errors {
     ...args: any[]
   ) {
     super(err, msg, args);
-  }
-
-  serialize(): ErrorInterfaces.SerializeResult {
-    return {
-      context: "authentication"
-    };
+    this.statusCode = 403;
+    this.context = "authentication";
   }
 }
 

@@ -10,7 +10,6 @@ var __                = require("language").__;
 var formatDate        = require("language").formatDate;
 var actions           = require("actions");
 var Router            = require("react-router");
-var getRouteName      = require("mykoop-utils/frontend/getRouteName");
 
 var Items = React.createClass({
   getInitialState: function() {
@@ -43,7 +42,21 @@ var Items = React.createClass({
           }
         },
         callback: function() {
-          Router.transitionTo(getRouteName(["dashboard", "adminEdit"]), {id: user.id});
+          Router.transitionTo("adminEdit", {id: user.id});
+        }
+      },
+      // FIXME:: Check for bill creation permission
+      // FIXME:: user module should not know about the transaction module
+      {
+        icon: "book",
+        tooltip: {
+          text: __("user::createBillForUser"),
+          overlayProps: {
+            placement: "top"
+          }
+        },
+        callback: function() {
+          Router.transitionTo("newBill", {}, {email: user.email});
         }
       }
     ];
@@ -58,7 +71,8 @@ var Items = React.createClass({
         "firstname",
         "lastname",
         "isMember",
-        "activeUntil"
+        "activeUntil",
+        "actions"
       ],
       columns: {
         id: {
@@ -75,18 +89,40 @@ var Items = React.createClass({
         },
         isMember: {
           name: __("user::userListHeaderisActive"),
-        },
-        activeUntil: {
-          name: __("user::userListHeaderActiveUntil"),
+          customFilterData: function(user) {
+            return __("user::isMember", {context: user.isMember ? undefined : "not"});
+          },
           cellGenerator: function(user) {
+            var text =  __("user::isMember", {context: user.isMember ? undefined : "not"});
             return (
-              (user.activeUntil !== null) ? formatDate(new Date(user.activeUntil)) : null
+              <span className={user.isMember ? "text-success" : "text-warning"}>
+                {text}
+              </span>
             );
           }
         },
-
+        activeUntil: {
+          name: __("user::userListHeaderActiveUntil"),
+          customFilterData: function(user) {
+            return user.activeUntil ? formatDate(new Date(user.activeUntil)) : null;
+          },
+          cellGenerator: function(user) {
+            if(user.activeUntil !== null) {
+              var date = new Date(user.activeUntil);
+              var membershipExpired = new Date() > date;
+              var Wrapper = membershipExpired ? React.DOM.strong : React.DOM.span;
+              return (
+                <Wrapper className={membershipExpired && "text-danger"}>
+                  {formatDate(date)}
+                </Wrapper>
+              );
+            }
+            return null;
+          }
+        },
         actions: {
           name: __("actions"),
+          headerProps: {className: "list-mod-min-width-2"},
           isStatic: true,
           cellGenerator: function(user) {
             return (

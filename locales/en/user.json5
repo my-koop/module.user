@@ -1,8 +1,11 @@
 {
+  users: "Users",
+  "adminEdit": "Editing user",
   "adminEditWelcome": "Editing user #__userId__",
   "myAccountWelcome": "My Account",
   "invalidUserId": "User id requested is invalid",
   "signin": "Please sign in",
+  denied: "Denied",
   "access_denied": "You are not allowed to access this page.",
   "access_denied_login": "It would seem you are not logged in, perhaps that is \
 the problem, do you want to attempt to",
@@ -32,10 +35,10 @@ the problem, do you want to attempt to",
   "register_panel_next" : "Next",
   "register_trigger_message" : "Are you sure all the information is valid?",
   "register_submit_button" : "Submit",
-  "form_profile_placeholder_firstname" : "Firstname",
-  "form_profile_label_firstname"  : "Firstname",
-  "form_profile_placeholder_lastname" : "Lastname",
-  "form_profile_label_lastname" : "Lastname",
+  "form_profile_placeholder_firstname" : "First name",
+  "form_profile_label_firstname"  : "First name",
+  "form_profile_placeholder_lastname" : "Last name",
+  "form_profile_label_lastname" : "Last name",
   "form_profile_label_email" : "E-Mail",
   "form_profile_placeholder_email" : "Email",
   "form_profile_label_password" : "Password",
@@ -76,33 +79,39 @@ the problem, do you want to attempt to",
   "passwordRecoverySubmit" : "Reset Password",
   "passwordRecoveryEmailPlaceholder" : "user@domain.com",
   "adminEditIdField" : "User Id",
+  "permissions_super_admin" : "This user has irrevocable access to all permissions.",
   "permissions_edit_instructions": "To remove a permission, leave the checkbox unchecked or the number field empty. If a section is checked, all current and future permissions under it will be granted.",
   "permissions_edit_hasall": "Has all current and future sub-permissions for this section",
   "permissions_edit_maximum": "Maximum value of __maximum__. Larger values will be capped.",
   "permissions_edit_nolimit": "No limit",
   "permissions_edit_update": "Update Permissions",
+  "permissions_edit_success": "You have successfully updated the permissions!",
   "userListWelcome" : "List of all users",
   "userListHeaderId" : "ID",
   "userListHeaderEmail" : "Email",
-  "userListHeaderFirstname" : "Firstname",
-  "userListHeaderLastname" : "Lastname",
+  "userListHeaderFirstname" : "First name",
+  "userListHeaderLastname" : "Last name",
   "userListHeaderisActive" : "Member",
   "userListHeaderActiveUntil" : "Active Until",
   "userListEditButton" : "Edit this user's account",
-  "userNotesAuthor" : "Left by",
-  "userNotesTimePrefix" : "On",
   "userNotesWelcome" : "Notes for this user",
-  "userNotesInputLabel" : "Note message",
-  "userNotesSubmit" : "Add a note",
-  "userNotesShowMore" : "Show more notes",
+
+  deactivateProfile: "Deactivate account",
+  activateProfile: "Activate account",
+  createBillForUser: "Create a new bill for this user",
+  isMember: "Is a member",
+  isMember_not: "Is not a member",
+
   navbar: {
     register: "Register",
     login: "Login",
     myAccount: "My Account",
-    logout: "Logout"
+    dashboard: "Administration",
+    logout: "Logout",
+    users: "$t(user::users)"
   },
   sidebar: {
-    users: "Users"
+    users: "$t(user::users)"
   },
 
   pwdRecovery: {
@@ -112,4 +121,56 @@ the problem, do you want to attempt to",
       }
     }
   },
+  //Update profile validation
+  validationEmailPresence : "Email field must not be left empty",
+  validationEmailValid: "The email your entered doesn't seem to be valid",
+  validationFirstnamePresence : "First name field must not be left empty",
+  validationLastnamePresence : "Last name field must not be left empty",
+  validationPhoneLength : "Phone number can not exceed 25 characters",
+  validationOriginValue : "Origin selection is invalid",
+  validationUsageNoteLength : "Usage note must not exceed 125 characters",
+  validationUsageFrequencyValue : "Usage frequency selection is invalid",
+  validationReferralValue : "Referral selection is invalid",
+  validationReferralSpecifyLength : "Referral specification must not exceed 125 characters",
+
+  errors: {
+    app: {
+      firstName: {
+        notFound: "First name cannot be left empty."
+      },
+      lastName: {
+        notFound: "Last name cannot be left empty."
+      },
+      email: {
+        notFound: "Email cannot be left empty.",
+        duplicate: "This email is already used.",
+        invalid: "Email format is invalid."
+      },
+      password: {
+        notFound: "Password cannot be left empty."
+      },
+      confpassword: {
+        notFound: "Password confirmation cannot be left empty.",
+        notMatch: "Passwords dont match."
+      },
+      phone: {
+        maximumLength: "Phone number must not exceed 25 characters."
+      },
+      referral: {
+        invalidSelection : "Referral selection is invalid."
+      },
+      usageFrequency: {
+        invalidSelection : "Usage Frequency is invalid."
+      },
+      referralSpecify: {
+        maximumLength: "Referral specification must not exceed 128 characters."
+      },
+      origin: {
+        invalidSelection: "Origin selection is invalid."
+      },
+      usageNote: {
+        maximumLength: "Usage description must not exceed 128 characters"
+      }
+    }
+  }
 }

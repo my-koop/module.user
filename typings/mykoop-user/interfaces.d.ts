@@ -4,7 +4,7 @@ declare module mkuser {
       email: string;
       firstname: string;
       lastname: string;
-      birthdate?: Date;
+      birthdate?: string;
       phone?: string;
       origin?: string;
       usageFrequency?: string;
@@ -30,6 +30,19 @@ declare module mkuser {
     }
     export interface Callback {
       (err: Error, result?: CallbackResult): void;
+    }
+  }
+
+  module UserActivation {
+    export interface Params {
+      id: number;
+      activate: number;
+    }
+    export interface Result {
+      isActive: number;
+    }
+    export interface Callback {
+      (err: Error, result?: Result): void;
     }
   }
 }

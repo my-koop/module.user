@@ -1,8 +1,11 @@
 {
+  users: "Utilisateurs",
+  "adminEdit": "Modification de l'utilisateur",
   "adminEditWelcome": "Modification de l'utilisateur #__userId__",
   "myAccountWelcome": "Mon compte",
   "invalidUserId": "Identifiant d'utilisateur invalide",
   "signin": "Veuillez vous connecter",
+  denied: "Refusé",
   "access_denied": "Vous n'êtes pas autorisé à accéder à cette page.",
   "access_denied_login": "Il semble que vous ne soyez pas connecté, il \
 pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
@@ -76,12 +79,14 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
   "passwordRecoverySubmit" : "Générer un nouveau mot de passe",
   "passwordRecoveryEmailPlaceholder" : "utilisateur@domaine.com",
   "adminEditIdField" : "Numéro d'utilisateur",
-  "permissions_edit_instructions": "Pour retirer un privilège, laisser la case décochée ou le champ vide. Si la case d'une section est cochée, tous les privilèges actuels et futurs de cette section seront accordés à l'utilisteur.",
+  "permissions_super_admin" : "Cet utilisateur possède tous les privilèges et ce de façon irrévocable.",
+  "permissions_edit_instructions": "Pour retirer un privilège, laisser la case décochée ou le champ vide. Si la case d'une section est cochée, tous les privilèges actuels et futurs de cette section seront accordés à l'utilisateur.",
   "permissions_edit_hasall": "Possède tous les privilèges actuels et futurs sous cette catégorie",
   "permissions_edit_maximum": "Valeur maximale de __maximum__. Les plus grandes valeurs seront ignorées.",
   "permissions_edit_nolimit": "Aucune limite",
   "permissions_edit_update": "Mettre à jour",
-  "userListWelcome" : "Liste des usagers",
+  "permissions_edit_success": "Vous avez mis les privilèges à jour avec succès!",
+  "userListWelcome" : "Liste des utilisateurs",
   "userListHeaderId" : "ID",
   "userListHeaderEmail" : "Courriel",
   "userListHeaderFirstname" : "Prénom",
@@ -89,20 +94,24 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
   "userListHeaderisActive" : "Membre",
   "userListHeaderActiveUntil" : "Expiration",
   "userListEditButton" : "Modifier le compte de cet usager",
-  "userNotesAuthor" : "Écrit par",
-  "userNotesTimePrefix" : "Le",
   "userNotesWelcome" : "Notes sur cet usager",
-  "userNotesInputLabel" : "Message de la note",
-  "userNotesSubmit" : "Ajouter une note",
-  "userNotesShowMore" : "Montrer plus de notes",
+
+  deactivateProfile: "Désactiver le compte",
+  activateProfile: "Activer le compte",
+  createBillForUser: "Créer une nouvelle facture pour cet utilisateur",
+  isMember: "Est membre",
+  isMember_not: "N'est pas membre",
+
   navbar: {
     register: "Inscription",
     login: "Connexion",
     myAccount: "Mon compte",
-    logout: "Déconnexion"
+    dashboard: "Administration",
+    logout: "Déconnexion",
+    users: "$t(user::users)"
   },
   sidebar: {
-    users: "Utilisateurs"
+    users: "$t(user::users)"
   },
 
   pwdRecovery: {
@@ -112,4 +121,57 @@ pourrait s'agir de la cause de cette erreur, désirez-vous essayer de",
       }
     }
   },
+
+  //Update profile validation
+  validationEmailPresence : "Le champs du courriel ne doit pas être vide.",
+  validationEmailValid: "Le courriel entré ne semble pas valide",
+  validationFirstnamePresence : "Le champs du prénom ne doit pas être vide.",
+  validationLastnamePresence : "Le champs du nom de famille ne doit pas être vide.",
+  validationPhoneLength : "Le numéro de téléphone ne doit  pas dépasser 25 charactères",
+  validationOriginValue : "La sélection de votre origine est invalide",
+  validationUsageNoteLength : "La description de votre usage de la bicyclette ne doit pas dépasser 125 charactères",
+  validationUsageFrequencyValue : "La sélection pour la fréquence d'utilisation est invalide.",
+  validationReferralValue : "La sélection pour la référence est invalide",
+  validationReferralSpecifyLength : "La précision sur la référence ne doit pas dépasser 125 charactères",
+
+  errors: {
+    app: {
+      firstname: {
+        notFound: "Le prénom ne peut être vide."
+      },
+      lastname: {
+        notFound: "Le nom de famille ne peut être vide."
+      },
+      email: {
+        notFound: "Le courriel ne peut être vide.",
+        duplicate: "Ce courriel est déjà utilisé.",
+        invalid: "Le format du courriel est invalide."
+      },
+      password: {
+        notFound: "Le mot de passe ne peut être vide."
+      },
+      confpassword: {
+        notFound: "La confirmation du mot de passe ne peut être vide.",
+        notMatch: "La confirmation du mot de passe doit correspondre au mot de passe."
+      },
+      phone: {
+        maximumLength: "Le numéro de téléphone ne doit pas excéder 25 charactères"
+      },
+      referral: {
+        invalidSelection : "La référence choisie est invalide."
+      },
+      usageFrequency: {
+        invalidSelection : "La fréquence d'usage choisie est invalide."
+      },
+      referralSpecify: {
+        maximumLength: "La spécification de la référence ne doit pas excéder 128 charactères"
+      },
+      origin: {
+        invalidSelection: "L'origine choisie est invalide"
+      },
+      usageNote: {
+        maximumLength: "La description de votre utilisation du vélo ne doit pas excéder 128 charactères"
+      },
+    }
+  }
 }

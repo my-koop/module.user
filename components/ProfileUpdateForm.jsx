@@ -1,13 +1,18 @@
-﻿var React       = require("react");
-var BSInput     = require("react-bootstrap/Input");
-var UserProfile = require("../lib/classes/UserProfile");
-var ajax        = require("ajax");
-var actions     = require("actions");
-var BSAlert     = require("react-bootstrap/Alert");
-var __          = require("language").__;
-var formatDate  = require("language").formatDate;
+﻿var React = require("react");
 
-var MKPermissionSet = require("./PermissionSet");
+var BSInput = require("react-bootstrap/Input");
+var BSCol   = require("react-bootstrap/Col");
+
+var UserProfile = require("../lib/classes/UserProfile");
+
+var MKAlert          = require("mykoop-core/components/Alert");
+var MKDateTimePicker = require("mykoop-core/components/DateTimePicker");
+var MKPermissionSet  = require("./PermissionSet");
+
+var formatDate  = require("language").formatDate;
+var actions     = require("actions");
+var _           = require("lodash");
+var __          = require("language").__;
 
 var ProfileUpdateForm = React.createClass({
 
@@ -17,7 +22,7 @@ var ProfileUpdateForm = React.createClass({
       email: React.PropTypes.string.isRequired,
       firstname: React.PropTypes.string,
       lastname: React.PropTypes.string,
-      birthdate: React.PropTypes.string,
+      birthdate: React.PropTypes.Date,
       phone: React.PropTypes.string,
       origin: React.PropTypes.string,
       referral: React.PropTypes.string,
@@ -38,13 +43,13 @@ var ProfileUpdateForm = React.createClass({
   getInitialState: function() {
     return {
       profileData: this.props.profile,
+      fieldStyles: {},
       message: null,
-      messageStyle: null,
-      emailStyle: null,
+      messageStyle: null
     }
   },
 
-  componentWillReceiveProps: function(nextProps){
+  componentWillReceiveProps: function(nextProps) {
     if(nextProps.userId !== this.props.userId) {
       this.setState({
         profileData: nextProps.profile
@@ -65,7 +70,7 @@ var ProfileUpdateForm = React.createClass({
     }
   },
 
-  setMessage: function(Message, isError){
+  setMessage: function(Message, isError) {
     var style = (isError) ? "warning" : "success";
     this.setState({
       message: Message,
@@ -73,7 +78,47 @@ var ProfileUpdateForm = React.createClass({
     })
   },
 
-  onSubmit: function(e){
+  processValidationErrors: function(errors) {
+    var fieldStyles = {};
+    var message = _.map(errors, function(errorString, i) {
+      var split = errorString.split(":");
+      fieldStyles[split[0]] = "error";
+      return (
+        <p key={i}>
+          { __("user::" + split[1])}
+        </p>
+        ) ;
+    });
+    this.setMessage(message, isError = true);
+    this.setState({
+      fieldStyles: fieldStyles
+    });
+  },
+
+  requestFeedback: function(err) {
+    this.setState({
+      fieldStyles: {}
+    });
+    if(err) {
+      if(err.context === "validation") {
+          this.processValidationErrors(err.validation);
+      } else if(err.context == "application" && err.app.email == "duplicate") {
+        this.setMessage(__("errors::error_duplicate_email") + this.state.profileData.email, isError = true);
+        var fieldStyles = {};
+        fieldStyles.email = "error";
+        this.setState({
+          fieldStyles: fieldStyles,
+        });
+      } else {
+        this.setMessage(__("user::update_profile_failure_message"), isError = true);
+      }
+    } else {
+      //Display Success
+      this.setMessage(__("user::update_profile_success_message"),isError = false);
+    }
+  },
+
+  onSubmit: function(e) {
     e.preventDefault();
     var self = this;
     //Reset displayed message
@@ -99,24 +144,8 @@ var ProfileUpdateForm = React.createClass({
           referral:        profileData.referral,
           referralSpecify: profileData.referralSpecify
         }
-      },function(err, result){
-          if(err || !result.updateSuccess){
-            console.log(err);
-            if(err.message == "Error: Duplicate Email"){
-              self.setMessage(__("errors::error_duplicate_email") + profileData.email, isError = true);
-              self.setState({
-                emailStyle: "warning",
-              });
-            } else {
-              self.setMessage(__("user::update_profile_failure_message"), isError = true);
-            }
-          } else {
-            //Display Success
-            self.setMessage(__("user::update_profile_success_message"), isError = false);
-            self.setState({
-              emailStyle: null
-            });
-          }
+      },function(err, result) {
+          self.requestFeedback(err);
       }
     );
   },
@@ -125,55 +154,70 @@ var ProfileUpdateForm = React.createClass({
   render: function() {
     var self = this;
     return (
-      <div>
-        {this.state.message ?
-          <BSAlert bsStyle={this.state.messageStyle}>
-            {this.state.message}
-          </BSAlert>
-        : null}
+      <BSCol md={6}>
+        <MKAlert bsStyle={this.state.messageStyle} key="feedback">
+          {this.state.message}
+        </MKAlert>
         <form onSubmit={this.onSubmit}>
           <BSInput
             type="email"
             label={__("user::form_profile_label_email")}
             placeholder={__("user::form_profile_placeholder_email")}
-            ref="email"
+            key="email"
             autofocus
-            bsStyle={this.state.emailStyle}
+            bsStyle={this.state.fieldStyles.email || null}
+            hasFeedback={!!this.state.fieldStyles.email}
             valueLink = {this.makeValueLink("email")}
           />
            <BSInput
             type="text"
             label={__("user::form_profile_label_firstname")}
             placeholder={__("user::form_profile_placeholder_firstname")}
-            ref="firstname"
+            key="firstname"
+            bsStyle={this.state.fieldStyles.firstname}
+            hasFeedback={!!this.state.fieldStyles.firstname}
             valueLink = {this.makeValueLink("firstname")}
           />
           <BSInput
             type="text"
             label={__("user::form_profile_label_lastname")}
             placeholder={__("user::form_profile_placeholder_lastname")}
-            ref="lastname"
+            key="lastname"
+            bsStyle={this.state.fieldStyles.lastname}
+            hasFeedback={!!this.state.fieldStyles.lastname}
             valueLink = {this.makeValueLink("lastname")}
           />
           <BSInput
             type="text"
             label={__("user::form_profile_label_phone")}
             placeholder={__("user::form_profile_placeholder_phone")}
-            ref="phone"
+            key="phone"
+            bsStyle={this.state.fieldStyles.phone}
+            hasFeedback={!!this.state.fieldStyles.phone}
             valueLink = {this.makeValueLink("phone")}
           />
-          <BSInput
-            type="text"
-            label={__("user::form_profile_label_birthdate")}
-            placeholder={__("user::form_profile_placeholder_birthdate")}
-            valueLink = {this.makeValueLink("birthdate")}
-            ref="birthdate"
+          <label htmlFor="birthdatePicker" key="birthdateLabel">
+            {__("user::form_profile_label_birthdate")}
+          </label>,
+          <MKDateTimePicker
+            className="form-group"
+            id="birthdatePicker"
+            value={this.state.profileData.birthdate}
+            key="birthdatePicker"
+            time={false}
+            format="M/d/yyyy"
+            onChange={function(date, str) {
+              self.handleFieldChange("birthdate", date);
+            }}
           />
           <BSInput
             type="select"
             defaultValue="visit"
+            key="referral"
             label={__("user::form_profile_label_visit_select")}
             valueLink={this.makeValueLink("referral")}
+            bsStyle={this.state.fieldStyles.referral}
+            hasFeedback={!!this.state.fieldStyles.referral}
           >
             <option value="visit">{__("user::form_profile_select_option_visit")}</option>
             <option value="friend">{__("user::form_profile_select_option_friend")}</option>
@@ -183,7 +227,10 @@ var ProfileUpdateForm = React.createClass({
           {this.state.profileData.referral === "other" ?
             <BSInput
               type="text"
+              key="referralSpecify"
               label={__("user::form_profile_label_referralSpecify")}
+              bsStyle={this.state.fieldStyles.referralSpecify}
+              hasFeedback={!!this.state.fieldStyles.referralSpecify}
               valueLink={this.makeValueLink("referralSpecify")}
             />
           : null
@@ -192,8 +239,10 @@ var ProfileUpdateForm = React.createClass({
             type="select"
             defaultValue="everyday"
             label={__("user::form_profile_label_usage_select")}
-            ref="usage"
-            valueLink = {this.makeValueLink("usage")}
+            key="usage"
+            valueLink = {this.makeValueLink("usageFrequency")}
+            bsStyle={this.state.fieldStyles.usageFrequency}
+            hasFeedback={!!this.state.fieldStyles.usageFrequency}
           >
             <option value="everyday">{__("user::form_profile_select_option_everyday")}</option>
             <option value="fewWeek">{__("user::form_profile_select_option_fewWeek")}</option>
@@ -205,8 +254,10 @@ var ProfileUpdateForm = React.createClass({
             type="select"
             defaultValue="udem"
             label={__("user::form_profile_label_origin_select")}
-            ref="origin"
+            key="origin"
             valueLink = {this.makeValueLink("origin")}
+            bsStyle={this.state.fieldStyles.origin}
+            hasFeedback={!!this.state.fieldStyles.origin}
           >
             <option value="udem">{__("user::form_profile_select_option_udem")}</option>
             <option value="brebeuf">{__("user::form_profile_select_option_brebeuf")}</option>
@@ -216,15 +267,19 @@ var ProfileUpdateForm = React.createClass({
             type="text"
             label={__("user::form_profile_label_usageNote")}
             placeholder={__("user::form_profile_placeholder_usageNote")}
-            ref="usageNote"
+            key="usageNote"
             valueLink = {this.makeValueLink("usageNote")}
+            bsStyle={this.state.fieldStyles.usageNote}
+            hasFeedback={!!this.state.fieldStyles.usageNote}
           />
           <BSInput
             type="submit"
-            bsStyle="primary"
+            className="pull-right"
+            key="submit"
+            bsStyle="success"
             value={__("user::update_profile_submit_button")} />
         </form>
-      </div>
+      </BSCol>
     );
   }
 });

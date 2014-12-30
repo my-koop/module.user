@@ -7,6 +7,7 @@ var MKIcon = require("mykoop-core/components/Icon");
 var MKLoginModal = require("./LoginModal");
 
 var __ = require("language").__;
+var _ = require("lodash");
 
 var UserLoginNavItem = React.createClass({
   onMenuLogin: function() {
@@ -14,8 +15,17 @@ var UserLoginNavItem = React.createClass({
   },
 
   render: function() {
+    var others = _.omit(this.props,
+      "active",
+      "activeHref",
+      "activeKey",
+      "key",
+      "navItem",
+      "ref",
+      "onSelect"
+    );
     return (
-      <BSNavItem onSelect={this.onMenuLogin} key="userlogin">
+      <BSNavItem onSelect={this.onMenuLogin} key="userlogin" {...others}>
         <BSModalTrigger
           ref="loginmodal"
           modal={<MKLoginModal />}

@@ -8,22 +8,27 @@ var BSAccordion = require("react-bootstrap/Accordion");
 
 var MKAlert               = require("mykoop-core/components/Alert");
 var MKConfirmationTrigger = require("mykoop-core/components/ConfirmationTrigger");
+var MKFeedbacki18nMixin = require("mykoop-core/components/Feedbacki18nMixin");
 
 var actions = require("actions");
 var _ = require("lodash");
 var __ = require("language").__;
+var website = require("website");
 var async = require("async");
 
-var userMeta = require("dynamic-metadata").user;
-var userContributions = userMeta && userMeta.contributions;
-var registerContributions = _.toArray(
-  userContributions && userContributions.registerForm
-).filter(function(contribution) {
+var localSession = require("session").local;
+
+var userContributions = require("dynamic-metadata").contributions.user;
+var registerContributions = _(userContributions.registerForm)
+.filter(function(contribution) {
   return contribution.titleKey && _.isFunction(contribution.component);
-}).map(function(contribution) {
+})
+.sortBy("priority")
+.map(function(contribution) {
   contribution.component = contribution.component();
   return contribution;
-});
+})
+.value();
 
 var MKRegisterAccountInfo = require("./RegisterAccountInfo");
 var MKRegisterOptionalInfo = require("./RegisterOptionalInfo");
@@ -41,7 +46,7 @@ registerContributions = [
 var totalPanels = registerContributions.length;
 
 var RegisterPage = React.createClass({
-  mixins: [React.addons.LinkedStateMixin],
+  mixins: [React.addons.LinkedStateMixin, MKFeedbacki18nMixin],
 
   getInitialState: function() {
     return {
@@ -61,24 +66,6 @@ var RegisterPage = React.createClass({
   // Checks if we received a positive response from the server
   hasSentSuccessfully: function() {
     return this.state.success === 1;
-  },
-
-  // Get message to display in the form (null = no message)
-  getMessage: function() {
-    switch(this.state.success) {
-    case 1: return __("user::register_success_message");
-    case 2: return __("user::register_failure_message");
-    default: return null;
-    }
-  },
-
-  // Get style to use for message
-  getMessageStyle: function() {
-    switch(this.state.success) {
-    case 1: return "success";
-    case 2: return "danger";
-    default: return null;
-    }
   },
 
   // Captures shift+tab & tab key to go up or down in the accordion
@@ -137,6 +124,7 @@ var RegisterPage = React.createClass({
 
   submitForm: function() {
     var self = this;
+    this.clearFeedback();
     // This assumes that the first 2 panels are ours
     var data = _.merge(
       this.refs.contribution0.getAccountInfo(),
@@ -146,14 +134,23 @@ var RegisterPage = React.createClass({
       async.waterfall([
         function registerUser(next) {
           actions.user.register({
-            i18nErrors: {},
+            i18nErrors: {
+              prefix: "user::errors",
+              keys: ["app"]
+            },
             data: data
           }, next);
         },
         function notifyContributions(userInfo, res, next) {
+          localSession.user = userInfo;
+
           async.each(self.contributionRefs, function(ref, callback) {
             var onUserCreated = self.refs[ref].onUserCreated;
-            (onUserCreated && onUserCreated(userInfo.id, callback)) || callback();
+            if(onUserCreated) {
+              return onUserCreated(userInfo.id, callback);
+            }
+
+            callback();
           }, function(err) {
             next(null, err);
           });
@@ -174,12 +171,19 @@ var RegisterPage = React.createClass({
         }
       ], function (err) {
         self.pendingRequest = false;
+        website.render();
+
         if(err) {
-          //FIXME:: handle validation data to notify user
+          if(err.app) {
+            self.refs.contribution0.setValidationFeedback(err);
+            self.refs.contribution1.setValidationFeedback(err);
+          }
+          self.setFeedback(err.i18n, "danger");
           return self.setState({
             success: 0
           });
         }
+        self.setFeedback({key: "user::register_success_message"}, "success");
       });
     }
   },
@@ -219,9 +223,7 @@ var RegisterPage = React.createClass({
 
     return (
       <BSPanel header={__("user::register_panel_header")} >
-        <MKAlert bsStyle={this.getMessageStyle()}>
-          {this.getMessage()}
-        </MKAlert>
+        {this.renderFeedback()}
         <BSAccordion activeKey={this.state.key} onSelect={this.handleSelect}>
           {extraPanels}
         </BSAccordion>

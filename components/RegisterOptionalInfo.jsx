@@ -2,9 +2,10 @@ var React  = require("react");
 
 var BSInput = require("react-bootstrap/Input");
 
+var MKDateTimePicker = require("mykoop-core/components/DateTimePicker");
 var __ = require("language").__;
 
-var RegisterAccountInfo = React.createClass({
+var RegisterOptionalInfo = React.createClass({
   mixins: [React.addons.LinkedStateMixin],
 
   propTypes: {
@@ -12,9 +13,21 @@ var RegisterAccountInfo = React.createClass({
     checkGoingDownKey: React.PropTypes.func.isRequired,
   },
 
+  stateKeys: [
+    "phone",
+    "birthdate",
+    "referral",
+    "referralSpecify",
+    "usageFrequency",
+    "origine",
+    "usageNote"
+  ],
+
   // Initialize state to avoid crashes if nothing is entered
   getInitialState: function() {
-    return {};
+    return {
+      fieldStates: {},
+    };
   },
 
   getOptionalInfo: function() {
@@ -23,14 +36,25 @@ var RegisterAccountInfo = React.createClass({
       birthdate: this.state.birthdate,
       referral: this.state.referral,
       referralSpecify: this.state.referralSpecify,
-      usage: this.state.usage,
-      origin: this.state.origin,
+      usageFrequency: this.state.usageFrequency,
+      origine: this.state.origine,
       usageNote: this.state.usageNote
     };
   },
 
   onEnterFocus: function() {
     this.refs.phone.getInputDOMNode().focus();
+  },
+
+  setValidationFeedback: function(errors) {
+    //Field highlighting
+    var fieldStates = {};
+    _.intersection(this.stateKeys, _.keys(errors.app)).forEach(function(key){
+      fieldStates[key] = "error";
+    })
+    this.setState({
+      fieldStates: fieldStates,
+    });
   },
 
   render: function() {
@@ -44,18 +68,30 @@ var RegisterAccountInfo = React.createClass({
           placeholder={__("user::form_profile_placeholder_phone")}
           ref="phone"
           valueLink = {this.linkState("phone")}
+          bsStyle={this.state.fieldStates.phone || null}
+          hasFeedback={!!this.state.fieldStates.phone}
           onKeyDown={this.props.checkGoingUpKey}
         />
-        <BSInput
-          type="text"
-          label={__("user::form_profile_label_birthdate")}
-          placeholder={__("user::form_profile_placeholder_birthdate")}
-          valueLink = {this.linkState("birthdate")}
+        <label htmlFor="birthdatePicker">
+          {__("user::form_profile_label_birthdate")}
+        </label>,
+        <MKDateTimePicker
+          id="birthdatePicker"
+          value={this.state.birthdate}
+          time={false}
+          format="M/d/yyyy"
+          onChange={function(date, str) {
+            self.setState({
+              birthdate: date
+            });
+          }}
         />
         <BSInput
           type="select"
           defaultValue="visit"
           label={__("user::form_profile_label_visit_select")}
+          bsStyle={this.state.fieldStates.referral || null}
+          hasFeedback={!!this.state.fieldStates.referral}
           valueLink={this.linkState("referral")}
         >
           <option value="visit">{__("user::form_profile_select_option_visit")}</option>
@@ -67,6 +103,8 @@ var RegisterAccountInfo = React.createClass({
           <BSInput
             type="text"
             label={__("user::form_profile_label_referralSpecify")}
+            bsStyle={this.state.fieldStates.referralSpecify || null}
+            hasFeedback={!!this.state.fieldStates.referralSpecify}
             valueLink={this.linkState("referralSpecify")}
           />
         : null
@@ -75,7 +113,9 @@ var RegisterAccountInfo = React.createClass({
           type="select"
           defaultValue="everyday"
           label={__("user::form_profile_label_usage_select")}
-          valueLink = {this.linkState("usage")}
+          valueLink = {this.linkState("usageFrequency")}
+          bsStyle={this.state.fieldStates.usageFrequency || null}
+          hasFeedback={!!this.state.fieldStates.usageFrequency}
         >
           <option value="everyday">{__("user::form_profile_select_option_everyday")}</option>
           <option value="fewWeek">{__("user::form_profile_select_option_fewWeek")}</option>
@@ -88,6 +128,8 @@ var RegisterAccountInfo = React.createClass({
           defaultValue="udem"
           label={__("user::form_profile_label_origin_select")}
           valueLink = {this.linkState("origin")}
+          bsStyle={this.state.fieldStates.origine || null}
+          hasFeedback={!!this.state.fieldStates.origine}
         >
           <option value="udem">{__("user::form_profile_select_option_udem")}</option>
           <option value="brebeuf">{__("user::form_profile_select_option_brebeuf")}</option>
@@ -99,10 +141,12 @@ var RegisterAccountInfo = React.createClass({
           placeholder={__("user::form_profile_placeholder_usageNote")}
           onKeyDown={this.props.checkGoingDownKey}
           valueLink = {this.linkState("usageNote")}
+          bsStyle={this.state.fieldStates.usageNote || null}
+          hasFeedback={!!this.state.fieldStates.usageNote}
         />
      </div>
     );
   }
 });
 
-module.exports = RegisterAccountInfo;
+module.exports = RegisterOptionalInfo;

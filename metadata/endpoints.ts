@@ -20,8 +20,16 @@ var endpoints = {
       },
       updateProfile: {
         path: "/users/current",
-        method: "put"
+        method: "put",
+        validation: {
+          resolve: "validation",
+          value: "validateUpdateProfile"
+        }
       }
+    },
+    activation: {
+      path: "/users/:id/activation",
+      method: "put"
     },
     updatePassword: {
       path: "/users/:id/password",
@@ -33,7 +41,11 @@ var endpoints = {
     },
     updateProfile: {
       path: "/users/:id",
-      method: "put"
+      method: "put",
+      validation: {
+        resolve: "validation",
+        value: "validateUpdateProfile"
+      }
     },
     updatePermissions: {
       path: "/users/:id/permissions",
@@ -41,7 +53,11 @@ var endpoints = {
     },
     login: {
       path: "/users/login",
-      method: "post"
+      method: "post",
+      validation: {
+        resolve: "validation",
+        value: "validateLogin"
+      }
     },
     getPublicProfile: {
       path: "/users/:id",
@@ -57,7 +73,11 @@ var endpoints = {
     },
     register: {
       path: "/users",
-      method: "post"
+      method: "post",
+      validation: {
+        resolve: "validation",
+        value: "validateRegister"
+      }
     },
     emailExists: {
       path: "/users/email/isValid",

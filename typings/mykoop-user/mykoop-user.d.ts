@@ -18,7 +18,7 @@ declare module mkuser {
     email          ?: string;
     firstname      ?: string;
     lastname       ?: string;
-    birthdate      ?: Date;
+    birthdate      ?: string;
     phone          ?: string;
     origin         ?: string;
     usageFrequency ?: string;
@@ -29,6 +29,12 @@ declare module mkuser {
   }
 
   export interface Module extends mykoop.IModule {
+    /* Documentation for static methods.
+    static serializePermissions(permissions: any): string;
+    static deserializePermissions(permissions: string): any;
+    static validateCurrentUser(req: Express.Request, callback: Function): void;
+    */
+    validatePermissions(userPermissions, requiredPermissions): boolean;
     userExists(
       params: User.IdExists.Params,
       callback: User.IdExists.Callback
@@ -42,7 +48,16 @@ declare module mkuser {
       loginInfo: UserInterfaces.LoginRequestData,
       callback: (err: Error, result?: LoginResponse
     ) => void): void;
-    getProfile(id: number, callback: (err: Error, result: UserProfile) => void): void;
+
+    getProfile(
+      params: {id: number},
+      callback: (err: Error, result: UserProfile) => void
+    );
+    __getProfile(
+      connection: mysql.IConnection,
+      params: {id: number},
+      callback: (err: Error, result: UserProfile) => void
+    );
     registerNewUser(
       profile: RegisterNewUser.Params,
       callback: RegisterNewUser.Callback
@@ -70,7 +85,16 @@ declare module mkuser {
     __getNotesForId(connection: mysql.IConnection, params, callback);
     newNote(params: dbQueryStruct.NewNote, callback: (err: Error) => void);
     __newNote(connection: mysql.IConnection, params: dbQueryStruct.NewNote, callback);
-  }
 
+    userActivation(
+      params: mkuser.UserActivation.Params,
+      callback: mkuser.UserActivation.Callback
+    );
+    __userActivation(
+      connection: mysql.IConnection,
+      params: mkuser.UserActivation.Params,
+      callback: mkuser.UserActivation.Callback
+    );
+  }
 }
 

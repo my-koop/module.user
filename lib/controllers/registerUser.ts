@@ -12,21 +12,33 @@ function registerUser(req: express.Request, res: express.Response) {
     lastname:       req.param("lastName"),
     phone:          req.param("phone",null),
     origin:         req.param("origin", null),
-    birthday:       req.param("birthdate",null),
+    birthdate:      req.param("birthdate",null),
     usageNote:      req.param("usageNote"),
     usageFrequency: req.param("usage",null),
     referral:       req.param("referral",null),
-    // FIXME: Handle referral specify
+    referralSpecify:req.param("referralSpecify",null),
     passwordToHash: req.param("password"),
     confPassword:   req.param("confpassword")
   };
-
 
   self.registerNewUser(profile, function(err, result) {
     if (err) {
       return res.error(err);
     }
-    res.send(result);
+
+    var initialUserSession: mkuser.LoginResponse = {
+      id: result.id,
+      email: profile.email,
+      perms: {
+        loggedIn: true
+      }
+    };
+
+    var session = req.session;
+
+    session.user = initialUserSession;
+
+    res.send(initialUserSession);
   });
 };
 

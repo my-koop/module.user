@@ -33,20 +33,32 @@ var PermissionMixin = {
         }
       }
 
+      if (__DEV__) {
+        if (!hasEnoughPermissions) {
+          console.info(
+            "Invalid user permissions, tried to validate",
+            permissions,
+            "against",
+            localSession.user ? localSession.user.perms : undefined,
+            localSession.user ? "(User #" + localSession.user.id + ")" : ""
+          );
+        }
+      }
+
       return hasEnoughPermissions;
     }
   },
 
   propTypes: {
-    permissions: React.PropTypes.object.isRequired
+    permissions: React.PropTypes.object
   },
 
   getInitialState: function() {
    return {
     userMeetsPermissions: PermissionMixin.statics.validateUserPermissions(
-      this.props.permissions
-    )
-   };
+        this.props && this.props.permissions
+      )
+    };
   }
 }
 
